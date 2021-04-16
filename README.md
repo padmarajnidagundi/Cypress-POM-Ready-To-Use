@@ -4,7 +4,7 @@ Cypress Page Object Basic Model ( Ready To Use ) - UI Test Automation Design Pat
 Contact me! if you have more ideas -  [padmaraj.nidagundi@gmail.com](mailto:padmaraj.nidagundi@gmail.com)  
 
  - https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use
- - https://www.npmjs.com/package/padmaraj
+ - https://www.npmjs.com/package/cypress-page-object-model
  - https://www.linkedin.com/in/padmarajn/
 
 **How To Run ==> How To Use Cypress.io Page Object Design Pattern Basic Model ( Ready To Use )**
