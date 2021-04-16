@@ -1,6 +1,6 @@
 {
   "name": "cypress-page-object-model",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Cypress Page Object Basic Model ( Ready To Use ) - UI Test Automation Design Pattern for Cypress.io",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://www.linkedin.com/in/padmarajn/"
+    "url": "https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use"
   },
   "keywords": [
     "cypress",
