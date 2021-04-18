@@ -43,7 +43,7 @@ export default homePageLinks
 ```
 
 **Step 3** 
-**How To Add Test Case ==> Create your individual test with name contain spec in it:  TestX.Spec.js in the folder =>  integration**
+**How To Add UI Test Case ==> Create your individual test with name contain spec in it:  UITestX.Spec.js in the folder =>  integration**
 **Test case code pattern** in the folder =>  **integration**
 ```
 import homePageLinks from '../pageObjects/homePageLinks'
@@ -72,7 +72,26 @@ describe('User visit diffrent pages on cypress.io', () => {
 
 
 ```
- **Used chaijs for assertion**
+**Step 4** 
+**How To Add API Test Case ==> Create your individual test with name contain spec in it:  API-GETTestX.spec.js in the folder =>  integration**
+**Test case code pattern** in the folder =>  **integration**
+```
+describe('API Test on cypress.io', () => {
+    it("API Test 1.1 - GET request to that endpoint should return server status", () => {
+    cy.request("GET", "https://www.cypress.io/", {
+    }).then((response) => {
+      // response.body is automatically serialized into JSON
+      cy.log(response.body);
+      expect(response.status).to.eq(200)
+      expect(response).to.have.property('headers')
+      expect(response).to.have.property('duration')
+    });
+  });
+});
+
+```
+
+ **Default used chaijs for assertion**
  [https://www.chaijs.com/](https://www.chaijs.com/)
  [https://docs.cypress.io/guides/references/assertions/](https://docs.cypress.io/guides/references/assertions/)
  

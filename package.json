@@ -1,6 +1,6 @@
 {
   "name": "cypress-page-object-model",
-  "version": "1.0.14",
+  "version": "1.0.19",
   "description": "Cypress Page Object Basic Model ( Ready To Use ) - UI Test Automation Design Pattern for Cypress.io",
   "main": "index.js",
   "scripts": {
@@ -36,7 +36,7 @@
     "automation"
   ],
   "author": "Padmaraj Nidagundi",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://www.linkedin.com/in/padmarajn/",
   "dependencies": {}
 }
