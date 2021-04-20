@@ -7,7 +7,7 @@ Contact me! if you have more ideas -  [padmaraj.nidagundi@gmail.com](mailto:padm
  - https://www.npmjs.com/package/cypress-page-object-model
  - https://www.linkedin.com/in/padmarajn/
 
-**How To Run ==> How To Use Cypress.io Page Object Design Pattern Basic Model ( Ready To Use )**
+**How To Setup and Run ==> How To Use Cypress.io Page Object Design Pattern Basic Model ( Ready To Use )**
 
 **Step 1** 
 
@@ -107,7 +107,14 @@ describe('API Test on cypress.io', () => {
 
  
 ## Keywords
-Cypress, Cypress.io, Chai, Cypress POM, Cypress framework, Software testing, Test automation, Browser Testing, Qualiy assurance, Test automation framework, Test automation framework architecture, Test automation framework design, Page object model, web ui testing, E2E testing, Angular testing, AngularJS testing, Automation, UI testing framework JavaScript, UI testing framework React, Cypress testing, Cypress-testing-library, Cypress-testing-library npm, Cypress testing React, Cypress react testing library, Cypress npm
+Cypress, Cypress.io, Chai, Cypress POM, Cypress framework, Software testing, Test automation, Browser Testing, Qualiy assurance, Test automation framework, Test automation framework architecture, Test automation framework design, Page object model, web ui testing, E2E testing, Angular testing, AngularJS testing, Automation, UI testing framework JavaScript, UI testing framework React, Cypress testing, Cypress-testing-library, Cypress-testing-library npm, Cypress testing React, Cypress react testing library, Cypress npm, CypressAPI, Cypress-API-Test
 
 **maintaining codebase tips** **Kudos (Help) for you**
 -  npm install --save-dev
+
+**How to run test in diffrent modes** **Kudos (Help) for you**
+-  npx cypress open
+-  npx cypress run
+-  npx cypress run --browser chrome
+-  npx cypress run --browser chrome --headless
+-  npx cypress run --spec cypress/integration/UITest1.spec.js
