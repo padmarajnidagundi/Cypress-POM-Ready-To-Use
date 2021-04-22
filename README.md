@@ -111,6 +111,7 @@ Cypress, Cypress.io, Chai, Cypress POM, Cypress framework, Software testing, Tes
 
 **maintaining codebase tips** **Kudos (Help) for you**
 -  npm install --save-dev
+-  npm install mochawesome  ( for test report )
 
 **How to run test in diffrent modes** **Kudos (Help) for you**
 -  npx cypress open
