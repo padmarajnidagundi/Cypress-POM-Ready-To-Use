@@ -120,6 +120,8 @@ Cypress, Cypress.io, Chai, Cypress POM, Cypress framework, Software testing, Tes
 -  npx cypress run --browser chrome --headless
 -  npx cypress run --spec cypress/integration/UITest1.spec.js
 
+**Cypress API**
+-  https://docs.cypress.io/api/table-of-contents
 
 **Selecting a single element - querying DOM**
 
@@ -133,5 +135,13 @@ Cypress, Cypress.io, Chai, Cypress POM, Cypress framework, Software testing, Tes
 .get('.square') // select by class
 .get('#two') // select by id
 .get('[shape="three"]'); // select by attribute
+
+```
+
+**debugging tests in Cypress**
+
+``` 
+.pause()
+console.log()
 
 ```
