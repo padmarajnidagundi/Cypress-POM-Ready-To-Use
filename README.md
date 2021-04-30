@@ -119,3 +119,19 @@ Cypress, Cypress.io, Chai, Cypress POM, Cypress framework, Software testing, Tes
 -  npx cypress run --browser chrome
 -  npx cypress run --browser chrome --headless
 -  npx cypress run --spec cypress/integration/UITest1.spec.js
+
+
+**Selecting a single element - querying DOM**
+
+``` 
+<h1>Numbers:</h1>
+<div class="one"></div>
+<div id="two"></div>
+<div shape="three"></div>
+
+.get('one') // select by tag
+.get('.square') // select by class
+.get('#two') // select by id
+.get('[shape="three"]'); // select by attribute
+
+```
