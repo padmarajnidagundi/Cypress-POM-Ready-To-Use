@@ -1,6 +1,6 @@
 {
   "name": "cypress-page-object-model",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "Cypress Page Object Basic Model ( Ready To Use ) - UI Test Automation Design Pattern for Cypress.io",
   "main": "index.js",
   "scripts": {
