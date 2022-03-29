@@ -33,10 +33,10 @@
     "javascript",
     "cypress-testing-library",
     "cypress-npm",
-    "automation"
+    "automation",
+    "cypress-api"
   ],
   "author": "Padmaraj Nidagundi",
   "license": "MIT",
-  "homepage": "https://www.linkedin.com/in/padmarajn/",
-  "dependencies": {}
+  "homepage": "https://www.linkedin.com/in/padmarajn/"
 }
