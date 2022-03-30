@@ -1,11 +1,11 @@
-class login{
-    email(){
+class login {
+    email() {
         return cy.get('input[type="email"]')
     }
-    password(){
+    password() {
         return cy.get('input[type="password"]')
     }
-    signInButton(){
+    signInButton() {
         return cy.get('.btn').contains('Sign in')
     }
 }

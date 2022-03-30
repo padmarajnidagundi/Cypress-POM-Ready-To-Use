@@ -1,5 +1,4 @@
 class pricingPageLinks {
-
    teamtab() {
       return cy.get('.Toggle__Indicator-sc-1pryher-3')
    }
@@ -8,5 +7,4 @@ class pricingPageLinks {
    }
 
 }
-
 export default pricingPageLinks
