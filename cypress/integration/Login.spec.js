@@ -1,4 +1,4 @@
-import Login from '../pageObjects/login'
+import Login from '../pageObjects/reactLogin'
 
 describe('Login', function () {
     const login = new Login()
