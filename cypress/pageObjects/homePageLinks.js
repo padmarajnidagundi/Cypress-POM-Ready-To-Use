@@ -13,7 +13,6 @@ class homePageLinks {
       return cy.get('button[id="onetrust-accept-btn-handler"]')
    }
 
-
 }
 
 export default homePageLinks
