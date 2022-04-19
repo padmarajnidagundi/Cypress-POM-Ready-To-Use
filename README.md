@@ -597,7 +597,7 @@ See `commandsCookies.js` and `usages/cookies.js` for moving cookies across domai
 
 ```js
 cy.stashCookies('myStash').then((cookies) => {
-    cy.setCookiesOnDomain(cookies, 'www.totaljobs.com');
+    cy.setCookiesOnDomain(cookies, 'www.cypress.io');
 });
 ```
 
@@ -1155,7 +1155,7 @@ Cypress.Commands.add('setBaseUrl', (baseUrl) => {
 ```
 
 ```js
-cy.setBaseUrl('https://www.totaljobs.com');
+cy.setBaseUrl('https://www.cypress.io');
 ```
 
 Debug messages to a log file.
@@ -1240,7 +1240,7 @@ const util = require('../../util.js');
 
 cy.request({
     method: 'GET',
-    url: 'https://www.totaljobs.com/Authenticated/Unsubscribe.aspx',
+    url: 'https://www.cypress.io',
     failOnStatusCode: true,
 }).then((response) => {
     expect(response.status).to.eq(200);
