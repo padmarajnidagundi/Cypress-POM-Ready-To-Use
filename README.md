@@ -76,18 +76,21 @@ describe('User visit diffrent pages on cypress.io', () => {
 **How To Add API Test Case ==> Create your individual test with name contain spec in it:  API-GETTestX.spec.js in the folder =>  integration**
 **Test case code pattern** in the folder =>  **integration**
 ```
-describe('API Test on cypress.io', () => {
-    it("API Test 1.1 - GET request to that endpoint should return server status", () => {
-    cy.request("GET", "https://www.cypress.io/", {
-    }).then((response) => {
-      // response.body is automatically serialized into JSON
-      cy.log(response.body);
-      expect(response.status).to.eq(200)
-      expect(response).to.have.property('headers')
-      expect(response).to.have.property('duration')
-    });
-  });
-});
+   Cypress.config('baseUrl', 'https://reqres.in')
+
+    it('Test 1 - GET API testing Using API ', () => {
+        cy.request('/api/users?page=2').then((response) => {
+            expect(response).to.have.property('status', 200)
+            expect(response.body).to.not.be.null
+            expect(response.body).to.have.property('page', 2)
+            expect(response.body.data).to.be.an('array')
+            expect(response.body.data).to.have.length(6)
+            response.body.data.forEach(user => {
+                expect(user).to.have.all.keys('id', 'email', 'first_name', 'last_name', 'avatar')
+            })
+        })
+    })
+
 
 ```
 
