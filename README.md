@@ -26,19 +26,21 @@ Contact me! if you have more ideas -  [padmaraj.nidagundi@gmail.com](mailto:padm
 ```
 class homePageLinks {
 
-   homepage() {
-      return cy.visit('https://www.cypress.io/')
-   }
-   howitworkspagelink() {
-      return cy.get('.styled__MenuWrapper-sc-16oj5lj-1 > .styled__NavList-sc-16oj5lj-3:nth-child(1) > .styled__NavItem-sc-16oj5lj-4:nth-child(2) > .Link-sc-5cc5in-0')
-   }
-   pricingpagelink() {
-      return cy.get('.styled__NavList-sc-16oj5lj-3:nth-child(1) > .styled__NavItem-sc-16oj5lj-4:nth-child(4) > .Link-sc-5cc5in-0')
-   }
+   visit() {
+      cy.visit('https://example.cypress.io/')
+  }
 
+  getHeader() {
+      return cy.get('h1')
+  }
+
+  getNavigationLink(linkText) {
+      return cy.get('a').contains(linkText)
+  }
 }
 
 export default homePageLinks
+
 
 ```
 
@@ -46,27 +48,24 @@ export default homePageLinks
 **How To Add UI Test Case ==> Create your individual test with name contain spec in it:  UITestX.Spec.js in the folder =>  integration**
 **Test case code pattern** in the folder =>  **integration**
 ```
-import homePageLinks from '../pageObjects/homePageLinks'
-import pricingPageLinks from '../pageObjects/pricingPageLinks'
-describe('User visit diffrent pages on cypress.io', () => {
-    const l = new homePageLinks()
-    it('Test 1.1 - User visit "Home Page" and visit the "How it works"', () => {
-        l.homepage()
-        cy.title().should('eq', 'JavaScript End to End Testing Framework | cypress.io')  //Verify Page Title with exact & full text
-        cy.title().should('include', 'JavaScript')     //Verify Page Title with partial text
-        l.howitworkspagelink().click()
-        cy.title().should('eq', 'End to End Testing Framework | cypress.io')  //Verify Page Title with exact & full text
-        cy.title().should('include', 'End to End')     //Verify Page Title with partial text
+import ExamplePage from '../pageObjects/homePageLinks'
+
+
+describe('Example Cypress.io Tests', () => {
+    const examplePage = new ExamplePage()
+
+    beforeEach(() => {
+        examplePage.visit()
     })
 
-    it('Test 1.2 - User visit "Pricing" page and check for the price of cypress.io and click on Team and Business', () => {
-        l.homepage()
-        l.pricingpagelink().click()
-        cy.title().should('eq', 'Pricing | cypress.io')  //Verify Page Title with exact & full text
-        cy.title().should('include', 'Pricing')     //Verify Page Title with partial text
-        const p = new pricingPageLinks()
-        p.teamtab().click()
-        p.businesstab().click()
+    it('should verify the header text', () => {
+        examplePage.getHeader().should('contain', 'Kitchen Sink')
+    })
+
+    it('should navigate to the "Utilities" page', () => {
+        examplePage.getNavigationLink('Utilities').click()
+        cy.url().should('include', '/utilities')
+        cy.get('h1').should('contain', 'Utilities')
     })
 })
 
