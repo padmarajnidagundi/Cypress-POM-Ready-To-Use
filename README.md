@@ -70,6 +70,61 @@ describe('Example Cypress.io Tests', () => {
 })
 
 
+### Question:
+
+### Answer:
+Certainly! I'll explain the selected code from the Cypress test file:
+
+```javascript
+describe('Example Cypress.io Tests', () => {
+    const examplePage = new ExamplePage()
+
+    beforeEach(() => {
+        examplePage.visit()
+    })
+
+    it('should verify the header text', () => {
+        examplePage.getHeader().should('contain', 'Kitchen Sink')
+    })
+
+    it('should navigate to the "Utilities" page', () => {
+        examplePage.getNavigationLink('Utilities').click()
+        cy.url().should('include', '/utilities')
+        cy.get('h1').should('contain', 'Utilities')
+    })
+})
+```
+
+This code is a Cypress test suite that uses the Page Object Model (POM) pattern. Here's a breakdown of what's happening:
+
+1. `describe('Example Cypress.io Tests', () => { ... })`: This creates a test suite named "Example Cypress.io Tests".
+
+2. `const examplePage = new ExamplePage()`: An instance of the ExamplePage class is created. This class likely contains methods for interacting with elements on the page.
+
+3. `beforeEach(() => { examplePage.visit() })`: Before each test in this suite, the `visit()` method of the examplePage object is called, which likely navigates to the page being tested.
+
+4. The first test case:
+   ```javascript
+   it('should verify the header text', () => {
+       examplePage.getHeader().should('contain', 'Kitchen Sink')
+   })
+   ```
+   This test checks if the header of the page contains the text "Kitchen Sink".
+
+5. The second test case:
+   ```javascript
+   it('should navigate to the "Utilities" page', () => {
+       examplePage.getNavigationLink('Utilities').click()
+       cy.url().should('include', '/utilities')
+       cy.get('h1').should('contain', 'Utilities')
+   })
+   ```
+   This test clicks on a navigation link to the "Utilities" page, then verifies that the URL includes '/utilities' and that there's an h1 element containing the text "Utilities".
+
+This code demonstrates good practices in Cypress testing, including use of the Page Object Model for better organization and reusability, and clear, descriptive test cases that each verify a specific piece of functionality.
+
+
+
 ```
 **Step 4** 
 **How To Add API Test Case ==> Create your individual test with name contain spec in it:  API-GETTestX.spec.js in the folder =>  integration**
