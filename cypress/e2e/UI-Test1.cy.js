@@ -1,7 +1,7 @@
 import ExamplePage from '../pageObjects/homePageLinks'
 
 
-describe('Example Cypress.io Tests', () => {
+describe('UI Test 1  Utilities example.cypress.io Page Tests', () => {
     const examplePage = new ExamplePage()
 
     beforeEach(() => {
