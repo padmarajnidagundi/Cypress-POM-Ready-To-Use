@@ -7,6 +7,41 @@ Contact me! if you have more ideas -  [padmaraj.nidagundi@gmail.com](mailto:padm
  - https://www.npmjs.com/package/cypress-page-object-model
  - https://www.linkedin.com/in/padmarajn/
 
+
+ **Project Structure:**
+
+```
+Cypress-POM-Ready-To-Use/
+├── .github/
+│   └── workflows/
+│       └── node.js.yml
+├── cypress/
+│   ├── downloads/
+│   ├── e2e/
+│   │   ├── API-Tests.cy.js
+│   │   ├── Login-Tests.cy.js
+│   │   ├── UI-Test1.cy.js
+│   │   └── UI-Test2.cy.js
+│   ├── pageObjects/
+│   │   ├── homePageLinks.js
+│   │   ├── pricingPageLinks.js
+│   │   ├── queryingPageLinks.js
+│   │   └── reactLogin.js
+│   ├── plugins/
+│   │   └── index.js
+│   └── support/
+│       ├── commands.js
+│       └── e2e.js
+├── mochawesome-report/
+│   └── assets/
+├── node_modules/
+├── .gitignore
+├── cypress.config.js
+├── jsconfig.json
+├── package.json
+└── README.md
+```
+
 **How To Setup and Run ==> How To Use Cypress.io Page Object Design Pattern Basic Model ( Ready To Use )**
 
 **Step 1** 
