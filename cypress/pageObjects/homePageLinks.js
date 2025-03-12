@@ -1,16 +1,21 @@
-class homePageLinks {
+import BasePage from './basePage'
 
-   visit() {
-      cy.visit('https://example.cypress.io/')
-  }
+class HomePageLinks extends BasePage {
+    constructor() {
+        super()
+        this.selectors = {
+            header: 'h1',
+            navigationLink: 'a'
+        }
+    }
 
-  getHeader() {
-      return cy.get('h1')
-  }
+    getHeader() {
+        return this.getElement(this.selectors.header)
+    }
 
-  getNavigationLink(linkText) {
-      return cy.get('a').contains(linkText)
-  }
+    getNavigationLink(linkText) {
+        return this.getElement(this.selectors.navigationLink).contains(linkText)
+    }
 }
 
-export default homePageLinks
+export default HomePageLinks

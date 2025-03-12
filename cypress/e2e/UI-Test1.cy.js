@@ -1,14 +1,5 @@
 import ExamplePage from '../pageObjects/homePageLinks'
 
-
-<<<<<<< What this test do <<<<<<<
-/**//+
- * Test suite for UI Test 1 on the example.cypress.io Utilities page.//+
- * This suite verifies the header text and navigation to the Utilities page.//+
- * //+
- * @param {string} description - The description of the test suite.//+
- * @param {Function} callback - The function containing the test cases.//+
- *///+
 describe('UI Test 1  Utilities example.cypress.io Page Tests', () => {
     const examplePage = new ExamplePage()
 

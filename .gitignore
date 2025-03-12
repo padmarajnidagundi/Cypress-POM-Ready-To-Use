@@ -1,1 +1,29 @@
-node_modules
+# Dependencies
+node_modules/
+package-lock.json
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+cypress/results/
+
+# IDE
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Test reports
+mochawesome-report/
+reports/
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
