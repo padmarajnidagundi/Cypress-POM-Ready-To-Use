@@ -2,7 +2,7 @@ const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
   watchForFileChanges: false,
-  video: false,
+  video: process.env.CI ? true : false,
   viewportWidth: 1920,
   viewportHeight: 1080,
   screenshotsFolder: 'mochawesome-report/assets',
@@ -12,7 +12,7 @@ module.exports = defineConfig({
     openMode: null,
   },
   retries: {
-    runMode: 2,
+    runMode: process.env.CI ? 2 : 0,
     openMode: 0,
   },
   execTimout: 60000,
@@ -20,12 +20,20 @@ module.exports = defineConfig({
   pageLoadTimeout: 60000,
   requestTimeout: 10000,
   responseTimeout: 30000,
+  screenshotOnRunFailure: true,
   env: {
     apiUrl: 'https://reqres.in',
     reactAppUrl: 'https://react-redux.realworld.io',
-    exampleUrl: 'https://example.cypress.io'
+    exampleUrl: 'https://example.cypress.io',
+    testType: {
+      api: 'cypress/e2e/api',
+      ui: 'cypress/e2e/ui',
+      integration: 'cypress/e2e/integration'
+    }
   },
   e2e: {
+    specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
+    supportFile: 'cypress/support/e2e.js',
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {

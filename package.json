@@ -7,11 +7,15 @@
     "cypress:install": "cypress install",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "test": "cypress run",
+    "test": "cypress run --headless --browser chrome",
     "test:open": "cypress open",
-    "test:ci": "cypress run --headless",
+    "test:ci": "cypress run --headless --browser chrome",
     "lint": "eslint cypress/**/*.{js,ts}",
-    "prettier": "prettier --write \"cypress/**/*.{js,ts}\""
+    "prettier": "prettier --write \"cypress/**/*.{js,ts}\"",
+    "test:api": "cypress run --spec \"cypress/e2e/api/**/*\"",
+    "test:ui": "cypress run --spec \"cypress/e2e/ui/**/*\"",
+    "test:integration": "cypress run --spec \"cypress/e2e/integration/**/*\"",
+    "test:parallel": "cypress run --parallel --spec \"cypress/e2e/**/*\""
   },
   "repository": {
     "type": "git",
