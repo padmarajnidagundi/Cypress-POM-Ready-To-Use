@@ -15,11 +15,15 @@
     "test:api": "cypress run --spec \"cypress/e2e/api/**/*\"",
     "test:ui": "cypress run --spec \"cypress/e2e/ui/**/*\"",
     "test:integration": "cypress run --spec \"cypress/e2e/integration/**/*\"",
-    "test:parallel": "cypress run --parallel --spec \"cypress/e2e/**/*\""
+    "test:parallel": "cypress run --parallel --spec \"cypress/e2e/**/*\"",
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use"
+    "url": "git+https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use.git"
   },
   "keywords": [
     "cypress",
@@ -63,5 +67,15 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "cypress"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/issues"
   }
 }

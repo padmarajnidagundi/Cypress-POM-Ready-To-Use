@@ -1,0 +1,13 @@
+.github/
+.vscode/
+node_modules/
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+cypress/results/
+*.log
+.DS_Store
+coverage/
+mochawesome-report/
+.env
+*.tgz
