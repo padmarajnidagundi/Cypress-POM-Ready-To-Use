@@ -2,7 +2,7 @@
 
 A production-ready Cypress automation framework with Page Object Model, supporting both UI and API testing.
 
-## Key Features
+## Key Features.
 
 - TypeScript support with type definitions
 - Page Object Model implementation
