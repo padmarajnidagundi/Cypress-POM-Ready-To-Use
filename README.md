@@ -19,15 +19,52 @@ A production-ready Cypress automation framework with Page Object Model, supporti
 ```bash
 git clone https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use
 cd Cypress-POM-Ready-To-Use
-npm install
 ```
 
-2. **Run Tests**
+2. **Setup Project**
+```bash
+npm run presetup     # Install all dependencies
+npm run setup       # Install Cypress
+npm run verify      # Verify Cypress installation
+```
+
+3. **Open Cypress**
+```bash
+npm run cypress:open  # Open Cypress Test Runner
+```
+
+4. **Run Tests**
 ```bash
 npm run test:ui          # Run UI tests
 npm run test:api         # Run API tests
 npm run test:parallel    # Run all tests in parallel
 npm run test:ci         # Run tests in CI mode
+```
+
+### Troubleshooting Installation
+
+If you encounter the error `'cypress' is not recognized as an internal or external command`, follow these steps:
+
+1. Clear npm cache and node_modules:
+```bash
+npm cache clean --force
+rm -rf node_modules
+rm -rf package-lock.json
+```
+
+2. Reinstall dependencies:
+```bash
+npm run presetup
+```
+
+3. Verify installation:
+```bash
+npm run verify
+```
+
+4. Test Cypress:
+```bash
+npm run cypress:open
 ```
 
 ## For QA Engineers
@@ -157,6 +194,77 @@ pipeline {
         }
     }
 }
+```
+
+### Test Reporting
+
+This framework uses Mochawesome for comprehensive HTML reporting. Get detailed insights with screenshots, videos, and test execution metrics.
+
+1. **Available Report Commands**
+```bash
+npm run report:clean     # Clean previous reports
+npm run report:merge     # Merge multiple report JSONs
+npm run report:generate  # Generate HTML from JSON
+npm run test:report      # Full test execution with reports
+```
+
+2. **Report Features**
+   - Interactive HTML dashboard
+   - Test execution timeline
+   - Suite and test-level statistics
+   - Failure screenshots embedded in report
+   - Test execution videos
+   - Performance metrics
+   - Filter and search capabilities
+   - Responsive design for mobile viewing
+
+3. **Report Structure**
+```
+cypress/reports/
+├── html/               # HTML reports
+│   ├── assets/        # Screenshots, videos
+│   ├── report.html    # Main report
+│   └── report.json    # Combined results
+└── json/              # Individual test JSONs
+```
+
+4. **Reporter Configuration**
+Add these options to `cypress.config.js`:
+```javascript
+module.exports = defineConfig({
+  reporter: 'cypress-mochawesome-reporter',
+  reporterOptions: {
+    charts: true,                    // Enable charts
+    reportPageTitle: 'Test Report',  // Custom title
+    embeddedScreenshots: true,       // Inline screenshots
+    inlineAssets: true,             // Inline assets
+    saveAllAttempts: false,         // Save only failures
+    reportDir: 'cypress/reports/html',
+    overwrite: false,
+    html: true,
+    json: true
+  }
+})
+```
+
+5. **Viewing Reports**
+   - Open `cypress/reports/html/report.html` in any browser
+   - Reports are self-contained and can be shared
+   - Support offline viewing
+   - Can be hosted on any static server
+
+6. **CI/CD Integration**
+```yaml
+- name: Generate Test Report
+  if: always()
+  run: npm run test:report
+
+- name: Upload Test Report
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: test-report
+    path: cypress/reports/html
 ```
 
 ## Debugging Tips

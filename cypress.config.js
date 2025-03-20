@@ -21,6 +21,18 @@ module.exports = defineConfig({
   requestTimeout: 10000,
   responseTimeout: 30000,
   screenshotOnRunFailure: true,
+  reporter: 'cypress-mochawesome-reporter',
+  reporterOptions: {
+    charts: true,
+    reportPageTitle: 'Cypress POM Test Report',
+    embeddedScreenshots: true,
+    inlineAssets: true,
+    saveAllAttempts: false,
+    reportDir: 'cypress/reports/html',
+    overwrite: false,
+    html: true,
+    json: true
+  },
   env: {
     apiUrl: 'https://reqres.in',
     reactAppUrl: 'https://react-redux.realworld.io',
@@ -37,6 +49,7 @@ module.exports = defineConfig({
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
+      require('cypress-mochawesome-reporter/plugin')(on);
       return require('./cypress/plugins/index.js')(on, config)
     },
   },
