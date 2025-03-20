@@ -4,6 +4,10 @@
   "description": "Cypress Page Object Basic Model ( Ready To Use ) - UI Test Automation Design Pattern for Cypress.io",
   "main": "index.js",
   "scripts": {
+    "presetup": "npm install",
+    "setup": "npm run cypress:install",
+    "verify": "cypress verify",
+    "cypress": "cypress",
     "cypress:install": "cypress install",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
