@@ -34,7 +34,7 @@ module.exports = defineConfig({
     json: true
   },
   env: {
-    apiUrl: 'https://reqres.in',
+    apiUrl: 'https://reqres.in/api',
     reactAppUrl: 'https://react-redux.realworld.io',
     exampleUrl: 'https://example.cypress.io',
     testType: {
@@ -44,6 +44,7 @@ module.exports = defineConfig({
     }
   },
   e2e: {
+    baseUrl: 'https://reqres.in/api', // Moved baseUrl here
     specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
     supportFile: 'cypress/support/e2e.js',
     // We've imported your old cypress plugins here.
