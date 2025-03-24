@@ -112,24 +112,126 @@ describe('Login Tests', () => {
 
 ### Writing API Tests
 
-1. **Use Built-in Commands**
-```typescript
-// cypress/e2e/api/users.cy.ts
-describe('Users API', () => {
-    it('should create a new user', () => {
-        cy.request({
-            method: 'POST',
-            url: '/api/users',
-            body: {
-                name: 'Test User',
-                role: 'QA'
-            }
-        }).then(response => {
-            expect(response.status).to.eq(201)
-        })
+Our framework supports comprehensive API testing across multiple categories:
+
+1. **Unit Tests**
+```javascript
+describe('[Unit] User API Operations', () => {
+  it('[Unit] should retrieve user with valid data structure', () => {
+    cy.apiRequest('GET', '/users/1').then((response) => {
+      expect(response.status).to.eq(200)
+      expect(response.body.data).to.have.all.keys('id', 'email', 'first_name', 'last_name', 'avatar')
     })
+  })
 })
 ```
+
+2. **Integration Tests**
+```javascript
+describe('[Integration] User Management Workflow', () => {
+  it('[Integration] should perform complete user CRUD operations', () => {
+    cy.apiRequest('POST', '/users', {
+      body: { name: 'Test User', job: 'QA Engineer' }
+    }).then((response) => {
+      expect(response.status).to.eq(201)
+    })
+  })
+})
+```
+
+3. **Performance Tests**
+```javascript
+describe('[Performance] API Response Times', () => {
+  it('[Performance] should meet response time SLA', () => {
+    cy.apiRequest('GET', '/users').then((response) => {
+      expect(response.duration).to.be.lessThan(1000)
+    })
+  })
+})
+```
+
+4. **Security Tests**
+```javascript
+describe('[Security] API Authentication', () => {
+  it('[Security] should enforce authentication', () => {
+    cy.apiRequest('GET', '/protected', {
+      headers: { 'Authorization': 'Bearer invalid_token' }
+    }).then((response) => {
+      expect(response.status).to.eq(401)
+    })
+  })
+})
+```
+
+5. **Validation Tests**
+```javascript
+describe('[Validation] API Input Validation', () => {
+  it('[Validation] should enforce required fields', () => {
+    cy.apiRequest('POST', '/register', {
+      body: {}
+    }).then((response) => {
+      expect(response.status).to.eq(400)
+    })
+  })
+})
+```
+
+6. **Interoperability Tests**
+```javascript
+describe('[Interop] API Compatibility', () => {
+  it('[Interop] should support multiple formats', () => {
+    cy.apiRequest('GET', '/users', {
+      headers: { 'Accept': 'application/json' }
+    }).then((response) => {
+      expect(response.headers['content-type']).to.include('application/json')
+    })
+  })
+})
+```
+
+### API Test Organization
+```
+cypress/e2e/api/
+├── unit-tests/           # Basic API operations
+├── integration-tests/    # End-to-end workflows
+├── performance-tests/    # Response times & load
+├── security-tests/      # Auth & security checks
+├── validation-tests/    # Input validation
+└── interop-tests/      # Compatibility tests
+```
+
+### Custom API Commands
+
+Our framework provides built-in commands for API testing:
+
+```javascript
+// Make API requests with default configuration
+cy.apiRequest(method, path, options)
+
+// Example usage
+cy.apiRequest('POST', '/users', {
+  body: { name: 'Test User' },
+  headers: { 'Authorization': 'Bearer token' }
+})
+```
+
+### API Testing Best Practices
+
+1. **Test Structure**
+   - Use descriptive category prefixes: [Unit], [Integration], etc.
+   - Group related tests in appropriate folders
+   - Follow the single responsibility principle
+
+2. **Assertions**
+   - Verify status codes and response structure
+   - Check response times for performance
+   - Validate security headers and tokens
+   - Test edge cases and error conditions
+
+3. **Data Management**
+   - Use fixtures for test data
+   - Clean up test data after tests
+   - Handle environment-specific configurations
 
 ### Best Practices
 
@@ -471,3 +573,5 @@ MIT License - feel free to use in your projects
 - Author: Padmaraj Nidagundi
 - Email: padmaraj.nidagundi@gmail.com
 - LinkedIn: https://www.linkedin.com/in/padmarajn/
+- NpmJs: https://www.npmjs.com/package/cypress-page-object-model
+- GitHub: https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use
