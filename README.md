@@ -1,4 +1,4 @@
-# Cypress-POM-Ready-To-Use (2024 Edition)
+# Cypress-POM-Ready-To-Use (2025 Edition)
 
 A production-ready Cypress automation framework with Page Object Model, supporting both UI and API testing.
 
@@ -12,6 +12,46 @@ A production-ready Cypress automation framework with Page Object Model, supporti
 - Environment-based configuration
 - Comprehensive reporting
 - Built-in retry mechanisms for flaky tests
+
+## Framework Comparison
+
+### Cypress Advantages & Disadvantages
+
+| Advantages | Disadvantages |
+|------------|---------------|
+| ✅ Real-time reload and time travel debugging | ❌ Single browser tab execution |
+| ✅ Automatic waiting and retry mechanisms | ❌ Limited cross-domain testing |
+| ✅ Consistent and reliable tests | ❌ No support for multiple browser windows |
+| ✅ Built-in screenshots and videos | ❌ Limited iframe support |
+| ✅ Excellent developer experience and debugging | ❌ No native mobile testing support |
+| ✅ Modern JavaScript stack and syntax | ❌ Same-origin policy limitations |
+| ✅ Rich ecosystem of plugins | ❌ CPU/Memory intensive for large suites |
+| ✅ Comprehensive documentation | ❌ Limited support for file downloads |
+| ✅ Active community support | ❌ Requires JavaScript knowledge |
+| ✅ Built-in network stubbing | ❌ Browser support limited to Chrome-family |
+| ✅ Native access to browser APIs | ❌ Not suitable for native mobile apps |
+| ✅ Simple setup and configuration | ❌ Complex iframe handling |
+| ✅ API testing capabilities | ❌ Limited parallel testing in open source |
+| ✅ TypeScript support | ❌ Higher resource usage than Selenium |
+| ✅ Command chaining for better readability | ❌ Learning curve for non-JS developers |
+
+### When to Choose Cypress
+
+1. **Best For:**
+   - Modern web applications
+   - Single page applications (SPAs)
+   - Real-time testing feedback
+   - JavaScript/TypeScript projects
+   - E2E and Component testing
+   - API testing
+
+2. **Not Ideal For:**
+   - Native mobile testing
+   - Multi-tab scenarios
+   - Complex iframe operations
+   - Cross-browser testing at scale
+   - Non-JavaScript applications
+   - Limited resource environments
 
 ## Quick Start
 
