@@ -294,8 +294,8 @@ cy.apiRequest('POST', '/users', {
 
 1. **Selectors**
    - Use data-testid attributes: `[data-testid="login-button"]`
-   - Store selectors in page objects
-   - Use meaningful selector names
+   - Store selectors in page objects.
+   - Use meaningful selector names.
 
 2. **Test Organization**
 ```
