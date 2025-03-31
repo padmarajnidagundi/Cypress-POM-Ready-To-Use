@@ -1,49 +1,20 @@
-name: NPM Publish
+name: Node.js Package
 
 on:
-  push:
-    branches: [ "main" ]
-    tags: [ "v*" ]
   release:
     types: [created]
-  workflow_dispatch:
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
-          
-      - name: Check NPM version
-        id: check
-        run: |
-          LOCAL_VERSION=$(node -p "require('./package.json').version")
-          NPM_VERSION=$(npm view cypress-page-object-model version || echo "0.0.0")
-          if [ "$LOCAL_VERSION" != "$NPM_VERSION" ]; then
-            echo "Version change detected: $NPM_VERSION -> $LOCAL_VERSION"
-            echo "publish=true" >> $GITHUB_OUTPUT
-          fi
-          
-      - name: Install dependencies
-        if: steps.check.outputs.publish == 'true'
-        run: npm ci
-        
-      - name: Run tests
-        if: steps.check.outputs.publish == 'true'
-        continue-on-error: true
-        run: npm test
-        
-      - name: Build package
-        if: steps.check.outputs.publish == 'true'
-        run: npm run build || true
-        
-      - name: Publish to NPM
-        if: steps.check.outputs.publish == 'true'
-        run: npm publish
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org/'
+      - run: npm ci
+      - run: npm test
+      - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
