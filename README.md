@@ -229,6 +229,22 @@ describe('[Interop] API Compatibility', () => {
 })
 ```
 
+7. **Mock Tests**
+```javascript
+describe('[Mock] API Response Mocking', () => {
+  it('[Mock] should handle mocked responses', () => {
+    cy.intercept('GET', '/users', {
+      fixture: 'users.json'
+    }).as('getUsers')
+
+    cy.apiRequest('GET', '/users').then((response) => {
+      expect(response.status).to.eq(200)
+      cy.wait('@getUsers')
+    })
+  })
+})
+```
+
 ### API Test Organization
 ```
 cypress/e2e/api/
@@ -237,6 +253,7 @@ cypress/e2e/api/
 ├── performance-tests/    # Response times & load
 ├── security-tests/      # Auth & security checks
 ├── validation-tests/    # Input validation
+├── mock-tests/         # Response mocking & stubbing
 └── interop-tests/      # Compatibility tests
 ```
 
