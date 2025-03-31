@@ -21,8 +21,11 @@
     "test:integration": "cypress run --spec \"cypress/e2e/integration/**/*\"",
     "test:parallel": "cypress run --parallel --spec \"cypress/e2e/**/*\"",
     "build": "tsc",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && npm run test",
     "version": "git add -A src",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
     "postversion": "git push && git push --tags",
     "report:clean": "rm -rf cypress/reports",
     "report:merge": "mochawesome-merge cypress/reports/json/*.json > cypress/reports/html/report.json",
@@ -85,7 +88,8 @@
     "cypress"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "bugs": {
     "url": "https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/issues"

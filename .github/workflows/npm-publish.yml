@@ -1,6 +1,9 @@
 name: NPM Publish
 
 on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*" ]
   release:
     types: [created]
   workflow_dispatch:
@@ -16,16 +19,30 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
           
+      - name: Check NPM version
+        id: check
+        run: |
+          LOCAL_VERSION=$(node -p "require('./package.json').version")
+          NPM_VERSION=$(npm view cypress-page-object-model version || echo "0.0.0")
+          if [ "$LOCAL_VERSION" != "$NPM_VERSION" ]; then
+            echo "Version change detected: $NPM_VERSION -> $LOCAL_VERSION"
+            echo "publish=true" >> $GITHUB_OUTPUT
+          fi
+          
       - name: Install dependencies
+        if: steps.check.outputs.publish == 'true'
         run: npm ci
         
       - name: Run tests
+        if: steps.check.outputs.publish == 'true'
         run: npm test
         
       - name: Build package
+        if: steps.check.outputs.publish == 'true'
         run: npm run build
         
       - name: Publish to NPM
+        if: steps.check.outputs.publish == 'true'
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
