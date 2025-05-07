@@ -426,6 +426,96 @@ module.exports = defineConfig({
     path: cypress/reports/html
 ```
 
+## Advanced Features
+
+### Visual Regression Testing
+
+The framework includes visual regression testing capabilities:
+
+```javascript
+// Visual regression test example
+describe('Visual Tests', () => {
+  it('should match homepage screenshot', () => {
+    cy.visit('/')
+    cy.matchImageSnapshot('homepage')
+  })
+})
+```
+
+Configuration in cypress.config.js:
+- Visual regression path: `cypress/snapshots`
+- Visual threshold: 0.1
+
+Run visual tests:
+```bash
+npm run test:visual
+```
+
+### Accessibility Testing
+
+Built-in accessibility testing with cypress-axe:
+
+```javascript
+describe('Accessibility Tests', () => {
+  it('should pass accessibility checks', () => {
+    cy.visit('/')
+    cy.injectAxe()
+    cy.checkA11y()
+  })
+})
+```
+
+Run accessibility tests:
+```bash
+npm run test:a11y
+```
+
+### Network Stubbing
+
+Enhanced network mocking capabilities:
+
+```javascript
+// Mock REST API
+cy.mockNetworkResponse('GET', '/api/users', { users: [] })
+
+// Mock GraphQL
+cy.mockGraphQL('GetUsers', { data: { users: [] } })
+```
+
+### Test Data Management
+
+Factory pattern for test data generation:
+
+```javascript
+import UserFactory from '../support/factories/userFactory'
+
+describe('User Tests', () => {
+  it('should create user', () => {
+    const user = UserFactory.generate()
+    // Use generated user data in tests
+  })
+
+  it('should create multiple users', () => {
+    const users = UserFactory.generateMany(3)
+    // Use generated users data in tests
+  })
+})
+```
+
+## Additional Dependencies
+
+New testing capabilities are provided by:
+
+```json
+{
+  "cypress-image-snapshot": "^4.0.1",
+  "cypress-axe": "^1.5.0",
+  "@testing-library/cypress": "^10.0.1",
+  "cypress-real-events": "^1.11.0",
+  "@faker-js/faker": "^8.0.0"
+}
+```
+
 ## Debugging Tips
 
 1. **Time Travel**

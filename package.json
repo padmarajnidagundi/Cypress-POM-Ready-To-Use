@@ -30,7 +30,9 @@
     "report:clean": "rm -rf cypress/reports",
     "report:merge": "mochawesome-merge cypress/reports/json/*.json > cypress/reports/html/report.json",
     "report:generate": "marge cypress/reports/html/report.json -f report -o cypress/reports/html",
-    "test:report": "npm run report:clean && npm run test && npm run report:merge && npm run report:generate"
+    "test:report": "npm run report:clean && npm run test && npm run report:merge && npm run report:generate",
+    "test:visual": "cypress run --env type=visual",
+    "test:a11y": "cypress run --env type=accessibility"
   },
   "repository": {
     "type": "git",
@@ -78,7 +80,11 @@
     "mochawesome-merge": "^4.3.0",
     "mochawesome-report-generator": "^6.2.0",
     "prettier": "^3.2.4",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "cypress-image-snapshot": "^4.0.1",
+    "cypress-axe": "^1.5.0",
+    "@testing-library/cypress": "^10.0.1",
+    "cypress-real-events": "^1.11.0"
   },
   "engines": {
     "node": ">=18.0.0"

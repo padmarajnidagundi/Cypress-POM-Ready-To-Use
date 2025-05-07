@@ -41,7 +41,9 @@ module.exports = defineConfig({
       api: 'cypress/e2e/api',
       ui: 'cypress/e2e/ui',
       integration: 'cypress/e2e/integration'
-    }
+    },
+    visualRegressionPath: 'cypress/snapshots',
+    visualThreshold: 0.1
   },
   e2e: {
     baseUrl: 'https://reqres.in/api', // Moved baseUrl here
@@ -51,6 +53,7 @@ module.exports = defineConfig({
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
+      require('cypress-image-snapshot/plugin')(on, config);
       return require('./cypress/plugins/index.js')(on, config)
     },
   },

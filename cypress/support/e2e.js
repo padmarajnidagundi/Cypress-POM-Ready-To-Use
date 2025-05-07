@@ -16,6 +16,16 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 import './commands/api.commands'
+import 'cypress-axe'
+import { configureAxe } from 'cypress-axe'
+
+// Configure aXe
+configureAxe({
+  rules: [
+    { id: 'color-contrast', enabled: true },
+    { id: 'landmark-one-main', enabled: true }
+  ]
+})
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
