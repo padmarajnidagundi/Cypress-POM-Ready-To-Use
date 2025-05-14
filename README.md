@@ -1,4 +1,4 @@
-# Cypress POM Ready To Use - 2025 update
+# Cypress POM - Page Object Model Ready To Use - 2025 update
 
 A production-ready Cypress automation framework with Page Object Model, supporting both UI and API testing.
 
