@@ -37,6 +37,8 @@ module.exports = defineConfig({
     apiUrl: 'https://reqres.in/api',
     reactAppUrl: 'https://react-redux.realworld.io',
     exampleUrl: 'https://example.cypress.io',
+    chatGptUrl: 'https://chat.openai.com',
+    chatGptApiUrl: 'https://api.openai.com/v1',
     testType: {
       api: 'cypress/e2e/api',
       ui: 'cypress/e2e/ui',
