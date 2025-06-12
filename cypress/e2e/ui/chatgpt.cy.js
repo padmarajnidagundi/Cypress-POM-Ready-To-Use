@@ -58,4 +58,23 @@ describe('ChatGPT UI Tests', () => {
             chatGpt.getLastResponse().should('be.visible')
         })
     })
+
+    it('should open menu and settings', () => {
+        chatGpt.visit()
+        
+        // Verify menu interaction
+        chatGpt.getElement(chatGpt.selectors.menuButton)
+            .should('be.visible')
+            .click()
+        
+        // Verify settings button is visible in menu
+        chatGpt.getElement(chatGpt.selectors.settingsButton)
+            .should('be.visible')
+            .click()
+            
+        // Add assertions for settings panel visibility
+        // Note: Add proper settings panel selector when available
+        cy.url().should('include', '/settings')
+    })
+
 })
