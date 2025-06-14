@@ -77,4 +77,49 @@ describe('ChatGPT UI Tests', () => {
         cy.url().should('include', '/settings')
     })
 
+    it('should verify complete message interaction flow', () => {
+        chatGpt.visit()
+        const testMessage = 'Tell me about Cypress testing'
+        
+        // Verify initial state
+        chatGpt.getElement(chatGpt.selectors.clearButton).should('be.visible')
+        chatGpt.getElement(chatGpt.selectors.messageInput)
+            .should('be.visible')
+            .and('be.empty')
+            .and('have.attr', 'placeholder')
+        
+        // Send message and verify loading state
+        chatGpt.sendMessage(testMessage)
+        chatGpt.getElement(chatGpt.selectors.loadingIndicator)
+            .should('be.visible')
+        
+        // Wait for and verify response
+        chatGpt.waitForResponse()
+        
+        // Verify message appears in both user and assistant sections
+        chatGpt.getUserMessages()
+            .should('contain', testMessage)
+        chatGpt.getAssistantMessages()
+            .should('be.visible')
+            .and('not.be.empty')
+        
+        // Verify regenerate button is available
+        chatGpt.getElement(chatGpt.selectors.regenerateButton)
+            .should('be.visible')
+            .and('be.enabled')
+        
+        // Test regenerate functionality
+        chatGpt.regenerateResponse()
+        chatGpt.getElement(chatGpt.selectors.loadingIndicator)
+            .should('be.visible')
+        chatGpt.waitForResponse()
+        
+        // Clear conversation and verify
+        chatGpt.clearConversation()
+        chatGpt.getChatHistory()
+            .should('not.contain', testMessage)
+        chatGpt.getElement(chatGpt.selectors.messageInput)
+            .should('be.empty')
+    })
+
 })

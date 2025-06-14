@@ -3,14 +3,20 @@ import BasePage from './basePage'
 class ChatGptPage extends BasePage {
     constructor() {
         super()
-        this.selectors = {
-            loginButton: 'button[data-testid="login-button"]',            messageInput: 'textarea[data-testid="message-input"]',
+        this.selectors = {            loginButton: 'button[data-testid="login-button"]',
+            messageInput: 'textarea[data-testid="message-input"]',
             sendButton: 'button[data-testid="send-button"]',
             messageResponse: '[data-testid="message-response"]',
             chatHistory: '[data-testid="chat-history"]',
             menuButton: '[data-testid="menu-button"]',
             settingsButton: '[data-testid="settings-button"]',
-            errorMessage: '[data-testid="error-message"]'
+            errorMessage: '[data-testid="error-message"]',
+            loadingIndicator: '[data-testid="loading-indicator"]',
+            conversationTitle: '[data-testid="conversation-title"]',
+            regenerateButton: '[data-testid="regenerate-button"]',
+            clearButton: '[data-testid="clear-button"]',
+            userMessage: '[data-testid="user-message"]',
+            assistantMessage: '[data-testid="assistant-message"]'
         }
     }
 
@@ -50,6 +56,22 @@ class ChatGptPage extends BasePage {
     openSettings() {
         this.openMenu()
         return this.getElement(this.selectors.settingsButton).click()
+    }
+
+    clearConversation() {
+        return this.getElement(this.selectors.clearButton).click()
+    }
+
+    regenerateResponse() {
+        return this.getElement(this.selectors.regenerateButton).click()
+    }
+
+    getUserMessages() {
+        return this.getElement(this.selectors.userMessage)
+    }
+
+    getAssistantMessages() {
+        return this.getElement(this.selectors.assistantMessage)
     }
 }
 
