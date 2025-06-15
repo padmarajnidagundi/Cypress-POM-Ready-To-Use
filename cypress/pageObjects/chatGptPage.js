@@ -1,5 +1,7 @@
 import BasePage from './basePage'
 
+const RESPONSE_DELAY_MS = 100;
+
 class ChatGptPage extends BasePage {
     constructor() {
         super()
@@ -72,6 +74,18 @@ class ChatGptPage extends BasePage {
 
     getAssistantMessages() {
         return this.getElement(this.selectors.assistantMessage)
+    }
+
+    getErrorMessage() {
+        return this.getElement(this.selectors.errorMessage)
+    }
+
+    mockResponseFailure(statusCode, errorMessage) {
+        cy.intercept('POST', '**/api/chat/**', {
+            statusCode: statusCode,
+            body: { error: errorMessage },
+            delay: RESPONSE_DELAY_MS
+        }).as('failedRequest')
     }
 }
 

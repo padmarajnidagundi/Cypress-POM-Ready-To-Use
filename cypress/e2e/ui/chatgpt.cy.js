@@ -122,4 +122,70 @@ describe('ChatGPT UI Tests', () => {
             .should('be.empty')
     })
 
+    describe('Error Handling', () => {
+        beforeEach(() => {
+            chatGpt.visit()
+        })
+
+        it('should handle network timeout gracefully', () => {
+            chatGpt.mockResponseFailure(504, 'Gateway Timeout')
+            const testMessage = 'This should trigger a timeout'
+            
+            chatGpt.sendMessage(testMessage)
+            cy.wait('@failedRequest')
+            
+            chatGpt.getErrorMessage()
+                .should('be.visible')
+                .and('contain', 'timeout')
+            
+            // Verify UI remains functional
+            chatGpt.getElement(chatGpt.selectors.messageInput)
+                .should('be.enabled')
+            chatGpt.getElement(chatGpt.selectors.sendButton)
+                .should('be.enabled')
+        })
+
+        it('should handle server errors appropriately', () => {
+            chatGpt.mockResponseFailure(500, 'Internal Server Error')
+            const testMessage = 'This should trigger a server error'
+            
+            chatGpt.sendMessage(testMessage)
+            cy.wait('@failedRequest')
+            
+            chatGpt.getErrorMessage()
+                .should('be.visible')
+                .and('contain', 'error')
+            
+            // Verify retry functionality
+            chatGpt.getElement(chatGpt.selectors.regenerateButton)
+                .should('be.visible')
+                .and('be.enabled')
+                .click()
+            
+            // Verify message persistence
+            chatGpt.getUserMessages()
+                .should('contain', testMessage)
+        })
+
+        it('should handle rate limiting', () => {
+            chatGpt.mockResponseFailure(429, 'Too Many Requests')
+            const testMessage = 'This should trigger rate limiting'
+            
+            chatGpt.sendMessage(testMessage)
+            cy.wait('@failedRequest')
+            
+            chatGpt.getErrorMessage()
+                .should('be.visible')
+                .and('contain', 'rate limit')
+            
+            // Verify cool-down message
+            cy.contains('Please wait before sending more messages')
+                .should('be.visible')
+            
+            // Verify message input is temporarily disabled
+            chatGpt.getElement(chatGpt.selectors.messageInput)
+                .should('be.disabled')
+        })
+    })
+
 })
