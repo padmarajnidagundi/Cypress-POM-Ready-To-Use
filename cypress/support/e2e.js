@@ -27,5 +27,11 @@ configureAxe({
   ]
 })
 
+// Add custom command for checking accessibility
+Cypress.Commands.add('checkA11y', (context, options) => {
+  cy.injectAxe()
+  cy.checkA11y(context, options)
+})
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
