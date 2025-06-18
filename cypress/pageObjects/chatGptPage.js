@@ -87,6 +87,30 @@ class ChatGptPage extends BasePage {
             delay: RESPONSE_DELAY_MS
         }).as('failedRequest')
     }
+
+    checkElementAccessibility(selector, options = {}) {
+        const element = this.getElement(selector)
+        element.should('have.attr', 'role')
+        element.should('have.attr', 'aria-label')
+        if (options.tabIndex !== undefined) {
+            element.should('have.attr', 'tabindex', options.tabIndex)
+        }
+        return element
+    }
+
+    checkFocusableElement(selector) {
+        const element = this.getElement(selector)
+        element.should('be.visible')
+            .and('not.have.attr', 'aria-hidden', 'true')
+            .and('not.have.css', 'display', 'none')
+            .and('not.have.css', 'visibility', 'hidden')
+        return element
+    }
+
+    verifyAriaExpanded(selector, expectedState) {
+        return this.getElement(selector)
+            .should('have.attr', 'aria-expanded', expectedState.toString())
+    }
 }
 
 export default ChatGptPage

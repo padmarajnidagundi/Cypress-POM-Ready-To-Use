@@ -131,4 +131,133 @@ describe('ChatGPT Accessibility Tests', () => {
             .type('{pageup}')
             .should('have.attr', 'aria-label')
     })
+
+    it('should verify ARIA attributes on interactive elements', () => {
+        chatGpt.visit()
+        
+        // Check message input accessibility
+        chatGpt.checkElementAccessibility(chatGpt.selectors.messageInput, { tabIndex: '0' })
+            .should('have.attr', 'aria-placeholder')
+            .and('have.attr', 'aria-multiline', 'true')
+        
+        // Check send button accessibility
+        chatGpt.checkElementAccessibility(chatGpt.selectors.sendButton)
+            .should('have.attr', 'aria-pressed', 'false')
+            .and('have.attr', 'role', 'button')
+        
+        // Check menu button accessibility
+        chatGpt.checkElementAccessibility(chatGpt.selectors.menuButton)
+            .should('have.attr', 'aria-haspopup', 'true')
+            .and('have.attr', 'aria-controls')
+    })
+
+    it('should verify focus management in chat interface', () => {
+        chatGpt.visit()
+        const testMessage = 'Testing focus management'
+        
+        // Verify focus on input
+        chatGpt.getElement(chatGpt.selectors.messageInput).focus()
+        cy.focused().should('have.attr', 'data-testid', 'message-input')
+        
+        // Send message and verify focus retention
+        chatGpt.sendMessage(testMessage)
+        cy.focused().should('have.attr', 'data-testid', 'message-input')
+        
+        // Verify regenerate button is focusable after response
+        chatGpt.waitForResponse()
+        chatGpt.checkFocusableElement(chatGpt.selectors.regenerateButton)
+            .focus()
+        cy.focused().should('have.attr', 'data-testid', 'regenerate-button')
+    })
+
+    it('should verify dynamic ARIA updates', () => {
+        chatGpt.visit()
+        
+        // Check menu button states
+        chatGpt.verifyAriaExpanded(chatGpt.selectors.menuButton, false)
+        chatGpt.openMenu()
+        chatGpt.verifyAriaExpanded(chatGpt.selectors.menuButton, true)
+        
+        // Check loading state announcements
+        chatGpt.sendMessage('Test message')
+        cy.get('[role="status"]')
+            .should('exist')
+            .and('have.attr', 'aria-live', 'polite')
+        
+        // Verify response containers
+        chatGpt.waitForResponse()
+        cy.get('[role="log"]')
+            .should('exist')
+            .and('have.attr', 'aria-label')
+            .and('not.be.empty')
+    })
+
+    it('should verify heading hierarchy and landmarks', () => {
+        chatGpt.visit()
+        
+        // Check main landmark
+        cy.get('main')
+            .should('exist')
+            .and('have.attr', 'role', 'main')
+        
+        // Verify heading levels
+        cy.get('h1').should('exist').and('be.visible')
+        cy.get('h2, h3, h4, h5, h6').each(($heading) => {
+            const currentLevel = parseInt($heading.prop('tagName').slice(1))
+            const parentHeadings = $heading.prevAll(':header')
+            
+            if (parentHeadings.length > 0) {
+                const previousLevel = parseInt(parentHeadings.first().prop('tagName').slice(1))
+                expect(currentLevel - previousLevel).to.be.lessThan(2)
+            }
+        })
+    })
+
+    it('should verify color contrast and text accessibility', () => {
+        chatGpt.visit()
+        
+        // Custom contrast check function
+        const checkContrast = ($el) => {
+            const backgroundColor = $el.css('background-color')
+            const color = $el.css('color')
+            // Note: In a real implementation, you'd calculate the contrast ratio
+            expect(backgroundColor).to.not.equal(color)
+        }
+        
+        // Check interactive elements
+        cy.get('button, a, input, [role="button"]').each(($el) => {
+            checkContrast($el)
+            
+            // Check text size
+            const fontSize = parseInt($el.css('font-size'))
+            expect(fontSize).to.be.at.least(12)
+        })
+        
+        // Check focus indicators
+        cy.get('button').first().focus()
+        cy.focused()
+            .should('have.css', 'outline')
+            .and('not.equal', 'none')
+    })
+
+    it('should verify keyboard shortcuts and help text', () => {
+        chatGpt.visit()
+        
+        // Check for keyboard shortcut documentation
+        cy.get('[aria-label*="keyboard shortcuts"], [aria-label*="help"]')
+            .should('exist')
+            .and('be.visible')
+        
+        // Verify common keyboard shortcuts
+        const shortcuts = {
+            '{esc}': () => cy.get('[data-testid="menu"]').should('not.be.visible'),
+            '{ctrl}/': () => cy.get('[aria-label*="keyboard shortcuts"]').should('be.visible'),
+            '{ctrl}k': () => cy.focused().should('have.attr', 'data-testid', 'message-input')
+        }
+        
+        Object.entries(shortcuts).forEach(([key, assertion]) => {
+            cy.get('body').type(key)
+            assertion()
+        })
+    })
 })
