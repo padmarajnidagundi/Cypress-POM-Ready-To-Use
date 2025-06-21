@@ -1,10 +1,12 @@
 # Cypress POM - Page Object Model Ready To Use - 2025 update
 
-A production-ready Cypress automation framework with Page Object Model, supporting both UI and API testing.
+A production-ready Cypress automation framework with Page Object Model, supporting UI, API, and Accessibility testing. Features comprehensive ChatGPT interface testing capabilities.
 
-## Key Features.
+## Key Features
 
 - TypeScript support with type definitions
+- ChatGPT interface testing suite
+- Comprehensive accessibility testing
 - Page Object Model implementation
 - API testing capabilities with custom commands
 - Parallel test execution
