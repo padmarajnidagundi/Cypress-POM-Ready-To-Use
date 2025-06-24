@@ -1,3 +1,5 @@
+const { UserFactory, UserTypes } = require('../factories/userFactory')
+
 Cypress.Commands.add('apiLogin', (username, password) => {
     return cy.request({
         method: 'POST',
@@ -23,4 +25,14 @@ Cypress.Commands.add('apiRequest', (method, path, options = {}) => {
     ...defaults,
     ...options,
   })
+})
+
+Cypress.Commands.add('createTestUser', (overrides = {}, userType = UserTypes.REGULAR) => {
+  const user = UserFactory.generate(overrides, userType)
+  return cy.wrap(user)
+})
+
+Cypress.Commands.add('createTestUsers', (count, overrides = {}, userType = UserTypes.REGULAR) => {
+  const users = UserFactory.generateMany(count, overrides, userType)
+  return cy.wrap(users)
 })
