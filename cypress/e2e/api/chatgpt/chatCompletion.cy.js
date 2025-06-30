@@ -1,6 +1,15 @@
+/**
+ * Test suite for ChatGPT API integration
+ * Tests various aspects of the chat completions endpoint including
+ * basic functionality, rate limiting, conversation context, and error handling
+ */
 describe('ChatGPT API Tests', () => {
     const API_BASE = 'https://api.openai.com/v1'
     
+    /**
+     * Set up authorization header for all requests
+     * Uses Cypress environment variable for API key
+     */
     beforeEach(() => {
         // Set up authorization header for all requests
         cy.intercept('POST', `${API_BASE}/chat/completions`, (req) => {
@@ -8,6 +17,10 @@ describe('ChatGPT API Tests', () => {
         })
     })
 
+    /**
+     * Tests basic chat completion functionality
+     * Verifies successful response and presence of message content
+     */
     it('should get a response from chat completions API', () => {
         cy.apiRequest('POST', `${API_BASE}/chat/completions`, {
             body: {
@@ -27,6 +40,10 @@ describe('ChatGPT API Tests', () => {
         })
     })
 
+    /**
+     * Verifies the presence and structure of rate limiting headers
+     * These headers are crucial for implementing proper rate limiting in production
+     */
     it('should validate rate limiting headers', () => {
         cy.apiRequest('POST', `${API_BASE}/chat/completions`, {
             body: {
@@ -48,6 +65,11 @@ describe('ChatGPT API Tests', () => {
         })
     })
 
+    /**
+     * Tests the API's ability to maintain conversation context
+     * Sends multiple messages and verifies the response is contextually relevant
+     * Uses a predefined conversation about TypeScript as a test case
+     */
     it('should handle conversation context', () => {
         const conversation = [
             { role: 'user', content: 'What is TypeScript?' },
@@ -70,6 +92,11 @@ describe('ChatGPT API Tests', () => {
         })
     })
 
+    /**
+     * Tests error handling with invalid model name
+     * Verifies that the API returns appropriate error status and response
+     * Important for ensuring robust error handling in production
+     */
     it('should handle API errors gracefully', () => {
         cy.apiRequest('POST', `${API_BASE}/chat/completions`, {
             body: {
@@ -88,6 +115,11 @@ describe('ChatGPT API Tests', () => {
         })
     })
 
+    /**
+     * Validates the complete structure of the API response
+     * Ensures all required fields are present in both the main response
+     * and the usage object, which is critical for monitoring API consumption
+     */
     it('should validate response structure', () => {
         cy.apiRequest('POST', `${API_BASE}/chat/completions`, {
             body: {
