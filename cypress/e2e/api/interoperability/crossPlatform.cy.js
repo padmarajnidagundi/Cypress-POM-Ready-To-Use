@@ -1,6 +1,23 @@
+/**
+ * API Interoperability Test Suite
+ * Tests various aspects of API compatibility and cross-platform support:
+ * - Content type handling
+ * - CORS support
+ * - API versioning
+ * - Content negotiation
+ */
 describe('API Interoperability Tests', () => {
+  /**
+   * Tests the API's ability to handle different data formats
+   * Verifies:
+   * 1. JSON format support (primary format)
+   * 2. Graceful handling of unsupported formats (XML)
+   * 
+   * Important for ensuring proper content type negotiation
+   * and backward compatibility with different client requirements
+   */
   it('should handle different data formats', () => {
-    // Test JSON format
+    // Test JSON format - Standard supported format
     cy.apiRequest('GET', '/users', {
       headers: { 
         'Accept': 'application/json'
@@ -10,7 +27,7 @@ describe('API Interoperability Tests', () => {
       expect(response.headers['content-type']).to.include('application/json')
     })
 
-    // Test XML format (expecting 406 Not Acceptable since API doesn't support XML)
+    // Test XML format - Verifying graceful rejection
     cy.apiRequest('GET', '/users', {
       headers: { 
         'Accept': 'application/xml'
@@ -20,7 +37,17 @@ describe('API Interoperability Tests', () => {
     })
   })
 
+  /**
+   * Validates Cross-Origin Resource Sharing (CORS) implementation
+   * Checks:
+   * 1. Response to cross-origin requests
+   * 2. Presence of CORS headers when supported
+   * 
+   * Critical for browser-based clients and modern web applications
+   * Note: Some test environments may not include CORS headers
+   */
   it('should verify CORS headers', () => {
+    // Test cross-origin request handling
     cy.apiRequest('GET', '/users', {
       headers: { 
         'Origin': 'https://example.com'
@@ -34,7 +61,17 @@ describe('API Interoperability Tests', () => {
     })
   })
 
+  /**
+   * Tests API version compatibility
+   * Verifies:
+   * 1. Support for version specification in requests
+   * 2. Proper handling of version headers
+   * 
+   * Essential for maintaining backward compatibility
+   * while supporting API evolution
+   */
   it('should handle different API versions', () => {
+    // Test version header support
     cy.apiRequest('GET', '/users', {
       headers: {
         'Accept-Version': 'v1'
@@ -44,7 +81,19 @@ describe('API Interoperability Tests', () => {
     })
   })
 
+  /**
+   * Tests content negotiation capabilities
+   * Verifies handling of:
+   * 1. Content compression preferences (gzip, deflate)
+   * 2. Language preferences
+   * 
+   * Important for:
+   * - Optimizing network performance
+   * - Supporting internationalization
+   * - Meeting client-specific requirements
+   */
   it('should support content negotiation', () => {
+    // Test compression and language preference handling
     cy.apiRequest('GET', '/users', {
       headers: {
         'Accept-Encoding': 'gzip, deflate',
