@@ -111,6 +111,7 @@ describe('API Negative Tests', () => {
      * Expected: Graceful error handling with appropriate message
      */
     it('should handle server errors gracefully', () => {
+      // Simulate a server error for GET /users
       cy.simulateNetworkError('GET', '/users', 'SERVER_ERROR')
       cy.apiRequest('GET', '/users')
         .then(response => {
@@ -125,6 +126,7 @@ describe('API Negative Tests', () => {
      * Expected: 429 Too Many Requests after limit is exceeded
      */
     it('should handle rate limiting', () => {
+      // Exhaust the rate limit for /users endpoint
       cy.exhaustRateLimit('/users', 15)
         .then(responses => {
           const lastResponse = responses[responses.length - 1]
