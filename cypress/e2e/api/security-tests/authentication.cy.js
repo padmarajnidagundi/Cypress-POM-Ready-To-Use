@@ -1,4 +1,5 @@
 describe('[Security] API Authentication', () => {
+  // This test checks if authentication is enforced when using an invalid token.
   it('[Security] should enforce authentication requirements', () => {
     cy.apiRequest('GET', '/users/2', {
       headers: {
@@ -10,6 +11,7 @@ describe('[Security] API Authentication', () => {
     })
   })
 
+  // This test checks if unauthorized access is prevented for DELETE requests with an invalid token.
   it('[Security] should prevent unauthorized access', () => {
     cy.apiRequest('DELETE', '/users/1', {
       headers: {
