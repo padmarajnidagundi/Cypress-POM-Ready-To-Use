@@ -1,4 +1,5 @@
 describe('API Unit Tests - Basic Operations', () => {
+  // Test: Validates the structure and types of a single user's data from the API
   it('should validate user data structure', () => {
     cy.apiRequest('GET', '/users/1').then((response) => {
       expect(response.status).to.eq(200)
@@ -8,6 +9,7 @@ describe('API Unit Tests - Basic Operations', () => {
     })
   })
 
+  // Test: Checks that requesting a non-existent user returns a 404 and empty body
   it('should validate error handling', () => {
     cy.apiRequest('GET', '/users/999').then((response) => {
       expect(response.status).to.eq(404)
@@ -15,6 +17,7 @@ describe('API Unit Tests - Basic Operations', () => {
     })
   })
 
+  // Test: Validates the structure of a successful response for the users list
   it('should validate successful response structure', () => {
     cy.apiRequest('GET', '/users').then((response) => {
       expect(response.status).to.eq(200)
