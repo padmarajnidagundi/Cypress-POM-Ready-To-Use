@@ -1,4 +1,5 @@
 describe('[Unit] User API Operations', () => {
+  // Test: Should retrieve a single user and validate the response data structure and types
   it('[Unit] should retrieve user with valid data structure', () => {
     cy.apiRequest('GET', '/users/1').then((response) => {
       expect(response.status).to.eq(200)
@@ -8,6 +9,7 @@ describe('[Unit] User API Operations', () => {
     })
   })
 
+  // Test: Should handle request for a non-existent user and return 404 with empty body
   it('[Unit] should handle non-existent user request', () => {
     cy.apiRequest('GET', '/users/999').then((response) => {
       expect(response.status).to.eq(404)
@@ -15,6 +17,7 @@ describe('[Unit] User API Operations', () => {
     })
   })
 
+  // Test: Should verify the structure of the users list response
   it('[Unit] should verify users list response structure', () => {
     cy.apiRequest('GET', '/users').then((response) => {
       expect(response.status).to.eq(200)
