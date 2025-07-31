@@ -1,4 +1,5 @@
 describe('API Validation Tests', () => {
+  // Test: Should return 400 and error message when required fields are missing in register
   it('should validate required fields for register', () => {
     cy.apiRequest('POST', '/register', {
       body: {}  // Empty body to test required fields
@@ -8,6 +9,7 @@ describe('API Validation Tests', () => {
     })
   })
 
+  // Test: Should validate email format and required password for registration
   it('should validate email format', () => {
     const testCases = [
       {
@@ -24,6 +26,7 @@ describe('API Validation Tests', () => {
       }
     ]
 
+    // Loop through test cases to check different validation scenarios
     testCases.forEach(testCase => {
       cy.apiRequest('POST', '/register', {
         body: testCase.data
@@ -33,6 +36,7 @@ describe('API Validation Tests', () => {
     })
   })
 
+  // Test: Should create a user when minimum required fields are provided
   it('should validate user creation with minimum required fields', () => {
     cy.apiRequest('POST', '/users', {
       body: {
