@@ -1,4 +1,5 @@
 describe('[Validation] API Input Validation', () => {
+  // Test: Should return 400 and error message when required fields are missing in register
   it('[Validation] should enforce required fields', () => {
     cy.apiRequest('POST', '/register', {
       body: {}  // Empty body to test required fields
@@ -8,6 +9,7 @@ describe('[Validation] API Input Validation', () => {
     })
   })
 
+  // Test: Should validate email format and required password for registration
   it('[Validation] should validate email format', () => {
     const testCases = [
       {
@@ -24,6 +26,7 @@ describe('[Validation] API Input Validation', () => {
       }
     ]
 
+    // Loop through test cases to check different validation scenarios
     testCases.forEach(testCase => {
       cy.apiRequest('POST', '/register', {
         body: testCase.data
