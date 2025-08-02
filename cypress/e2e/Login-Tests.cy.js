@@ -9,6 +9,7 @@ describe('UI Authentication Tests', function () {
     const login = new Login()
 
     beforeEach(() => {
+        // Set up a session before each test to maintain login state
         cy.session('session_id', () => {
             cy.visit('https://react-redux.realworld.io/#/login')
             login.email().type('padmaraj.nidagundi@gmail.com')
@@ -27,6 +28,7 @@ describe('UI Authentication Tests', function () {
      * - Dashboard elements visibility
      */
     it('should sign in successfully with valid credentials', function () {
+        // Attempt login with valid credentials and verify dashboard
         cy.visit('https://react-redux.realworld.io/#/login')
         login.email().type('padmaraj.nidagundi@gmail.com')
         login.password().type('cypres100')
@@ -43,6 +45,7 @@ describe('UI Authentication Tests', function () {
      * - Minimum password length
      */
     it('should validate login form fields', function () {
+        // Validate error messages for empty, invalid, and short password fields
         cy.visit('https://react-redux.realworld.io/#/login')
         
         // Test empty form submission
@@ -75,6 +78,7 @@ describe('UI Authentication Tests', function () {
      * - Server errors
      */
     it('should handle login errors appropriately', function () {
+        // Test error handling for invalid credentials and server/network errors
         cy.visit('https://react-redux.realworld.io/#/login')
         
         // Test invalid credentials
@@ -109,6 +113,7 @@ describe('UI Authentication Tests', function () {
      * - Navigation links
      */
     it('should verify login page UI elements', function () {
+        // Verify UI elements and attributes on the login page
         cy.visit('https://react-redux.realworld.io/#/login')
         
         // Verify form fields
@@ -140,6 +145,7 @@ describe('UI Authentication Tests', function () {
      * - Session restoration
      */
     it('should maintain login session', function () {
+        // Ensure login session persists after reload and token is stored
         cy.visit('https://react-redux.realworld.io/#/login')
         
         // Login and verify session storage
