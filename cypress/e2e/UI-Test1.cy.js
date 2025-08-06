@@ -22,6 +22,7 @@ describe('UI Test Suite - Cypress Kitchen Sink Example', () => {
      * Ensures the main content is visible and properly rendered
      */
     it('should verify the header text', () => {
+        // Check that the header is visible and contains correct text
         examplePage.getHeader()
             .should('be.visible')
             .and('contain', 'Kitchen Sink')
@@ -34,6 +35,7 @@ describe('UI Test Suite - Cypress Kitchen Sink Example', () => {
      * Checks URL changes and content updates
      */
     it('should navigate to the "Utilities" page', () => {
+        // Click on Utilities link and verify navigation and content
         examplePage.getNavigationLink('Utilities').click()
         cy.url().should('include', '/utilities')
         cy.get('h1').should('contain', 'Utilities')
@@ -45,6 +47,7 @@ describe('UI Test Suite - Cypress Kitchen Sink Example', () => {
      * Checks responsive behavior and element positioning
      */
     it('should verify page layout and structure', () => {
+        // Check navigation and layout structure, and responsive behavior
         // Check main navigation
         cy.get('nav').should('be.visible')
         
@@ -67,6 +70,7 @@ describe('UI Test Suite - Cypress Kitchen Sink Example', () => {
      * Tests hover states, focus states, and click behaviors
      */
     it('should verify interactive elements behavior', () => {
+        // Test hover, focus, and click feedback for interactive elements
         // Test navigation link hover states
         examplePage.getNavigationLink('Utilities')
             .trigger('mouseover')
@@ -90,6 +94,7 @@ describe('UI Test Suite - Cypress Kitchen Sink Example', () => {
      * Checks for presence of key elements and content
      */
     it('should verify content loading', () => {
+        // Check that content loads and images are not broken
         // Check initial content load
         cy.get('body').should('not.have.class', 'loading')
         
@@ -112,6 +117,7 @@ describe('UI Test Suite - Cypress Kitchen Sink Example', () => {
      * Tests behavior with invalid routes and broken links
      */
     it('should handle navigation errors gracefully', () => {
+        // Test navigation to invalid route and handle broken links
         // Test invalid route
         cy.visit({
             url: 'https://example.cypress.io/invalid-route',
@@ -133,6 +139,7 @@ describe('UI Test Suite - Cypress Kitchen Sink Example', () => {
      * Checks load times and resource loading
      */
     it('should load within acceptable time', () => {
+        // Measure page load time and check resource loading
         // Measure page load time
         cy.window().then((win) => {
             const perfData = win.performance.timing
