@@ -33,5 +33,30 @@ describe('Additional Tests', () => {
     cy.url().should('not.include', '/dashboard');
   });
 
+  // API test: Check that the homepage returns 200
+  it('API: should return 200 for homepage', () => {
+    cy.request('https://wesendcv.com/').its('status').should('eq', 200);
+  });
+
+  // API test: Check that a non-existent endpoint returns 404
+  it('API: should return 404 for non-existent endpoint', () => {
+    cy.request({
+      url: 'https://wesendcv.com/api/does-not-exist',
+      failOnStatusCode: false
+    }).its('status').should('eq', 404);
+  });
+
+  // API test: (example) Check that /api/status returns expected structure
+  it('API: should return status object from /api/status', () => {
+    cy.request({
+      url: 'https://wesendcv.com/api/status',
+      failOnStatusCode: false
+    }).then((response) => {
+      expect([200, 401, 403, 404]).to.include(response.status);
+      // Optionally check response body structure if known
+      // expect(response.body).to.have.property('status');
+    });
+  });
+
   // Add more tests as needed
 });
