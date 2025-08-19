@@ -58,5 +58,26 @@ describe('Additional Tests', () => {
     });
   });
 
+  // Positive API test: Homepage returns 200 and contains expected content
+  it('API: homepage should contain expected HTML', () => {
+    cy.request('https://wesendcv.com/').then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.include('<!DOCTYPE html>');
+      expect(response.body).to.include('WeSendCV');
+    });
+  });
+
+  // Positive API test: /api/status returns a valid status property if available
+  it('API: /api/status should return a status property if 200', () => {
+    cy.request({
+      url: 'https://wesendcv.com/api/status',
+      failOnStatusCode: false
+    }).then((response) => {
+      if (response.status === 200) {
+        expect(response.body).to.have.property('status');
+      }
+    });
+  });
+
   // Add more tests as needed
 });
