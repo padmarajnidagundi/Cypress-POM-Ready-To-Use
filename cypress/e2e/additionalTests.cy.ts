@@ -79,5 +79,37 @@ describe('Additional Tests', () => {
     });
   });
 
+  // Negative API test: Invalid method on homepage
+  it('API: should return 405 or 4xx for POST to homepage', () => {
+    cy.request({
+      method: 'POST',
+      url: 'https://wesendcv.com/',
+      failOnStatusCode: false
+    }).then((response) => {
+      expect(response.status).to.be.oneOf([400, 403, 404, 405]);
+    });
+  });
+
+  // Negative API test: Invalid method on /api/status
+  it('API: should return 405 or 4xx for DELETE on /api/status', () => {
+    cy.request({
+      method: 'DELETE',
+      url: 'https://wesendcv.com/api/status',
+      failOnStatusCode: false
+    }).then((response) => {
+      expect(response.status).to.be.oneOf([400, 403, 404, 405]);
+    });
+  });
+
+  // Negative API test: Malformed URL
+  it('API: should fail for malformed URL', () => {
+    cy.request({
+      url: 'https://wesendcv.com/api/%%%',
+      failOnStatusCode: false
+    }).then((response) => {
+      expect(response.status).to.be.oneOf([400, 404]);
+    });
+  });
+
   // Add more tests as needed
 });
