@@ -145,5 +145,14 @@ describe('Additional Tests', () => {
     });
   });
 
+  // Performance test: Homepage load time should be under 3 seconds
+  it('Performance: homepage should load in under 3 seconds', () => {
+    const start = Date.now();
+    cy.visit('https://wesendcv.com/').then(() => {
+      const duration = Date.now() - start;
+      expect(duration).to.be.lessThan(3000);
+    });
+  });
+
   // Add more tests as needed
 });
