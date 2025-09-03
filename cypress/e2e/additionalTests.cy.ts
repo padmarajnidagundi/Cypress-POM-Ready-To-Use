@@ -154,5 +154,15 @@ describe('Additional Tests', () => {
     });
   });
 
+  // Negative performance test: Homepage load time should NOT be under 10 seconds
+  it('Negative Performance: homepage should NOT load in under 10 seconds (simulated)', () => {
+    const start = Date.now();
+    cy.visit('https://wesendcv.com/').then(() => {
+      const duration = Date.now() - start;
+      // This assertion is expected to fail if the site is fast
+      expect(duration).to.be.greaterThan(10000);
+    });
+  });
+
   // Add more tests as needed
 });
