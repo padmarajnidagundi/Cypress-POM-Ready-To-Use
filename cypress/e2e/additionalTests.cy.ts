@@ -164,5 +164,24 @@ describe('Additional Tests', () => {
     });
   });
 
+  // Accessibility test: Check for common accessibility attributes and roles
+  it('Accessibility: homepage should have key accessibility features', () => {
+    cy.visit('https://wesendcv.com/');
+    // Check for lang attribute on html
+    cy.get('html').should('have.attr', 'lang');
+    // Check for main landmark
+    cy.get('main').should('exist');
+    // Check for alt attributes on images
+    cy.get('img').each(($img) => {
+      expect($img).to.have.attr('alt').and.not.be.empty;
+    });
+    // Check for aria-label or role on navigation
+    cy.get('nav').should('have.attr', 'aria-label').or('have.attr', 'role');
+    // Check for accessible button names
+    cy.get('button').each(($btn) => {
+      expect($btn.text().trim().length).to.be.greaterThan(0);
+    });
+  });
+
   // Add more tests as needed
 });
