@@ -183,5 +183,19 @@ describe('Additional Tests', () => {
     });
   });
 
+  // Negative Accessibility test: Ensure missing accessibility attributes are detected
+  it('Negative Accessibility: homepage should NOT have images without alt attributes', () => {
+    cy.visit('https://wesendcv.com/');
+    cy.get('img').each(($img) => {
+      // This assertion is expected to fail if any image is missing alt
+      expect($img).to.have.attr('alt').and.not.be.empty;
+    });
+  });
+
+  it('Negative Accessibility: homepage should NOT have nav without aria-label or role', () => {
+    cy.visit('https://wesendcv.com/');
+    cy.get('nav').should('not.exist').or('not.have.attr', 'aria-label').or('not.have.attr', 'role');
+  });
+
   // Add more tests as needed
 });
