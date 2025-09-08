@@ -197,5 +197,15 @@ describe('Additional Tests', () => {
     cy.get('nav').should('not.exist').or('not.have.attr', 'aria-label').or('not.have.attr', 'role');
   });
 
+  // Security test: Check for common security headers
+  it('Security: homepage should have common security headers', () => {
+    cy.request('https://wesendcv.com/').then((response) => {
+      expect(response.headers).to.have.property('x-frame-options');
+      expect(response.headers).to.have.property('x-content-type-options');
+      expect(response.headers).to.have.property('content-security-policy');
+      expect(response.headers['x-content-type-options']).to.equal('nosniff');
+    });
+  });
+
   // Add more tests as needed
 });
