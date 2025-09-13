@@ -3,6 +3,11 @@
  * Demonstrates use of Cypress intercepts for mocking API responses,
  * simulating network conditions, and verifying client behavior.
  */
+/**
+ * Mock API Response Test Suite
+ * Demonstrates use of Cypress intercepts for mocking API responses,
+ * simulating network conditions, and verifying client behavior.
+ */
 describe('[Mock] API Response Mocking', () => {
   beforeEach(() => {
     /**
@@ -130,4 +135,56 @@ describe('[Mock] API Response Mocking', () => {
     cy.apiRequest('GET', '/users/1/comments')
     cy.wait('@getUserComments')
   })
+
+  /**
+   * Negative test: Simulate 404 for non-existent endpoint.
+   */
+  it('[Mock][Negative] should return 404 for unknown endpoint', () => {
+    cy.intercept('GET', '**/unknown-endpoint', {
+      statusCode: 404,
+      body: { error: 'Not Found' }
+    }).as('getUnknown');
+
+    cy.apiRequest('GET', '/unknown-endpoint').then((response) => {
+      expect(response.status).to.eq(404);
+      expect(response.body.error).to.eq('Not Found');
+    });
+  });
+
+  /**
+   * Negative test: Simulate 400 for malformed request.
+   */
+  it('[Mock][Negative] should return 400 for malformed request', () => {
+    cy.intercept('POST', '**/users', (req) => {
+      if (!req.body || !req.body.name) {
+        req.reply({
+          statusCode: 400,
+          body: { error: 'Bad Request', message: 'Missing name' }
+        });
+      }
+    }).as('malformedUser');
+
+    cy.apiRequest('POST', '/users', { body: {} }).then((response) => {
+      expect(response.status).to.eq(400);
+      expect(response.body.error).to.eq('Bad Request');
+    });
+  });
+
+  /**
+   * Negative test: Simulate timeout for GET /users.
+   */
+  it('[Mock][Negative] should simulate timeout for GET /users', () => {
+    cy.intercept('GET', '**/users', (req) => {
+      req.reply((res) => {
+        setTimeout(() => {
+          res.send({ statusCode: 504, body: { error: 'Gateway Timeout' } });
+        }, 2000);
+      });
+    }).as('timeoutUsers');
+
+    cy.apiRequest('GET', '/users').then((response) => {
+      expect(response.status).to.eq(504);
+      expect(response.body.error).to.eq('Gateway Timeout');
+    });
+  });
 })
