@@ -724,3 +724,17 @@ MIT License - feel free to use in your projects
 - LinkedIn: https://www.linkedin.com/in/padmarajn/
 - NpmJs: https://www.npmjs.com/package/cypress-page-object-model
 - GitHub: https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use
+
+## MCP (Model Context Protocol) Integration
+
+MCP (Model Context Protocol) is an emerging standard for context-aware automation and test orchestration. The protocol enables advanced test scenarios, dynamic context switching, and improved interoperability between test suites and external systems.
+
+### Planned MCP Features for This Repo
+
+- **Context-aware Page Objects:** Enhance page objects to support dynamic context switching using MCP.
+- **Test Orchestration:** Integrate MCP for orchestrating complex test flows across UI, API, and accessibility layers.
+- **External System Integration:** Enable seamless communication with external systems (e.g., CI/CD, reporting tools) via MCP endpoints.
+- **Custom MCP Commands:** Provide Cypress custom commands for interacting with MCP contexts and models.
+- **Documentation & Examples:** Add guides and examples for using MCP in real-world test scenarios.
+
+> **Status:** MCP integration is planned for upcoming releases. Contributions and feedback are welcome!
