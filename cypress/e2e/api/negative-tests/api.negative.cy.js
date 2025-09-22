@@ -98,6 +98,88 @@ describe('API Negative Tests', () => {
           })
         })
     })
+
+    /**
+     * Tests rejection of short passwords
+     * Expected: 422 Unprocessable Entity with password validation error
+     */
+    it('should reject short passwords', () => {
+      cy.createTestUser({ password: '12' }).then(user => {
+        cy.apiRequest('POST', '/users', {
+          body: user
+        }).then(response => {
+          expect(response.status).to.eq(422)
+          expect(response.body.details).to.deep.include.members([
+            { field: 'password', message: Cypress.sinon.match(/short|length/i) }
+          ])
+        })
+      })
+    })
+
+    /**
+     * Tests rejection of invalid username format
+     * Expected: 422 Unprocessable Entity with username validation error
+     */
+    it('should reject invalid username', () => {
+      cy.createTestUser({ username: '!' }).then(user => {
+        cy.apiRequest('POST', '/users', {
+          body: user
+        }).then(response => {
+          expect(response.status).to.eq(422)
+          expect(response.body.details).to.deep.include.members([
+            { field: 'username', message: Cypress.sinon.match(/invalid|format/i) }
+          ])
+        })
+      })
+    })
+
+    /**
+     * Tests that extra fields are ignored or rejected
+     * Expected: 422 or 200 depending on API behavior
+     */
+    it('should handle extra fields in user creation', () => {
+      cy.createTestUser({ extra: 'field' }).then(user => {
+        cy.apiRequest('POST', '/users', {
+          body: user
+        }).then(response => {
+          expect([200, 422]).to.include(response.status)
+        })
+      })
+    })
+
+    /**
+     * Tests rejection of invalid email format
+     * Expected: 422 Unprocessable Entity with email validation error
+     */
+    it('should reject invalid email format', () => {
+      cy.createTestUser({ email: 'not-an-email' }).then(user => {
+        cy.apiRequest('POST', '/users', {
+          body: user
+        }).then(response => {
+          expect(response.status).to.eq(422)
+          expect(response.body.details).to.deep.include.members([
+            { field: 'email', message: Cypress.sinon.match(/invalid|format/i) }
+          ])
+        })
+      })
+    })
+
+    /**
+     * Tests rejection of numeric username
+     * Expected: 422 Unprocessable Entity with username validation error
+     */
+    it('should reject numeric username', () => {
+      cy.createTestUser({ username: 123456 }).then(user => {
+        cy.apiRequest('POST', '/users', {
+          body: user
+        }).then(response => {
+          expect(response.status).to.eq(422)
+          expect(response.body.details).to.deep.include.members([
+            { field: 'username', message: Cypress.sinon.match(/invalid|format/i) }
+          ])
+        })
+      })
+    })
   })
 
   /**
