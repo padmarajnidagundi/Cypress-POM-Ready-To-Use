@@ -247,6 +247,22 @@ describe('[Mock] API Response Mocking', () => {
 })
 ```
 
+### MCP Server API Tests
+
+Example MCP server health check:
+
+```javascript
+describe('[MCP] Server Health', () => {
+  it('should verify MCP server health and response time', () => {
+    cy.apiRequest('GET', '/mcp/health').then((response) => {
+      expect(response.status).to.eq(200)
+      expect(response.duration).to.be.lessThan(1000)
+      expect(response.body).to.have.property('status', 'ok')
+    })
+  })
+})
+```
+
 ### API Test Organization
 ```
 cypress/e2e/api/
@@ -272,6 +288,9 @@ cy.apiRequest('POST', '/users', {
   body: { name: 'Test User' },
   headers: { 'Authorization': 'Bearer token' }
 })
+
+// MCP server usage example
+cy.apiRequest('GET', '/mcp/health')
 ```
 
 ### API Testing Best Practices

@@ -69,6 +69,21 @@ Cypress.Commands.add('apiRequest', (method, path, options = {}) => {
   })
 })
 
+Cypress.Commands.add('mcpRequest', (method, path, options = {}) => {
+  const defaults = {
+    method,
+    url: `${Cypress.env('mcpServerUrl')}${path}`,
+    failOnStatusCode: false,
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  }
+  return cy.request({
+    ...defaults,
+    ...options,
+  })
+})
+
 Cypress.Commands.add('createTestUser', (overrides = {}, userType = UserTypes.REGULAR) => {
   const user = UserFactory.generate(overrides, userType)
   return cy.wrap(user)

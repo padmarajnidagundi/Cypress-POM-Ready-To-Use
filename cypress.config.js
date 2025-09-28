@@ -39,6 +39,7 @@ module.exports = defineConfig({
     exampleUrl: 'https://example.cypress.io',
     chatGptUrl: 'https://chat.openai.com',
     chatGptApiUrl: 'https://api.openai.com/v1',
+    mcpServerUrl: 'https://mcp.example.com', // MCP server endpoint
     testType: {
       api: 'cypress/e2e/api',
       ui: 'cypress/e2e/ui',

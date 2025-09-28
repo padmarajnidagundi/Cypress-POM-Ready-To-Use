@@ -84,4 +84,16 @@ describe('API Performance Tests', () => {
     )
     return Promise.all(burstRequests)
   })
+
+  /**
+   * Test: MCP server health and response time
+   * Ensures the MCP server /mcp/health endpoint responds within 1 second.
+   */
+  it('should verify MCP server health and response time', () => {
+    cy.apiRequest('GET', '/mcp/health').then((response) => {
+      expect(response.status).to.eq(200)
+      expect(response.duration).to.be.lessThan(1000)
+      expect(response.body).to.have.property('status', 'ok')
+    })
+  })
 })
