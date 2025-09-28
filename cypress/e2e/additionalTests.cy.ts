@@ -207,5 +207,73 @@ describe('Additional Tests', () => {
     });
   });
 
+  // Test: Check favicon is present
+  it('should have a favicon', () => {
+    cy.visit('https://wesendcv.com/');
+    cy.get('link[rel="icon"]').should('exist');
+  });
+
+  // Test: Check robots.txt is accessible
+  it('should serve robots.txt', () => {
+    cy.request('https://wesendcv.com/robots.txt').its('status').should('eq', 200);
+    cy.request('https://wesendcv.com/robots.txt').its('headers').its('content-type').should('include', 'text/plain');
+  });
+
+  // Test: Check sitemap.xml is accessible
+  it('should serve sitemap.xml', () => {
+    cy.request('https://wesendcv.com/sitemap.xml').its('status').should('eq', 200);
+    cy.request('https://wesendcv.com/sitemap.xml').its('headers').its('content-type').should('include', 'xml');
+  });
+
+  // Test: HEAD request to homepage
+  it('API: should respond to HEAD request for homepage', () => {
+    cy.request({
+      method: 'HEAD',
+      url: 'https://wesendcv.com/',
+      failOnStatusCode: false
+    }).its('status').should('eq', 200);
+  });
+
+  // Test: OPTIONS request to homepage
+  it('API: should respond to OPTIONS request for homepage', () => {
+    cy.request({
+      method: 'OPTIONS',
+      url: 'https://wesendcv.com/',
+      failOnStatusCode: false
+    }).its('status').should.be.oneOf([200, 204, 405]);
+  });
+
+  // Test: PATCH request to /api/status
+  it('API: should respond to PATCH request for /api/status', () => {
+    cy.request({
+      method: 'PATCH',
+      url: 'https://wesendcv.com/api/status',
+      failOnStatusCode: false
+    }).its('status').should.be.oneOf([200, 400, 403, 404, 405]);
+  });
+
+  // Performance: API response time for homepage
+  it('Performance: homepage API should respond in under 1 second', () => {
+    const start = Date.now();
+    cy.request('https://wesendcv.com/').then(() => {
+      const duration = Date.now() - start;
+      expect(duration).to.be.lessThan(1000);
+    });
+  });
+
+  // Negative test: Try to access admin page unauthenticated
+  it('should not allow access to admin page without login', () => {
+    cy.visit('https://wesendcv.com/admin', { failOnStatusCode: false });
+    cy.url().should('not.include', '/admin');
+    cy.contains(/login|unauthorized|sign in/i).should('exist');
+  });
+
+  // Security: Check for strict-transport-security header
+  it('Security: homepage should have strict-transport-security header', () => {
+    cy.request('https://wesendcv.com/').then((response) => {
+      expect(response.headers).to.have.property('strict-transport-security');
+    });
+  });
+
   // Add more tests as needed
 });
