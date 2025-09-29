@@ -275,5 +275,60 @@ describe('Additional Tests', () => {
     });
   });
 
+  // Edge case: Visit homepage with unsupported browser user-agent
+  it('should handle unsupported browser user-agent', () => {
+    cy.visit('https://wesendcv.com/', {
+      headers: { 'User-Agent': 'UnsupportedBrowser/1.0' }
+    });
+    cy.get('body').should('exist');
+  });
+
+  // Edge case: Request with invalid HTTP method
+  it('API: should handle invalid HTTP method', () => {
+    cy.request({
+      method: 'TRACE',
+      url: 'https://wesendcv.com/',
+      failOnStatusCode: false
+    }).its('status').should.be.oneOf([400, 405, 501]);
+  });
+
+  // Edge case: Request with huge payload
+  it('API: should handle huge payload on POST', () => {
+    const hugePayload = { data: 'x'.repeat(1000000) };
+    cy.request({
+      method: 'POST',
+      url: 'https://wesendcv.com/api/status',
+      body: hugePayload,
+      failOnStatusCode: false
+    }).its('status').should.be.oneOf([413, 400, 200]);
+  });
+
+  // Edge case: Request with empty payload to POST endpoint
+  it('API: should handle empty payload on POST', () => {
+    cy.request({
+      method: 'POST',
+      url: 'https://wesendcv.com/api/status',
+      body: {},
+      failOnStatusCode: false
+    }).its('status').should.be.oneOf([400, 422, 200]);
+  });
+
+  // Edge case: Request to deprecated endpoint
+  it('API: should handle request to deprecated endpoint', () => {
+    cy.request({
+      url: 'https://wesendcv.com/api/v0/old-endpoint',
+      failOnStatusCode: false
+    }).its('status').should.be.oneOf([404, 410, 200]);
+  });
+
+  // Edge case: Request with invalid authentication token
+  it('API: should handle invalid authentication token', () => {
+    cy.request({
+      url: 'https://wesendcv.com/api/status',
+      headers: { Authorization: 'Bearer invalidtoken' },
+      failOnStatusCode: false
+    }).its('status').should.be.oneOf([401, 403, 200]);
+  });
+
   // Add more tests as needed
 });
