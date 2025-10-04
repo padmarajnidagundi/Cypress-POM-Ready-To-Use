@@ -162,4 +162,60 @@ describe('UI Authentication Tests', function () {
         cy.reload()
         cy.get('nav').should('contain', 'Your Feed')
     })
+
+    /**
+     * Additional edge case: Attempt login with empty email and password
+     */
+    it('should show error for empty email and password', function () {
+        cy.visit('https://react-redux.realworld.io/#/login')
+        cy.get('input[type="email"]').clear()
+        cy.get('input[type="password"]').clear()
+        cy.get('button').contains('Sign in').click()
+        cy.get('.error-messages').should('be.visible')
+    })
+
+    /**
+     * Additional edge case: Attempt login with whitespace-only credentials
+     */
+    it('should show error for whitespace-only credentials', function () {
+        cy.visit('https://react-redux.realworld.io/#/login')
+        cy.get('input[type="email"]').type('    ')
+        cy.get('input[type="password"]').type('    ')
+        cy.get('button').contains('Sign in').click()
+        cy.get('.error-messages').should('be.visible')
+    })
+
+    /**
+     * Additional edge case: Attempt login with XSS payload
+     */
+    it('should not be vulnerable to XSS in login fields', function () {
+        cy.visit('https://react-redux.realworld.io/#/login')
+        cy.get('input[type="email"]').type('<script>alert(1)</script>')
+        cy.get('input[type="password"]').type('<script>alert(1)</script>')
+        cy.get('button').contains('Sign in').click()
+        cy.get('.error-messages').should('be.visible')
+    })
+
+    /**
+     * Additional edge case: Attempt login with extremely long email/password
+     */
+    it('should handle extremely long email and password', function () {
+        cy.visit('https://react-redux.realworld.io/#/login')
+        const longStr = 'a'.repeat(1000)
+        cy.get('input[type="email"]').type(longStr)
+        cy.get('input[type="password"]').type(longStr)
+        cy.get('button').contains('Sign in').click()
+        cy.get('.error-messages').should('be.visible')
+    })
+
+    /**
+     * Additional edge case: Attempt login with SQL injection string
+     */
+    it('should not be vulnerable to SQL injection in login fields', function () {
+        cy.visit('https://react-redux.realworld.io/#/login')
+        cy.get('input[type="email"]').type("' OR 1=1 --")
+        cy.get('input[type="password"]').type("' OR 1=1 --")
+        cy.get('button').contains('Sign in').click()
+        cy.get('.error-messages').should('be.visible')
+    })
 })
