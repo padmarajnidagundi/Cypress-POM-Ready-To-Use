@@ -150,4 +150,51 @@ describe('UI Test Suite - Cypress Kitchen Sink Example', () => {
         // Verify resource loading
         cy.get('script').should('have.length.lessThan', 20) // Reasonable script count
     })
+
+    /**
+     * Edge case: Navigation to a page with no content
+     */
+    it('should handle navigation to a page with no content', () => {
+        cy.visit('https://example.cypress.io/empty', { failOnStatusCode: false })
+        cy.get('body').should('exist')
+        cy.get('body').should('be.empty')
+    })
+
+    /**
+     * Edge case: Attempt to interact with a disabled button
+     */
+    it('should not allow interaction with a disabled button', () => {
+        cy.get('button:disabled').should('exist').and('be.visible')
+        cy.get('button:disabled').click({ force: true })
+        // No action should be performed
+    })
+
+    /**
+     * Edge case: Attempt to submit a form with missing required fields
+     */
+    it('should show error when submitting form with missing required fields', () => {
+        cy.get('form').first().within(() => {
+            cy.get('input[required]').clear()
+            cy.root().submit()
+        })
+        cy.get('.error-message, .error').should('exist')
+    })
+
+    /**
+     * Edge case: Attempt to load a page with a malformed URL
+     */
+    it('should handle malformed URL gracefully', () => {
+        cy.visit('https://example.cypress.io/%%%malformed', { failOnStatusCode: false })
+        cy.get('body').should('exist')
+        cy.get('.error-message').should('exist')
+    })
+
+    /**
+     * Edge case: Attempt to access a restricted page
+     */
+    it('should not allow access to restricted page', () => {
+        cy.visit('https://example.cypress.io/admin', { failOnStatusCode: false })
+        cy.url().should('not.include', '/admin')
+        cy.get('.error-message').should('exist')
+    })
 })
