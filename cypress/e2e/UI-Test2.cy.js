@@ -209,4 +209,51 @@ describe('UI Test Suite - Cypress Querying Examples', () => {
             })
         })
     })
+
+    /**
+     * Edge case: Query for a non-existent element
+     */
+    it('should not find a non-existent element', () => {
+        cy.get('.does-not-exist').should('not.exist')
+    })
+
+    /**
+     * Edge case: Attempt to interact with a disabled button
+     */
+    it('should not allow interaction with a disabled button', () => {
+        cy.get('button:disabled').should('exist').and('be.visible')
+        cy.get('button:disabled').click({ force: true })
+        // No action should be performed
+    })
+
+    /**
+     * Edge case: Submit form with missing required fields
+     */
+    it('should show error when submitting form with missing required fields', () => {
+        cy.get('form').first().within(() => {
+            cy.get('input[required]').clear()
+            cy.root().submit()
+        })
+        cy.get('.error-message, .error').should('exist')
+    })
+
+    /**
+     * Edge case: Query with an invalid selector
+     */
+    it('should handle invalid selector gracefully', () => {
+        cy.on('fail', (err) => {
+            expect(err.message).to.include('is not a valid selector')
+            return false
+        })
+        cy.get('???invalid-selector')
+    })
+
+    /**
+     * Edge case: Interact with hidden element
+     */
+    it('should not interact with hidden element', () => {
+        cy.get(':hidden').should('exist')
+        cy.get(':hidden').first().click({ force: true })
+        // No visible action should occur
+    })
 })
