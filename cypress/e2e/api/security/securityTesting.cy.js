@@ -70,4 +70,67 @@ describe('API Security Tests', () => {
       expect(response.status).to.eq(204)
     })
   })
+
+  /**
+   * Edge case: SQL injection style payload should not leak DB errors
+   */
+  it('should not leak database errors for SQL-injection-like payloads', () => {
+    const payload = {
+      name: "' OR '1'='1'; --",
+      job: 'injection-test'
+    }
+
+    cy.apiRequest('POST', '/users', { body: payload, failOnStatusCode: false }).then((response) => {
+      // Accept either sanitized creation or a validation error - but not raw DB error strings
+      expect([200, 201, 400, 422]).to.include(response.status)
+      if (response.body && typeof response.body === 'string') {
+        expect(response.body).to.not.match(/SQL|syntax error|ORA-|mysql/i)
+      } else if (response.body && typeof response.body === 'object') {
+        const asString = JSON.stringify(response.body).toLowerCase()
+        expect(asString).to.not.include('sql').and.to.not.include('syntax error')
+      }
+    })
+  })
+
+  /**
+   * Edge case: Huge payload handling (413 Payload Too Large)
+   */
+  it('should handle huge payloads appropriately', () => {
+    const huge = { data: 'x'.repeat(2_000_000) } // ~2MB
+    cy.apiRequest('POST', '/users', { body: huge, failOnStatusCode: false }).then((response) => {
+      expect([200, 201, 400, 413]).to.include(response.status)
+    })
+  })
+
+  /**
+   * Edge case: Missing Content-Type header
+   * Server should respond defensively when Content-Type is absent or unexpected
+   */
+  it('should respond appropriately when Content-Type header is missing', () => {
+    cy.request({
+      method: 'POST',
+      url: Cypress.config('baseUrl') ? `${Cypress.config('baseUrl')}/users` : '/users',
+      body: { name: 'no-content-type' },
+      headers: { /* intentionally empty */ },
+      failOnStatusCode: false
+    }).then((response) => {
+      expect([200, 201, 400, 415]).to.include(response.status)
+    })
+  })
+
+  /**
+   * Edge case: Simulated rate limit with Retry-After header
+   */
+  it('should surface Retry-After header when rate limited (simulated)', () => {
+    cy.intercept('GET', '/users', {
+      statusCode: 429,
+      headers: { 'retry-after': '2' },
+      body: { error: 'rate limited' }
+    }).as('rateLimitSim')
+
+    cy.apiRequest('GET', '/users', { failOnStatusCode: false }).then((response) => {
+      expect(response.status).to.eq(429)
+      expect(response.headers).to.have.property('retry-after')
+    })
+  })
 })
