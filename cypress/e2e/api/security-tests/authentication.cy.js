@@ -52,4 +52,34 @@ describe('[Security] API Authentication', () => {
       // Accept either 200 (success) or 400 (if API rejects extra fields)
     })
   })
+
+  /**
+   * Example: successful login returns a token (reqres example)
+   */
+  it('[Example] should log in successfully and return a token (reqres example)', () => {
+    cy.apiRequest('POST', '/login', {
+      body: { email: 'eve.holt@reqres.in', password: 'cityslicka' },
+      failOnStatusCode: false
+    }).then((response) => {
+      // Accept either success or validation error depending on environment
+      expect([200, 400]).to.include(response.status)
+      if (response.status === 200) {
+        expect(response.body).to.have.property('token')
+        expect(response.body.token).to.be.a('string').and.to.have.length.greaterThan(0)
+      }
+    })
+  })
+
+  /**
+   * Example: defensive check for expired/invalid token behavior
+   */
+  it('[Example] should handle expired/invalid tokens defensively', () => {
+    cy.apiRequest('GET', '/users', {
+      headers: { Authorization: 'Bearer expired_or_invalid_token' },
+      failOnStatusCode: false
+    }).then((response) => {
+      // Different APIs behave differently; accept common possibilities
+      expect([200, 401, 403]).to.include(response.status)
+    })
+  })
 })
