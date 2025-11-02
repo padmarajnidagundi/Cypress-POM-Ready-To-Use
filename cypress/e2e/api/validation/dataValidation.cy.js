@@ -48,4 +48,58 @@ describe('API Validation Tests', () => {
       expect(response.body).to.have.all.keys('name', 'job', 'id', 'createdAt')
     })
   })
+
+  /**
+   * Edge: SQL-injection-like payload should not expose DB errors
+   */
+  it('should not leak database errors for SQL-injection-like payloads', () => {
+    const payload = { name: "' OR 1=1 --", job: 'tester' }
+    cy.apiRequest('POST', '/users', { body: payload, failOnStatusCode: false }).then((res) => {
+      expect([200, 201, 400, 422]).to.include(res.status)
+      if (res.body && typeof res.body === 'string') {
+        expect(res.body).to.not.match(/sql|syntax error|ORA-|mysql/i)
+      } else if (res.body) {
+        expect(JSON.stringify(res.body).toLowerCase()).to.not.include('sql')
+      }
+    })
+  })
+
+  /**
+   * Edge: Very large input should be handled (413 or validation error possible)
+   */
+  it('should handle very large input payloads appropriately', () => {
+    const largeName = 'a'.repeat(50_000)
+    cy.apiRequest('POST', '/users', { body: { name: largeName }, failOnStatusCode: false }).then((res) => {
+      expect([201, 200, 400, 413]).to.include(res.status)
+    })
+  })
+
+  /**
+   * Edge: Duplicate creation behavior (idempotency/duplicate detection)
+   */
+  it('should handle duplicate user creation attempts defensively', () => {
+    const payload = { name: 'duplicate-test', job: 'qa' }
+    cy.apiRequest('POST', '/users', { body: payload, failOnStatusCode: false }).then((first) => {
+      expect([200, 201, 400]).to.include(first.status)
+      cy.apiRequest('POST', '/users', { body: payload, failOnStatusCode: false }).then((second) => {
+        // Accept either duplicate allowed (201) or rejected (409/400)
+        expect([200, 201, 400, 409]).to.include(second.status)
+      })
+    })
+  })
+
+  /**
+   * Edge: Missing Content-Type header handling
+   */
+  it('should respond appropriately when Content-Type is missing', () => {
+    cy.request({
+      method: 'POST',
+      url: '/users',
+      body: { name: 'no-content-type' },
+      headers: {}, // intentionally omit Content-Type
+      failOnStatusCode: false
+    }).then((res) => {
+      expect([200, 201, 400, 415]).to.include(res.status)
+    })
+  })
 })
