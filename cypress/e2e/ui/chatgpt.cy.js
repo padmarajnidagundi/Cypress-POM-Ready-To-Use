@@ -188,4 +188,72 @@ describe('ChatGPT UI Tests', () => {
         })
     })
 
+    /**
+     * Example: should not send an empty message
+     */
+    it('example: should not send an empty message', () => {
+        chatGpt.visit()
+        chatGpt.getElement(chatGpt.selectors.messageInput).clear()
+        chatGpt.getElement(chatGpt.selectors.sendButton).click()
+        // Expect an error or a no-op; tolerate both but surface an indicator if present
+        cy.get('body').then(($body) => {
+            if ($body.find('.error-message').length) {
+                chatGpt.getErrorMessage().should('be.visible')
+            } else {
+                // no error element: ensure no new user message was added
+                chatGpt.getUserMessages().should('not.contain', '')
+            }
+        })
+    })
+
+    /**
+     * Example: should handle emoji input
+     */
+    it('example: should handle messages with emoji', () => {
+        chatGpt.visit()
+        const msg = 'Hello 😊'
+        chatGpt.sendMessage(msg)
+        chatGpt.waitForResponse()
+        chatGpt.getAssistantMessages().should('be.visible').and('not.be.empty')
+        chatGpt.getUserMessages().should('contain', 'Hello')
+    })
+
+    /**
+     * Example: simulate paste into message input then send
+     */
+    it('example: should accept pasted text into input', () => {
+        chatGpt.visit()
+        const pasted = 'Pasted text example'
+        chatGpt.getElement(chatGpt.selectors.messageInput)
+            .invoke('val', pasted)
+            .trigger('input')
+        chatGpt.getElement(chatGpt.selectors.sendButton).click()
+        chatGpt.waitForResponse()
+        chatGpt.getUserMessages().should('contain', 'Pasted text example')
+    })
+
+    /**
+     * Example: send message via Enter key
+     */
+    it('example: should send message with Enter key', () => {
+        chatGpt.visit()
+        const msg = 'Send via Enter'
+        chatGpt.getElement(chatGpt.selectors.messageInput).type(`${msg}{enter}`)
+        chatGpt.waitForResponse()
+        chatGpt.getUserMessages().should('contain', msg)
+    })
+
+    /**
+     * Example: conversation persists after reload (best-effort)
+     */
+    it('example: conversation should persist after reload', () => {
+        chatGpt.visit()
+        const msg = 'Persist test message'
+        chatGpt.sendMessage(msg)
+        chatGpt.waitForResponse()
+        // reload and assert history still contains the message (if persistence is implemented)
+        cy.reload()
+        chatGpt.getChatHistory().should('contain', msg)
+    })
+
 })
