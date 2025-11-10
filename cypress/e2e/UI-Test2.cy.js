@@ -256,4 +256,75 @@ describe('UI Test Suite - Cypress Querying Examples', () => {
         cy.get(':hidden').first().click({ force: true })
         // No visible action should occur
     })
+
+    /**
+     * Network simulation tests
+     */
+    describe('Network Simulation Tests', () => {
+        it('should handle slow network gracefully', () => {
+            cy.intercept('**/*', (req) => {
+                req.on('response', (res) => {
+                    res.setDelay(1000)
+                })
+            }).as('slowNetwork')
+            
+            homePage.visit()
+            cy.get('.query-button').first().click()
+            cy.get('.loading-indicator').should('be.visible')
+            cy.get('.dynamic-content').should('exist')
+        })
+
+        it('should handle offline state', () => {
+            cy.intercept('**/*', { forceNetworkError: true }).as('offline')
+            homePage.visit()
+            cy.get('.error-message').should('be.visible')
+        })
+    })
+
+    /**
+     * Advanced accessibility tests
+     */
+    describe('Advanced Accessibility Tests', () => {
+        it('should have proper heading hierarchy', () => {
+            const headingLevels = []
+            cy.get('h1, h2, h3, h4, h5, h6').each(($heading) => {
+                const level = parseInt($heading.prop('tagName').charAt(1))
+                headingLevels.push(level)
+            }).then(() => {
+                // Check if heading levels are sequential
+                for (let i = 1; i < headingLevels.length; i++) {
+                    expect(headingLevels[i]).to.be.at.most(headingLevels[i-1] + 1)
+                }
+            })
+        })
+
+        it('should verify color contrast ratios', () => {
+            cy.get('.query-button').each(($button) => {
+                cy.wrap($button)
+                    .should('have.css', 'background-color')
+                    .and('have.css', 'color')
+            })
+        })
+    })
+
+    /**
+     * Responsive design tests
+     */
+    describe('Responsive Design Tests', () => {
+        const viewports = ['iphone-6', 'ipad-2', [1920, 1080]]
+        
+        viewports.forEach((size) => {
+            it(`should maintain layout integrity on ${size}`, () => {
+                if (Array.isArray(size)) {
+                    cy.viewport(size[0], size[1])
+                } else {
+                    cy.viewport(size)
+                }
+                
+                homePage.visit()
+                cy.get('.query-container').should('be.visible')
+                cy.get('.query-button').should('be.visible')
+            })
+        })
+    })
 })
