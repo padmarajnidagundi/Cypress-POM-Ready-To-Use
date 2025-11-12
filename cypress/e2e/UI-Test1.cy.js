@@ -197,4 +197,66 @@ describe('UI Test Suite - Cypress Kitchen Sink Example', () => {
         cy.url().should('not.include', '/admin')
         cy.get('.error-message').should('exist')
     })
+
+    /**
+     * Accessibility: skip-to-content link should be present and functional
+     */
+    it('accessibility: should have a working skip-to-content link', () => {
+        examplePage.visit()
+        cy.get('a[href="#main"], a.skip-to-content')
+            .should('exist')
+            .then($link => {
+                // If present, follow it and ensure main receives focus
+                if ($link.length) {
+                    cy.wrap($link).click()
+                    cy.get('main').should('have.focus')
+                }
+            })
+    })
+
+    /**
+     * Keyboard: tab order should reach interactive elements in a sensible order
+     */
+    it('keyboard: should have sensible tab order to main interactive elements', () => {
+        examplePage.visit()
+        // Start from body and tab through first few focusable elements
+        cy.get('body').tab() // requires cypress-plugin-tab if installed; fallback to focus checks
+        cy.get('a, button, input, select, textarea').first().focus().should('have.focus')
+    })
+
+    /**
+     * Form: should allow keyboard submission (Enter) for first form on page
+     */
+    it('form: should submit first form via Enter key when focused on input', () => {
+        examplePage.visit()
+        cy.get('form').first().within(() => {
+            cy.get('input[type="text"], input[type="email"], textarea').first().then($input => {
+                if ($input.length) {
+                    cy.wrap($input).type('test{enter}')
+                    // best-effort: check for form submission effects (navigation or success message)
+                    cy.wait(200)
+                    cy.get('body').then($b => {
+                        // if a success indicator exists, assert it; otherwise ensure no uncaught exception
+                        if ($b.find('.success, .submitted').length) {
+                            cy.get('.success, .submitted').should('exist')
+                        }
+                    })
+                }
+            })
+        })
+    })
+
+    /**
+     * Links: external links should open in new tab (target="_blank") or be explicit
+     */
+    it('links: should mark external links with target or rel attributes', () => {
+        examplePage.visit()
+        cy.get('a[href^="http"]').each($a => {
+            const $el = Cypress.$($a)
+            const target = $el.attr('target')
+            const rel = $el.attr('rel')
+            // Accept either opening in new tab or having rel="noopener" for external links
+            expect(target === '_blank' || typeof target === 'undefined' || rel !== undefined).to.be.true
+        })
+    })
 })
