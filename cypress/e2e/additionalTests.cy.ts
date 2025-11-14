@@ -330,5 +330,75 @@ describe('Additional Tests', () => {
     }).its('status').should.be.oneOf([401, 403, 200]);
   });
 
+  /**
+   * Example: Contact page should be reachable and contain a contact form
+   */
+  it('example: contact page should be reachable and contain a contact form', () => {
+    cy.visit('https://wesendcv.com/contact', { failOnStatusCode: false })
+    cy.get('h1, h2').then(($h) => {
+      // if page exists, there should be a heading
+      if ($h.length) expect($h.text().trim().length).to.be.greaterThan(0)
+    })
+    // if a contact form exists, ensure it has required fields
+    cy.get('form.contact, form#contact').then(($form) => {
+      if ($form.length) {
+        cy.wrap($form).within(() => {
+          cy.get('input[name="email"]').should('exist')
+          cy.get('textarea[name="message"]').should('exist')
+        })
+      }
+    })
+  })
+
+  /**
+   * Example: Newsletter signup should validate invalid email input
+   */
+  it('example: newsletter signup should reject invalid email', () => {
+    cy.visit('https://wesendcv.com/')
+    cy.get('form.newsletter, form#newsletter').then(($form) => {
+      if ($form.length) {
+        cy.wrap($form).within(() => {
+          cy.get('input[type="email"]').clear().type('invalid-email')
+          cy.get('button[type="submit"]').click()
+          // Expect client-side validation or server-side 4xx; accept both
+          cy.get('input[type="email"]').then(($input) => {
+            if ($input[0].validity) {
+              expect($input[0].validity.valid).to.be.false
+            } else {
+              // fallback: check for validation message
+              cy.get('.error, .invalid-feedback').should('exist')
+            }
+          })
+        })
+      }
+    })
+  })
+
+  /**
+   * Example: external links should include rel="noopener" when target="_blank"
+   */
+  it('example: external links with target _blank should include rel noopener', () => {
+    cy.visit('https://wesendcv.com/')
+    cy.get('a[target="_blank"]').each(($a) => {
+      const rel = $a.attr('rel') || ''
+      expect(rel.split(/\s+/)).to.include.oneOf(['noopener', 'noreferrer', 'noopener,noreferrer'])
+    })
+  })
+
+  /**
+   * Example: check Content-Security-Policy header presence (best-effort)
+   */
+  it('example: should have a Content-Security-Policy header if configured', () => {
+    cy.request({ url: 'https://wesendcv.com/', failOnStatusCode: false }).then((res) => {
+      if (res.headers && (res.headers['content-security-policy'] || res.headers['Content-Security-Policy'])) {
+        const csp = res.headers['content-security-policy'] || res.headers['Content-Security-Policy']
+        expect(csp).to.be.a('string').and.to.not.be.empty
+      } else {
+        // header may be absent in some deployments; accept that
+        expect([200, 301, 302]).to.include(res.status)
+      }
+    })
+  })
+
   // Add more tests as needed
 });
