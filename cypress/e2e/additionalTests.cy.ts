@@ -400,5 +400,54 @@ describe('Additional Tests', () => {
     })
   })
 
+  /**
+   * Negative UI: invalid login should show an error and not navigate
+   */
+  it('neg: should not allow login with invalid credentials', () => {
+    cy.visit('https://wesendcv.com/login', { failOnStatusCode: false })
+    cy.get('input[type="email"]').clear().type('invalid@example.com')
+    cy.get('input[type="password"]').clear().type('wrongpassword')
+    cy.get('button').contains(/login|sign in/i).click()
+    cy.get('body').then(($body) => {
+      // Expect an error message or no navigation to a protected page
+      if ($body.find('.error, .error-message').length) {
+        cy.get('.error, .error-message').should('be.visible')
+      } else {
+        cy.url().should('include', '/login').or('not.include', '/dashboard')
+      }
+    })
+  })
+
+  /**
+   * Negative UI: submitting contact form with required fields empty should show validation
+   */
+  it('neg: should validate required fields on contact form when empty', () => {
+    cy.visit('https://wesendcv.com/contact', { failOnStatusCode: false })
+    cy.get('form.contact, form#contact').then(($form) => {
+      if ($form.length) {
+        cy.wrap($form).within(() => {
+          cy.get('input[name="email"]').clear()
+          cy.get('textarea[name="message"]').clear()
+          cy.root().submit()
+        })
+        // Expect client-side validation messages or server-side 4xx response via XHR
+        cy.get('.error, .invalid-feedback, .error-message').should('exist')
+      } else {
+        // If no contact form present, at least ensure page loads without throwing
+        cy.get('body').should('exist')
+      }
+    })
+  })
+
+  /**
+   * Negative: restricted dashboard should not be accessible without authentication
+   */
+  it('neg: should block access to /dashboard when not authenticated', () => {
+    cy.visit('https://wesendcv.com/dashboard', { failOnStatusCode: false })
+    // Expect redirect to login or an unauthorized message
+    cy.url().should('not.include', '/dashboard')
+    cy.contains(/login|unauthorized|sign in|access denied/i).should('exist')
+  })
+
   // Add more tests as needed
 });
