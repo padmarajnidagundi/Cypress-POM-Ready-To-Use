@@ -187,4 +187,23 @@ describe('[Mock] API Response Mocking', () => {
       expect(response.body.error).to.eq('Gateway Timeout');
     });
   });
+
+  /**
+   * Negative test: Simulate 403 Forbidden for unauthorized access.
+   */
+  it('[Mock][Negative] should return 403 for unauthorized access', () => {
+    cy.intercept('DELETE', '**/users/*', {
+      statusCode: 403,
+      body: { 
+        error: 'Forbidden', 
+        message: 'You do not have permission to delete this user' 
+      }
+    }).as('deleteUserForbidden');
+
+    cy.apiRequest('DELETE', '/users/123').then((response) => {
+      expect(response.status).to.eq(403);
+      expect(response.body.error).to.eq('Forbidden');
+      expect(response.body.message).to.include('permission');
+    });
+  });
 })
