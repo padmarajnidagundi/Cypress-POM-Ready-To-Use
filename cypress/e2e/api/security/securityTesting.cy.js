@@ -11,7 +11,7 @@ describe('API Security Tests', () => {
   it('should validate authentication requirements', () => {
     cy.apiRequest('GET', '/users/2', {
       headers: {
-        'Authorization': 'Bearer invalid_token'
+        Authorization: 'Bearer invalid_token'
       }
     }).then((response) => {
       // reqres.in returns 200 even for invalid tokens, but in real APIs it should be 401
@@ -63,7 +63,7 @@ describe('API Security Tests', () => {
   it('should prevent unauthorized resource access', () => {
     cy.apiRequest('DELETE', '/users/1', {
       headers: {
-        'Authorization': 'Bearer invalid_token'
+        Authorization: 'Bearer invalid_token'
       }
     }).then((response) => {
       // reqres.in returns 204 for delete operations
@@ -111,7 +111,9 @@ describe('API Security Tests', () => {
       method: 'POST',
       url: Cypress.config('baseUrl') ? `${Cypress.config('baseUrl')}/users` : '/users',
       body: { name: 'no-content-type' },
-      headers: { /* intentionally empty */ },
+      headers: {
+        /* intentionally empty */
+      },
       failOnStatusCode: false
     }).then((response) => {
       expect([200, 201, 400, 415]).to.include(response.status)
@@ -169,7 +171,12 @@ describe('API Security Tests', () => {
     }).then((response) => {
       // Acceptable behaviors: block, sanitize, or redirect only to internal locations.
       // If server responds with a Location header, ensure it is not an external absolute URL.
-      if (response.status >= 300 && response.status < 400 && response.headers && response.headers.location) {
+      if (
+        response.status >= 300 &&
+        response.status < 400 &&
+        response.headers &&
+        response.headers.location
+      ) {
         const loc = response.headers.location
         expect(loc).to.not.match(/^https?:\/\/evil\.example\.com/i)
       } else {
@@ -185,12 +192,19 @@ describe('API Security Tests', () => {
   it('should redirect HTTP to HTTPS or otherwise enforce secure transport', () => {
     // This check is best-effort: test harness may be HTTPS-only; accept multiple outcomes.
     cy.request({
-      url: 'http://'+(Cypress.config('baseUrl') ? new URL(Cypress.config('baseUrl')).host : 'example.com'),
+      url:
+        'http://' +
+        (Cypress.config('baseUrl') ? new URL(Cypress.config('baseUrl')).host : 'example.com'),
       followRedirect: false,
       failOnStatusCode: false
     }).then((response) => {
       // If an HTTP -> HTTPS redirect exists, it will be a 3xx with location starting with https
-      if (response.status >= 300 && response.status < 400 && response.headers && response.headers.location) {
+      if (
+        response.status >= 300 &&
+        response.status < 400 &&
+        response.headers &&
+        response.headers.location
+      ) {
         expect(response.headers.location.toLowerCase()).to.match(/^https:\/\//)
       } else {
         // If server doesn't expose HTTP or test harness blocks it, accept common statuses

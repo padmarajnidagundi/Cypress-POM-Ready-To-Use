@@ -2,7 +2,7 @@ describe('API Validation Tests', () => {
   // Test: Should return 400 and error message when required fields are missing in register
   it('should validate required fields for register', () => {
     cy.apiRequest('POST', '/register', {
-      body: {}  // Empty body to test required fields
+      body: {} // Empty body to test required fields
     }).then((response) => {
       expect(response.status).to.eq(400)
       expect(response.body).to.have.property('error', 'Missing email or username')
@@ -27,7 +27,7 @@ describe('API Validation Tests', () => {
     ]
 
     // Loop through test cases to check different validation scenarios
-    testCases.forEach(testCase => {
+    testCases.forEach((testCase) => {
       cy.apiRequest('POST', '/register', {
         body: testCase.data
       }).then((response) => {
@@ -69,9 +69,11 @@ describe('API Validation Tests', () => {
    */
   it('should handle very large input payloads appropriately', () => {
     const largeName = 'a'.repeat(50_000)
-    cy.apiRequest('POST', '/users', { body: { name: largeName }, failOnStatusCode: false }).then((res) => {
-      expect([201, 200, 400, 413]).to.include(res.status)
-    })
+    cy.apiRequest('POST', '/users', { body: { name: largeName }, failOnStatusCode: false }).then(
+      (res) => {
+        expect([201, 200, 400, 413]).to.include(res.status)
+      }
+    )
   })
 
   /**

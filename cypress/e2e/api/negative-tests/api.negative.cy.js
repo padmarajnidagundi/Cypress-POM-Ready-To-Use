@@ -2,6 +2,14 @@
  * Negative Test Suite for API Endpoints
  * Tests various error scenarios and edge cases to ensure robust error handling
  */
+
+// Define UserTypes enum
+const UserTypes = {
+  ADMIN: 'admin',
+  REGULAR: 'regular',
+  GUEST: 'guest'
+}
+
 describe('API Negative Tests', () => {
   /**
    * Authentication Related Tests
@@ -14,11 +22,10 @@ describe('API Negative Tests', () => {
      * Expected: 401 Unauthorized with appropriate error message
      */
     it('should reject invalid credentials', () => {
-      cy.apiLoginWithInvalidCredentials('invalid@email.com', 'wrongpassword')
-        .then(response => {
-          expect(response.status).to.eq(401)
-          expect(response.body).to.have.property('error')
-        })
+      cy.apiLoginWithInvalidCredentials('invalid@email.com', 'wrongpassword').then((response) => {
+        expect(response.status).to.eq(401)
+        expect(response.body).to.have.property('error')
+      })
     })
 
     /**
@@ -26,11 +33,10 @@ describe('API Negative Tests', () => {
      * Expected: 401 Unauthorized with "Token expired" message
      */
     it('should handle expired tokens', () => {
-      cy.useExpiredToken()
-        .then(response => {
-          expect(response.status).to.eq(401)
-          expect(response.body.error).to.equal('Token expired')
-        })
+      cy.useExpiredToken().then((response) => {
+        expect(response.status).to.eq(401)
+        expect(response.body.error).to.equal('Token expired')
+      })
     })
   })
 
@@ -46,16 +52,15 @@ describe('API Negative Tests', () => {
      * Expected: 422 Unprocessable Entity with validation details
      */
     it('should reject malformed user data', () => {
-      cy.createMalformedUser()
-        .then(invalidUser => {
-          cy.apiRequest('POST', '/users', {
-            body: invalidUser
-          }).then(response => {
-            expect(response.status).to.eq(422)
-            expect(response.body).to.have.property('details')
-            expect(response.body.details).to.have.length.greaterThan(0)
-          })
+      cy.createMalformedUser().then((invalidUser) => {
+        cy.apiRequest('POST', '/users', {
+          body: invalidUser
+        }).then((response) => {
+          expect(response.status).to.eq(422)
+          expect(response.body).to.have.property('details')
+          expect(response.body.details).to.have.length.greaterThan(0)
         })
+      })
     })
 
     /**
@@ -65,19 +70,18 @@ describe('API Negative Tests', () => {
      */
     it('should prevent duplicate user creation', () => {
       // Create initial user
-      cy.createTestUser().then(user => {
+      cy.createTestUser().then((user) => {
         cy.apiRequest('POST', '/users', { body: user })
-          
+
         // Attempt to create duplicate
-        cy.createDuplicateUser(user)
-          .then(duplicateUser => {
-            cy.apiRequest('POST', '/users', {
-              body: duplicateUser
-            }).then(response => {
-              expect(response.status).to.eq(409) // Conflict
-              expect(response.body.error).to.contain('already exists')
-            })
+        cy.createDuplicateUser(user).then((duplicateUser) => {
+          cy.apiRequest('POST', '/users', {
+            body: duplicateUser
+          }).then((response) => {
+            expect(response.status).to.eq(409) // Conflict
+            expect(response.body.error).to.contain('already exists')
           })
+        })
       })
     })
 
@@ -87,16 +91,15 @@ describe('API Negative Tests', () => {
      * Expected: 422 status for each invalid user
      */
     it('should validate multiple invalid users', () => {
-      cy.createInvalidUsers(3, 'invalid_format')
-        .then(invalidUsers => {
-          invalidUsers.forEach(user => {
-            cy.apiRequest('POST', '/users', {
-              body: user
-            }).then(response => {
-              expect(response.status).to.eq(422)
-            })
+      cy.createInvalidUsers(3, 'invalid_format').then((invalidUsers) => {
+        invalidUsers.forEach((user) => {
+          cy.apiRequest('POST', '/users', {
+            body: user
+          }).then((response) => {
+            expect(response.status).to.eq(422)
           })
         })
+      })
     })
 
     /**
@@ -104,10 +107,10 @@ describe('API Negative Tests', () => {
      * Expected: 422 Unprocessable Entity with password validation error
      */
     it('should reject short passwords', () => {
-      cy.createTestUser({ password: '12' }).then(user => {
+      cy.createTestUser({ password: '12' }).then((user) => {
         cy.apiRequest('POST', '/users', {
           body: user
-        }).then(response => {
+        }).then((response) => {
           expect(response.status).to.eq(422)
           expect(response.body.details).to.deep.include.members([
             { field: 'password', message: Cypress.sinon.match(/short|length/i) }
@@ -121,10 +124,10 @@ describe('API Negative Tests', () => {
      * Expected: 422 Unprocessable Entity with username validation error
      */
     it('should reject invalid username', () => {
-      cy.createTestUser({ username: '!' }).then(user => {
+      cy.createTestUser({ username: '!' }).then((user) => {
         cy.apiRequest('POST', '/users', {
           body: user
-        }).then(response => {
+        }).then((response) => {
           expect(response.status).to.eq(422)
           expect(response.body.details).to.deep.include.members([
             { field: 'username', message: Cypress.sinon.match(/invalid|format/i) }
@@ -138,10 +141,10 @@ describe('API Negative Tests', () => {
      * Expected: 422 or 200 depending on API behavior
      */
     it('should handle extra fields in user creation', () => {
-      cy.createTestUser({ extra: 'field' }).then(user => {
+      cy.createTestUser({ extra: 'field' }).then((user) => {
         cy.apiRequest('POST', '/users', {
           body: user
-        }).then(response => {
+        }).then((response) => {
           expect([200, 422]).to.include(response.status)
         })
       })
@@ -152,10 +155,10 @@ describe('API Negative Tests', () => {
      * Expected: 422 Unprocessable Entity with email validation error
      */
     it('should reject invalid email format', () => {
-      cy.createTestUser({ email: 'not-an-email' }).then(user => {
+      cy.createTestUser({ email: 'not-an-email' }).then((user) => {
         cy.apiRequest('POST', '/users', {
           body: user
-        }).then(response => {
+        }).then((response) => {
           expect(response.status).to.eq(422)
           expect(response.body.details).to.deep.include.members([
             { field: 'email', message: Cypress.sinon.match(/invalid|format/i) }
@@ -169,10 +172,10 @@ describe('API Negative Tests', () => {
      * Expected: 422 Unprocessable Entity with username validation error
      */
     it('should reject numeric username', () => {
-      cy.createTestUser({ username: 123456 }).then(user => {
+      cy.createTestUser({ username: 123456 }).then((user) => {
         cy.apiRequest('POST', '/users', {
           body: user
-        }).then(response => {
+        }).then((response) => {
           expect(response.status).to.eq(422)
           expect(response.body.details).to.deep.include.members([
             { field: 'username', message: Cypress.sinon.match(/invalid|format/i) }
@@ -195,11 +198,10 @@ describe('API Negative Tests', () => {
     it('should handle server errors gracefully', () => {
       // Simulate a server error for GET /users
       cy.simulateNetworkError('GET', '/users', 'SERVER_ERROR')
-      cy.apiRequest('GET', '/users')
-        .then(response => {
-          expect(response.status).to.eq(500)
-          expect(response.body.error).to.equal('Internal Server Error')
-        })
+      cy.apiRequest('GET', '/users').then((response) => {
+        expect(response.status).to.eq(500)
+        expect(response.body.error).to.equal('Internal Server Error')
+      })
     })
 
     /**
@@ -209,12 +211,11 @@ describe('API Negative Tests', () => {
      */
     it('should handle rate limiting', () => {
       // Exhaust the rate limit for /users endpoint
-      cy.exhaustRateLimit('/users', 15)
-        .then(responses => {
-          const lastResponse = responses[responses.length - 1]
-          expect(lastResponse.status).to.eq(429)
-          expect(lastResponse.body.error).to.contain('Too Many Requests')
-        })
+      cy.exhaustRateLimit('/users', 15).then((responses) => {
+        const lastResponse = responses[responses.length - 1]
+        expect(lastResponse.status).to.eq(429)
+        expect(lastResponse.body.error).to.contain('Too Many Requests')
+      })
     })
   })
 
@@ -229,17 +230,16 @@ describe('API Negative Tests', () => {
      * Expected: 403 Forbidden for unauthorized access attempts
      */
     it('should prevent unauthorized access to admin endpoints', () => {
-      cy.createTestUser({}, UserTypes.GUEST)
-        .then(user => {
-          cy.apiRequest('GET', '/admin/users', {
-            headers: {
-              Authorization: `Bearer ${user.token}`
-            }
-          }).then(response => {
-            expect(response.status).to.eq(403)
-            expect(response.body.error).to.equal('Forbidden')
-          })
+      cy.createTestUser({}, UserTypes.GUEST).then((user) => {
+        cy.apiRequest('GET', '/admin/users', {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        }).then((response) => {
+          expect(response.status).to.eq(403)
+          expect(response.body.error).to.equal('Forbidden')
         })
+      })
     })
 
     /**
@@ -249,17 +249,16 @@ describe('API Negative Tests', () => {
      */
     it('should validate required fields for different user types', () => {
       const userTypes = [UserTypes.ADMIN, UserTypes.REGULAR, UserTypes.GUEST]
-      
-      userTypes.forEach(type => {
-        cy.createInvalidUsers(1, 'missing_fields')
-          .then(([invalidUser]) => {
-            cy.apiRequest('POST', `/users/${type}`, {
-              body: invalidUser
-            }).then(response => {
-              expect(response.status).to.eq(422)
-              expect(response.body.details).to.not.be.empty
-            })
+
+      userTypes.forEach((type) => {
+        cy.createInvalidUsers(1, 'missing_fields').then(([invalidUser]) => {
+          cy.apiRequest('POST', `/users/${type}`, {
+            body: invalidUser
+          }).then((response) => {
+            expect(response.status).to.eq(422)
+            expect(response.body.details).to.not.be.empty
           })
+        })
       })
     })
   })
@@ -277,7 +276,7 @@ describe('API Negative Tests', () => {
     it('should handle empty request bodies', () => {
       cy.apiRequest('POST', '/users', {
         body: {}
-      }).then(response => {
+      }).then((response) => {
         expect(response.status).to.eq(400)
         expect(response.body.error).to.contain('empty')
       })
@@ -297,7 +296,7 @@ describe('API Negative Tests', () => {
           'Content-Type': 'application/json'
         },
         failOnStatusCode: false
-      }).then(response => {
+      }).then((response) => {
         expect(response.status).to.eq(400)
         expect(response.body.error).to.contain('JSON')
       })
@@ -312,10 +311,10 @@ describe('API Negative Tests', () => {
       cy.createTestUser({
         username: 'a'.repeat(256), // Exceeding maximum length
         password: 'a'.repeat(1024) // Exceeding maximum length
-      }).then(user => {
+      }).then((user) => {
         cy.apiRequest('POST', '/users', {
           body: user
-        }).then(response => {
+        }).then((response) => {
           expect(response.status).to.eq(422)
           expect(response.body.details).to.have.length(2) // Two validation errors
         })

@@ -3,9 +3,15 @@ describe('[Unit] User API Operations', () => {
   it('[Unit] should retrieve user with valid data structure', () => {
     cy.apiRequest('GET', '/users/1').then((response) => {
       expect(response.status).to.eq(200)
-      expect(response.body.data).to.have.all.keys('id', 'email', 'first_name', 'last_name', 'avatar')
+      expect(response.body.data).to.have.all.keys(
+        'id',
+        'email',
+        'first_name',
+        'last_name',
+        'avatar'
+      )
       expect(response.body.data.id).to.be.a('number')
-      expect(response.body.data.email).to.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
+      expect(response.body.data.email).to.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
     })
   })
 
@@ -70,9 +76,11 @@ describe('[Unit] User API Operations', () => {
    * Example: invalid payload should result in 4xx or be handled gracefully
    */
   it('[Example] should return 4xx for invalid payloads (or handle gracefully)', () => {
-    cy.apiRequest('POST', '/users', { body: { invalid: true }, failOnStatusCode: false }).then((res) => {
-      expect([400, 422, 201]).to.include(res.status)
-    })
+    cy.apiRequest('POST', '/users', { body: { invalid: true }, failOnStatusCode: false }).then(
+      (res) => {
+        expect([400, 422, 201]).to.include(res.status)
+      }
+    )
   })
 
   /**

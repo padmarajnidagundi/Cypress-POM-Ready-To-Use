@@ -3,7 +3,7 @@ describe('[Security] API Authentication', () => {
   it('[Security] should enforce authentication requirements', () => {
     cy.apiRequest('GET', '/users/2', {
       headers: {
-        'Authorization': 'Bearer invalid_token'
+        Authorization: 'Bearer invalid_token'
       }
     }).then((response) => {
       // reqres.in returns 200 even for invalid tokens, but in real APIs it should be 401
@@ -15,7 +15,7 @@ describe('[Security] API Authentication', () => {
   it('[Security] should prevent unauthorized access', () => {
     cy.apiRequest('DELETE', '/users/1', {
       headers: {
-        'Authorization': 'Bearer invalid_token'
+        Authorization: 'Bearer invalid_token'
       }
     }).then((response) => {
       // reqres.in returns 204 for delete operations
@@ -29,7 +29,9 @@ describe('[Security] API Authentication', () => {
       body: { email: 'user@example.com', password: '12' }
     }).then((response) => {
       expect(response.status).to.eq(400)
-      expect(response.body).to.have.property('error').and.to.match(/password/i)
+      expect(response.body)
+        .to.have.property('error')
+        .and.to.match(/password/i)
     })
   })
 
@@ -39,7 +41,9 @@ describe('[Security] API Authentication', () => {
       body: { username: 'a', email: 'user@example.com', password: 'password123' }
     }).then((response) => {
       expect(response.status).to.eq(400)
-      expect(response.body).to.have.property('error').and.to.match(/username/i)
+      expect(response.body)
+        .to.have.property('error')
+        .and.to.match(/username/i)
     })
   })
 

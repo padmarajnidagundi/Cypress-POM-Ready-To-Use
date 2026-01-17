@@ -1,0 +1,13 @@
+node_modules/
+dist/
+build/
+coverage/
+mochawesome-report/
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+cypress/reports/
+*.min.js
+*.log
+package-lock.json
+eslint.config.js

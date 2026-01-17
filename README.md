@@ -1,6 +1,14 @@
 # Cypress POM - Page Object Model Ready To Use - 2025 update
 
-A production-ready Cypress automation framework with Page Object Model, supporting UI, API, and Accessibility testing. Features comprehensive ChatGPT interface testing capabilities.
+[![Node.js CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml)
+[![npm version](https://img.shields.io/npm/v/cypress-page-object-model.svg)](https://www.npmjs.com/package/cypress-page-object-model)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+A production-ready Cypress automation framework with Page Object Model, supporting UI, API, and
+Accessibility testing. Features comprehensive ChatGPT interface testing capabilities.
 
 ## Key Features
 
@@ -19,27 +27,28 @@ A production-ready Cypress automation framework with Page Object Model, supporti
 
 ### Cypress Advantages & Disadvantages
 
-| Advantages | Disadvantages |
-|------------|---------------|
-| ✅ Real-time reload and time travel debugging | ❌ Single browser tab execution |
-| ✅ Automatic waiting and retry mechanisms | ❌ Limited cross-domain testing |
-| ✅ Consistent and reliable tests | ❌ No support for multiple browser windows |
-| ✅ Built-in screenshots and videos | ❌ Limited iframe support |
-| ✅ Excellent developer experience and debugging | ❌ No native mobile testing support |
-| ✅ Modern JavaScript stack and syntax | ❌ Same-origin policy limitations |
-| ✅ Rich ecosystem of plugins | ❌ CPU/Memory intensive for large suites |
-| ✅ Comprehensive documentation | ❌ Limited support for file downloads |
-| ✅ Active community support | ❌ Requires JavaScript knowledge |
-| ✅ Built-in network stubbing | ❌ Browser support limited to Chrome-family |
-| ✅ Native access to browser APIs | ❌ Not suitable for native mobile apps |
-| ✅ Simple setup and configuration | ❌ Complex iframe handling |
-| ✅ API testing capabilities | ❌ Limited parallel testing in open source |
-| ✅ TypeScript support | ❌ Higher resource usage than Selenium |
-| ✅ Command chaining for better readability | ❌ Learning curve for non-JS developers |
+| Advantages                                      | Disadvantages                               |
+| ----------------------------------------------- | ------------------------------------------- |
+| ✅ Real-time reload and time travel debugging   | ❌ Single browser tab execution             |
+| ✅ Automatic waiting and retry mechanisms       | ❌ Limited cross-domain testing             |
+| ✅ Consistent and reliable tests                | ❌ No support for multiple browser windows  |
+| ✅ Built-in screenshots and videos              | ❌ Limited iframe support                   |
+| ✅ Excellent developer experience and debugging | ❌ No native mobile testing support         |
+| ✅ Modern JavaScript stack and syntax           | ❌ Same-origin policy limitations           |
+| ✅ Rich ecosystem of plugins                    | ❌ CPU/Memory intensive for large suites    |
+| ✅ Comprehensive documentation                  | ❌ Limited support for file downloads       |
+| ✅ Active community support                     | ❌ Requires JavaScript knowledge            |
+| ✅ Built-in network stubbing                    | ❌ Browser support limited to Chrome-family |
+| ✅ Native access to browser APIs                | ❌ Not suitable for native mobile apps      |
+| ✅ Simple setup and configuration               | ❌ Complex iframe handling                  |
+| ✅ API testing capabilities                     | ❌ Limited parallel testing in open source  |
+| ✅ TypeScript support                           | ❌ Higher resource usage than Selenium      |
+| ✅ Command chaining for better readability      | ❌ Learning curve for non-JS developers     |
 
 ### When to Choose Cypress
 
 1. **Best For:**
+
    - Modern web applications
    - Single page applications (SPAs)
    - Real-time testing feedback
@@ -55,15 +64,17 @@ A production-ready Cypress automation framework with Page Object Model, supporti
    - Non-JavaScript applications
    - Limited resource environments
 
-## Quick Start
+## Quick Start.
 
 1. **Clone and Install**
+
 ```bash
 git clone https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use
 cd Cypress-POM-Ready-To-Use
 ```
 
 2. **Setup Project**
+
 ```bash
 npm run presetup     # Install all dependencies
 npm run setup       # Install Cypress
@@ -71,11 +82,13 @@ npm run verify      # Verify Cypress installation
 ```
 
 3. **Open Cypress**
+
 ```bash
 npm run cypress:open  # Open Cypress Test Runner
 ```
 
 4. **Run Tests**
+
 ```bash
 npm run test:ui          # Run UI tests
 npm run test:api         # Run API tests
@@ -85,9 +98,11 @@ npm run test:ci         # Run tests in CI mode
 
 ### Troubleshooting Installation
 
-If you encounter the error `'cypress' is not recognized as an internal or external command`, follow these steps:
+If you encounter the error `'cypress' is not recognized as an internal or external command`, follow
+these steps:
 
 1. Clear npm cache and node_modules:
+
 ```bash
 npm cache clean --force
 rm -rf node_modules
@@ -95,16 +110,19 @@ rm -rf package-lock.json
 ```
 
 2. Reinstall dependencies:
+
 ```bash
 npm run presetup
 ```
 
 3. Verify installation:
+
 ```bash
 npm run verify
 ```
 
 4. Test Cypress:
+
 ```bash
 npm run cypress:open
 ```
@@ -114,41 +132,43 @@ npm run cypress:open
 ### Writing UI Tests
 
 1. **Create Page Objects**
+
 ```typescript
 // cypress/pageObjects/pages/loginPage.ts
 import BasePage from '../basePage'
 
 class LoginPage extends BasePage {
-    private selectors = {
-        username: '#username',
-        password: '#password',
-        submitBtn: '[data-testid="login-btn"]'
-    }
+  private selectors = {
+    username: '#username',
+    password: '#password',
+    submitBtn: '[data-testid="login-btn"]'
+  }
 
-    login(username: string, password: string) {
-        this.getElement(this.selectors.username).type(username)
-        this.getElement(this.selectors.password).type(password)
-        this.getElement(this.selectors.submitBtn).click()
-    }
+  login(username: string, password: string) {
+    this.getElement(this.selectors.username).type(username)
+    this.getElement(this.selectors.password).type(password)
+    this.getElement(this.selectors.submitBtn).click()
+  }
 }
 ```
 
 2. **Write Tests**
+
 ```typescript
 // cypress/e2e/ui/login.cy.ts
 import LoginPage from '../../pageObjects/pages/loginPage'
 
 describe('Login Tests', () => {
-    const loginPage = new LoginPage()
-    
-    beforeEach(() => {
-        loginPage.visit('/login')
-    })
+  const loginPage = new LoginPage()
 
-    it('should login successfully', () => {
-        loginPage.login('testuser', 'password')
-        // assertions
-    })
+  beforeEach(() => {
+    loginPage.visit('/login')
+  })
+
+  it('should login successfully', () => {
+    loginPage.login('testuser', 'password')
+    // assertions
+  })
 })
 ```
 
@@ -157,18 +177,26 @@ describe('Login Tests', () => {
 Our framework supports comprehensive API testing across multiple categories:
 
 1. **Unit Tests**
+
 ```javascript
 describe('[Unit] User API Operations', () => {
   it('[Unit] should retrieve user with valid data structure', () => {
     cy.apiRequest('GET', '/users/1').then((response) => {
       expect(response.status).to.eq(200)
-      expect(response.body.data).to.have.all.keys('id', 'email', 'first_name', 'last_name', 'avatar')
+      expect(response.body.data).to.have.all.keys(
+        'id',
+        'email',
+        'first_name',
+        'last_name',
+        'avatar'
+      )
     })
   })
 })
 ```
 
 2. **Integration Tests**
+
 ```javascript
 describe('[Integration] User Management Workflow', () => {
   it('[Integration] should perform complete user CRUD operations', () => {
@@ -182,6 +210,7 @@ describe('[Integration] User Management Workflow', () => {
 ```
 
 3. **Performance Tests**
+
 ```javascript
 describe('[Performance] API Response Times', () => {
   it('[Performance] should meet response time SLA', () => {
@@ -193,11 +222,12 @@ describe('[Performance] API Response Times', () => {
 ```
 
 4. **Security Tests**
+
 ```javascript
 describe('[Security] API Authentication', () => {
   it('[Security] should enforce authentication', () => {
     cy.apiRequest('GET', '/protected', {
-      headers: { 'Authorization': 'Bearer invalid_token' }
+      headers: { Authorization: 'Bearer invalid_token' }
     }).then((response) => {
       expect(response.status).to.eq(401)
     })
@@ -206,6 +236,7 @@ describe('[Security] API Authentication', () => {
 ```
 
 5. **Validation Tests**
+
 ```javascript
 describe('[Validation] API Input Validation', () => {
   it('[Validation] should enforce required fields', () => {
@@ -219,11 +250,12 @@ describe('[Validation] API Input Validation', () => {
 ```
 
 6. **Interoperability Tests**
+
 ```javascript
 describe('[Interop] API Compatibility', () => {
   it('[Interop] should support multiple formats', () => {
     cy.apiRequest('GET', '/users', {
-      headers: { 'Accept': 'application/json' }
+      headers: { Accept: 'application/json' }
     }).then((response) => {
       expect(response.headers['content-type']).to.include('application/json')
     })
@@ -232,6 +264,7 @@ describe('[Interop] API Compatibility', () => {
 ```
 
 7. **Mock Tests**
+
 ```javascript
 describe('[Mock] API Response Mocking', () => {
   it('[Mock] should handle mocked responses', () => {
@@ -248,6 +281,7 @@ describe('[Mock] API Response Mocking', () => {
 ```
 
 ### API Test Organization
+
 ```
 cypress/e2e/api/
 ├── unit-tests/           # Basic API operations
@@ -270,18 +304,20 @@ cy.apiRequest(method, path, options)
 // Example usage
 cy.apiRequest('POST', '/users', {
   body: { name: 'Test User' },
-  headers: { 'Authorization': 'Bearer token' }
+  headers: { Authorization: 'Bearer token' }
 })
 ```
 
 ### API Testing Best Practices
 
 1. **Test Structure**
+
    - Use descriptive category prefixes: [Unit], [Integration], etc.
    - Group related tests in appropriate folders
    - Follow the single responsibility principle
 
 2. **Assertions**
+
    - Verify status codes and response structure
    - Check response times for performance
    - Validate security headers and tokens
@@ -295,11 +331,13 @@ cy.apiRequest('POST', '/users', {
 ### Best Practices
 
 1. **Selectors**
+
    - Use data-testid attributes: `[data-testid="login-button"]`
    - Store selectors in page objects.
    - Use meaningful selector names.
 
 2. **Test Organization**
+
 ```
 cypress/
 ├── e2e/
@@ -338,11 +376,13 @@ module.exports = {
 ### Running Tests in CI
 
 1. **GitHub Actions** (pre-configured)
+
 ```bash
 npm run test:ci
 ```
 
 2. **Jenkins** (sample configuration)
+
 ```groovy
 pipeline {
     agent any
@@ -359,9 +399,11 @@ pipeline {
 
 ### Test Reporting
 
-This framework uses Mochawesome for comprehensive HTML reporting. Get detailed insights with screenshots, videos, and test execution metrics.
+This framework uses Mochawesome for comprehensive HTML reporting. Get detailed insights with
+screenshots, videos, and test execution metrics.
 
 1. **Available Report Commands**
+
 ```bash
 npm run report:clean     # Clean previous reports
 npm run report:merge     # Merge multiple report JSONs
@@ -370,6 +412,7 @@ npm run test:report      # Full test execution with reports
 ```
 
 2. **Report Features**
+
    - Interactive HTML dashboard
    - Test execution timeline
    - Suite and test-level statistics
@@ -380,6 +423,7 @@ npm run test:report      # Full test execution with reports
    - Responsive design for mobile viewing
 
 3. **Report Structure**
+
 ```
 cypress/reports/
 ├── html/               # HTML reports
@@ -389,17 +433,17 @@ cypress/reports/
 └── json/              # Individual test JSONs
 ```
 
-4. **Reporter Configuration**
-Add these options to `cypress.config.js`:
+4. **Reporter Configuration** Add these options to `cypress.config.js`:
+
 ```javascript
 module.exports = defineConfig({
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
-    charts: true,                    // Enable charts
-    reportPageTitle: 'Test Report',  // Custom title
-    embeddedScreenshots: true,       // Inline screenshots
-    inlineAssets: true,             // Inline assets
-    saveAllAttempts: false,         // Save only failures
+    charts: true, // Enable charts
+    reportPageTitle: 'Test Report', // Custom title
+    embeddedScreenshots: true, // Inline screenshots
+    inlineAssets: true, // Inline assets
+    saveAllAttempts: false, // Save only failures
     reportDir: 'cypress/reports/html',
     overwrite: false,
     html: true,
@@ -409,12 +453,14 @@ module.exports = defineConfig({
 ```
 
 5. **Viewing Reports**
+
    - Open `cypress/reports/html/report.html` in any browser
    - Reports are self-contained and can be shared
    - Support offline viewing
    - Can be hosted on any static server
 
 6. **CI/CD Integration**
+
 ```yaml
 - name: Generate Test Report
   if: always()
@@ -445,10 +491,12 @@ describe('Visual Tests', () => {
 ```
 
 Configuration in cypress.config.js:
+
 - Visual regression path: `cypress/snapshots`
 - Visual threshold: 0.1
 
 Run visual tests:
+
 ```bash
 npm run test:visual
 ```
@@ -468,6 +516,7 @@ describe('Accessibility Tests', () => {
 ```
 
 Run accessibility tests:
+
 ```bash
 npm run test:a11y
 ```
@@ -521,6 +570,7 @@ New testing capabilities are provided by:
 ## Debugging Tips
 
 1. **Time Travel**
+
    - Use Cypress Time Travel feature
    - Check screenshots in `cypress/screenshots`
    - Review videos in `cypress/videos`
@@ -531,16 +581,19 @@ New testing capabilities are provided by:
 
 ## Contributing
 
-We welcome contributions that help improve this Cypress Page Object Model framework! Here's how you can contribute:
+We welcome contributions that help improve this Cypress Page Object Model framework! Here's how you
+can contribute:
 
 ### Types of Contributions
 
 1. **Page Objects**
+
    - New page object implementations
    - Improvements to existing page objects
    - Utility functions for common actions
 
 2. **Test Examples**
+
    - UI test examples
    - API test examples
    - Integration test patterns
@@ -553,6 +606,7 @@ We welcome contributions that help improve this Cypress Page Object Model framew
 ### How to Contribute
 
 1. **Fork and Clone**
+
    ```bash
    # Fork this repository on GitHub
    git clone https://github.com/YOUR_USERNAME/Cypress-POM-Ready-To-Use.git
@@ -561,20 +615,24 @@ We welcome contributions that help improve this Cypress Page Object Model framew
    ```
 
 2. **Create a Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
 3. **Make Changes**
+
    - Follow the existing code structure
    - Add tests for new features
    - Update documentation as needed
 
 4. **Contribution Guidelines**
+
    - Use TypeScript for new files
    - Follow the page object pattern
    - Add JSDoc comments for methods
    - Include test cases for new features
+
    ```typescript
    /**
     * Example of a well-documented page object
@@ -596,6 +654,7 @@ We welcome contributions that help improve this Cypress Page Object Model framew
    ```
 
 5. **Run Tests**
+
    ```bash
    npm run test        # Run all tests
    npm run lint        # Check code style
@@ -609,6 +668,7 @@ We welcome contributions that help improve this Cypress Page Object Model framew
    - Wait for review and address feedback
 
 ### Directory Structure for Contributions
+
 ```
 cypress/
 ├── e2e/                    # Add tests here
@@ -624,11 +684,13 @@ cypress/
 ### Code Style Guide
 
 1. **Naming Conventions**
+
    - Use PascalCase for page objects: `LoginPage.ts`
    - Use camelCase for methods: `submitForm()`
    - Use descriptive test names: `'should successfully submit form'`
 
 2. **File Organization**
+
    - One page object per file
    - Group related tests in describe blocks
    - Keep selectors in a separate object
@@ -655,26 +717,32 @@ cypress/
 ### Common Configuration Issues
 
 1. **Error with `cypress.config.js`**
+
    ```javascript
    const { defineConfig } = require('cypress')
    ```
+
    **Solution:** Ensure proper configuration setup:
+
    - Install browserify preprocessor: `npm install @cypress/browserify-preprocessor --save-dev`
    - Use the complete configuration:
+
    ```javascript
-   const { defineConfig } = require("cypress");
-   const createBundler = require("@cypress/browserify-preprocessor");
+   const { defineConfig } = require('cypress')
+   const createBundler = require('@cypress/browserify-preprocessor')
 
    module.exports = defineConfig({
      viewportWidth: 1920,
      viewportHeight: 1080,
-     watchForFileChanges: false,
+     watchForFileChanges: false
      // ... other configurations
-   });
+   })
    ```
 
 2. **TypeScript Support**
+
    - Ensure these dependencies are installed:
+
    ```json
    {
      "devDependencies": {
@@ -686,6 +754,7 @@ cypress/
    ```
 
 3. **Running Tests**
+
    - For UI tests: `npm run test:ui`
    - For API tests: `npm run test:api`
    - For parallel execution: `npm run test:parallel`
@@ -699,11 +768,13 @@ cypress/
 ### Best Practices
 
 1. **Page Object Model**
+
    - Keep selectors in page objects
    - Use data-testid attributes
    - Implement base page for common functions
 
 2. **Test Organization**
+
    - API tests in `cypress/e2e/api/`
    - UI tests in `cypress/e2e/ui/`
    - Integration tests in `cypress/e2e/integration/`
@@ -727,14 +798,21 @@ MIT License - feel free to use in your projects
 
 ## MCP (Model Context Protocol) Integration
 
-MCP (Model Context Protocol) is an emerging standard for context-aware automation and test orchestration. The protocol enables advanced test scenarios, dynamic context switching, and improved interoperability between test suites and external systems.
+MCP (Model Context Protocol) is an emerging standard for context-aware automation and test
+orchestration. The protocol enables advanced test scenarios, dynamic context switching, and improved
+interoperability between test suites and external systems.
 
 ### Planned MCP Features for This Repo
 
-- **Context-aware Page Objects:** Enhance page objects to support dynamic context switching using MCP.
-- **Test Orchestration:** Integrate MCP for orchestrating complex test flows across UI, API, and accessibility layers.
-- **External System Integration:** Enable seamless communication with external systems (e.g., CI/CD, reporting tools) via MCP endpoints.
-- **Custom MCP Commands:** Provide Cypress custom commands for interacting with MCP contexts and models.
+- **Context-aware Page Objects:** Enhance page objects to support dynamic context switching using
+  MCP.
+- **Test Orchestration:** Integrate MCP for orchestrating complex test flows across UI, API, and
+  accessibility layers.
+- **External System Integration:** Enable seamless communication with external systems (e.g., CI/CD,
+  reporting tools) via MCP endpoints.
+- **Custom MCP Commands:** Provide Cypress custom commands for interacting with MCP contexts and
+  models.
 - **Documentation & Examples:** Add guides and examples for using MCP in real-world test scenarios.
 
-> **Status:** MCP integration is planned for upcoming releases. Contributions and feedback are welcome!
+> **Status:** MCP integration is planned for upcoming releases. Contributions and feedback are
+> welcome!

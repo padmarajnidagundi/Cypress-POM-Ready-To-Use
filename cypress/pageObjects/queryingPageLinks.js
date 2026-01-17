@@ -1,23 +1,23 @@
 class queryingPageLinks {
-    visit() {
-        cy.visit('https://example.cypress.io/commands/querying')
-    }
+  visit() {
+    cy.visit('https://example.cypress.io/commands/querying')
+  }
 
-    getHeader() {
-        return cy.get('h1')
-    }
+  getHeader() {
+    return cy.get('h1')
+  }
 
-    getNavigationLink(linkText) {
-        return cy.get('a').contains(linkText)
-    }
+  getNavigationLink(linkText) {
+    return cy.get('a').contains(linkText)
+  }
 
-    getQueryingSection() {
-        return cy.get('#querying')
-    }
+  getQueryingSection() {
+    return cy.get('#querying')
+  }
 
-    getQueryingExamples() {
-        return cy.get('.query-btn')
-    }
+  getQueryingExamples() {
+    return cy.get('.query-btn')
+  }
 }
 
 export default queryingPageLinks

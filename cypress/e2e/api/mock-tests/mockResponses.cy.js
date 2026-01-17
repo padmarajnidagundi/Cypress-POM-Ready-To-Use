@@ -102,13 +102,13 @@ describe('[Mock] API Response Mocking', () => {
    */
   it('[Mock] should verify network conditions', () => {
     const startTime = Date.now()
-    
+
     cy.apiRequest('POST', '/users', {
       body: { name: 'Test User' }
-    }).then((response) => {
+    }).then(() => {
       const endTime = Date.now()
       const duration = endTime - startTime
-      
+
       expect(duration).to.be.greaterThan(1000) // Verify artificial delay
       cy.wait('@createUser')
     })
@@ -131,7 +131,7 @@ describe('[Mock] API Response Mocking', () => {
     // Test multiple endpoints
     cy.apiRequest('GET', '/users/1/posts')
     cy.wait('@getUserPosts')
-    
+
     cy.apiRequest('GET', '/users/1/comments')
     cy.wait('@getUserComments')
   })
@@ -143,13 +143,13 @@ describe('[Mock] API Response Mocking', () => {
     cy.intercept('GET', '**/unknown-endpoint', {
       statusCode: 404,
       body: { error: 'Not Found' }
-    }).as('getUnknown');
+    }).as('getUnknown')
 
     cy.apiRequest('GET', '/unknown-endpoint').then((response) => {
-      expect(response.status).to.eq(404);
-      expect(response.body.error).to.eq('Not Found');
-    });
-  });
+      expect(response.status).to.eq(404)
+      expect(response.body.error).to.eq('Not Found')
+    })
+  })
 
   /**
    * Negative test: Simulate 400 for malformed request.
@@ -160,15 +160,15 @@ describe('[Mock] API Response Mocking', () => {
         req.reply({
           statusCode: 400,
           body: { error: 'Bad Request', message: 'Missing name' }
-        });
+        })
       }
-    }).as('malformedUser');
+    }).as('malformedUser')
 
     cy.apiRequest('POST', '/users', { body: {} }).then((response) => {
-      expect(response.status).to.eq(400);
-      expect(response.body.error).to.eq('Bad Request');
-    });
-  });
+      expect(response.status).to.eq(400)
+      expect(response.body.error).to.eq('Bad Request')
+    })
+  })
 
   /**
    * Negative test: Simulate timeout for GET /users.
@@ -177,16 +177,16 @@ describe('[Mock] API Response Mocking', () => {
     cy.intercept('GET', '**/users', (req) => {
       req.reply((res) => {
         setTimeout(() => {
-          res.send({ statusCode: 504, body: { error: 'Gateway Timeout' } });
-        }, 2000);
-      });
-    }).as('timeoutUsers');
+          res.send({ statusCode: 504, body: { error: 'Gateway Timeout' } })
+        }, 2000)
+      })
+    }).as('timeoutUsers')
 
     cy.apiRequest('GET', '/users').then((response) => {
-      expect(response.status).to.eq(504);
-      expect(response.body.error).to.eq('Gateway Timeout');
-    });
-  });
+      expect(response.status).to.eq(504)
+      expect(response.body.error).to.eq('Gateway Timeout')
+    })
+  })
 
   /**
    * Negative test: Simulate 403 Forbidden for unauthorized access.
@@ -194,16 +194,16 @@ describe('[Mock] API Response Mocking', () => {
   it('[Mock][Negative] should return 403 for unauthorized access', () => {
     cy.intercept('DELETE', '**/users/*', {
       statusCode: 403,
-      body: { 
-        error: 'Forbidden', 
-        message: 'You do not have permission to delete this user' 
+      body: {
+        error: 'Forbidden',
+        message: 'You do not have permission to delete this user'
       }
-    }).as('deleteUserForbidden');
+    }).as('deleteUserForbidden')
 
     cy.apiRequest('DELETE', '/users/123').then((response) => {
-      expect(response.status).to.eq(403);
-      expect(response.body.error).to.eq('Forbidden');
-      expect(response.body.message).to.include('permission');
-    });
-  });
+      expect(response.status).to.eq(403)
+      expect(response.body.error).to.eq('Forbidden')
+      expect(response.body.message).to.include('permission')
+    })
+  })
 })

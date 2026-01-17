@@ -18,13 +18,15 @@ describe('API Performance Tests', () => {
    * Purpose: Simulate load and check API stability under concurrent access.
    */
   it('should handle multiple concurrent requests', () => {
-    const requests = Array(10).fill().map(() => 
-      cy.apiRequest('GET', '/users').then((response) => {
-        expect(response.status).to.eq(200)
-        expect(response.duration).to.be.lessThan(1000)
-      })
-    )
-    
+    const requests = Array(10)
+      .fill()
+      .map(() =>
+        cy.apiRequest('GET', '/users').then((response) => {
+          expect(response.status).to.eq(200)
+          expect(response.duration).to.be.lessThan(1000)
+        })
+      )
+
     return Promise.all(requests)
   })
 
@@ -36,11 +38,11 @@ describe('API Performance Tests', () => {
    */
   it('should measure response time distribution', () => {
     const measurements = []
-    
+
     cy.apiRequest('GET', '/users?page=1').then((response) => {
       measurements.push(response.duration)
       expect(response.status).to.eq(200)
-      
+
       // Calculate performance metrics
       const avgTime = measurements.reduce((a, b) => a + b, 0) / measurements.length
       expect(avgTime).to.be.lessThan(1000)
@@ -64,10 +66,12 @@ describe('API Performance Tests', () => {
    * Sends a POST to /users and checks response time under 1.5 seconds.
    */
   it('should handle POST request efficiently', () => {
-    cy.apiRequest('POST', '/users', { name: 'PerfTest', email: 'perf@test.com' }).then((response) => {
-      expect(response.status).to.eq(201)
-      expect(response.duration).to.be.lessThan(1500)
-    })
+    cy.apiRequest('POST', '/users', { name: 'PerfTest', email: 'perf@test.com' }).then(
+      (response) => {
+        expect(response.status).to.eq(201)
+        expect(response.duration).to.be.lessThan(1500)
+      }
+    )
   })
 
   /**
@@ -76,12 +80,14 @@ describe('API Performance Tests', () => {
    * Verifies all responses are successful and under 1.5 seconds.
    */
   it('should handle burst load of requests', () => {
-    const burstRequests = Array(20).fill().map(() =>
-      cy.apiRequest('GET', '/users').then((response) => {
-        expect(response.status).to.eq(200)
-        expect(response.duration).to.be.lessThan(1500)
-      })
-    )
+    const burstRequests = Array(20)
+      .fill()
+      .map(() =>
+        cy.apiRequest('GET', '/users').then((response) => {
+          expect(response.status).to.eq(200)
+          expect(response.duration).to.be.lessThan(1500)
+        })
+      )
     return Promise.all(burstRequests)
   })
 })

@@ -11,7 +11,7 @@ describe('[Interop] API Compatibility', () => {
    * Verifies handling of different Accept header values:
    * 1. JSON format - Expected to succeed (primary format)
    * 2. XML format - Expected to fail gracefully (unsupported format)
-   * 
+   *
    * Purpose: Ensure API properly handles content negotiation
    * and responds appropriately to both supported and
    * unsupported format requests
@@ -19,8 +19,8 @@ describe('[Interop] API Compatibility', () => {
   it('[Interop] should support multiple data formats', () => {
     // Test JSON format - Primary supported format
     cy.apiRequest('GET', '/users', {
-      headers: { 
-        'Accept': 'application/json'
+      headers: {
+        Accept: 'application/json'
       }
     }).then((response) => {
       expect(response.status).to.eq(200)
@@ -29,8 +29,8 @@ describe('[Interop] API Compatibility', () => {
 
     // Test XML format - Unsupported format handling
     cy.apiRequest('GET', '/users', {
-      headers: { 
-        'Accept': 'application/xml'
+      headers: {
+        Accept: 'application/xml'
       }
     }).then((response) => {
       expect(response.status).to.be.oneOf([406, 200])
@@ -42,7 +42,7 @@ describe('[Interop] API Compatibility', () => {
    * Verifies the API's handling of cross-origin requests by:
    * 1. Sending request with Origin header
    * 2. Checking for CORS-related response headers
-   * 
+   *
    * Notes:
    * - Tests against reqres.in which may not always return CORS headers
    * - Handles both CORS-enabled and non-CORS environments
@@ -51,8 +51,8 @@ describe('[Interop] API Compatibility', () => {
   it('[Interop] should handle cross-origin requests', () => {
     // Simulate cross-origin request from example.com
     cy.apiRequest('GET', '/users', {
-      headers: { 
-        'Origin': 'https://example.com'
+      headers: {
+        Origin: 'https://example.com'
       }
     }).then((response) => {
       expect(response.status).to.eq(200)

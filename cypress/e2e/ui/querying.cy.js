@@ -27,9 +27,6 @@ describe('Advanced DOM Querying Tests', () => {
 
   it('should handle dynamic content loading', () => {
     cy.get('.query-button').first().click()
-    cy.get('.dynamic-content')
-      .should('exist')
-      .and('be.visible')
-      .and('not.be.empty')
+    cy.get('.dynamic-content').should('exist').and('be.visible').and('not.be.empty')
   })
 })

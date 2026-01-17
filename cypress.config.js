@@ -9,13 +9,13 @@ module.exports = defineConfig({
   chromeWebSecurity: false,
   firefoxGcInterval: {
     runMode: null,
-    openMode: null,
+    openMode: null
   },
   retries: {
     runMode: process.env.CI ? 2 : 0,
-    openMode: 0,
+    openMode: 0
   },
-  execTimout: 60000,
+  execTimeout: 60000,
   defaultCommandTimeout: 10000,
   pageLoadTimeout: 60000,
   requestTimeout: 10000,
@@ -54,9 +54,9 @@ module.exports = defineConfig({
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
-      require('cypress-mochawesome-reporter/plugin')(on);
-      require('cypress-image-snapshot/plugin')(on, config);
+      require('cypress-mochawesome-reporter/plugin')(on)
+      require('cypress-image-snapshot/plugin')(on, config)
       return require('./cypress/plugins/index.js')(on, config)
-    },
-  },
+    }
+  }
 })

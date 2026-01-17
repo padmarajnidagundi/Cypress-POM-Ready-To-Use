@@ -43,14 +43,14 @@ const ErrorResponses = {
 }
 
 Cypress.Commands.add('apiLogin', (username, password) => {
-    return cy.request({
-        method: 'POST',
-        url: `${Cypress.env('apiUrl')}/login`,
-        body: {
-            username,
-            password
-        }
-    })
+  return cy.request({
+    method: 'POST',
+    url: `${Cypress.env('apiUrl')}/login`,
+    body: {
+      username,
+      password
+    }
+  })
 })
 
 Cypress.Commands.add('apiRequest', (method, path, options = {}) => {
@@ -59,13 +59,13 @@ Cypress.Commands.add('apiRequest', (method, path, options = {}) => {
     url: `${Cypress.env('apiUrl')}${path}`,
     failOnStatusCode: false,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     }
   }
 
   return cy.request({
     ...defaults,
-    ...options,
+    ...options
   })
 })
 
@@ -80,15 +80,17 @@ Cypress.Commands.add('createTestUsers', (count, overrides = {}, userType = UserT
 })
 
 Cypress.Commands.add('apiLoginWithInvalidCredentials', (username, password) => {
-  return cy.request({
-    method: 'POST',
-    url: `${Cypress.env('apiUrl')}/login`,
-    body: { username, password },
-    failOnStatusCode: false
-  }).then(response => {
-    expect(response.status).to.eq(401)
-    return response
-  })
+  return cy
+    .request({
+      method: 'POST',
+      url: `${Cypress.env('apiUrl')}/login`,
+      body: { username, password },
+      failOnStatusCode: false
+    })
+    .then((response) => {
+      expect(response.status).to.eq(401)
+      return response
+    })
 })
 
 Cypress.Commands.add('createMalformedUser', (overrides = {}) => {
@@ -153,12 +155,14 @@ Cypress.Commands.add('useExpiredToken', () => {
 
 // Rate limit testing
 Cypress.Commands.add('exhaustRateLimit', (endpoint, attempts = 10) => {
-  const requests = Array(attempts).fill().map(() => 
-    cy.request({
-      method: 'GET',
-      url: `${Cypress.env('apiUrl')}${endpoint}`,
-      failOnStatusCode: false
-    })
-  )
+  const requests = Array(attempts)
+    .fill()
+    .map(() =>
+      cy.request({
+        method: 'GET',
+        url: `${Cypress.env('apiUrl')}${endpoint}`,
+        failOnStatusCode: false
+      })
+    )
   return cy.wrap(Promise.all(requests))
 })

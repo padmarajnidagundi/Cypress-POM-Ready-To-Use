@@ -1,0 +1,63 @@
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'chore(deps)'
+      include: 'scope'
+    reviewers:
+      - 'padmarajnidagundi'
+    assignees:
+      - 'padmarajnidagundi'
+    labels:
+      - 'dependencies'
+      - 'automated'
+    ignore:
+      # Ignore major version updates for specific packages if needed
+      - dependency-name: 'cypress'
+        update-types: ['version-update:semver-major']
+    groups:
+      # Group Cypress-related dependencies
+      cypress:
+        patterns:
+          - 'cypress*'
+          - '@cypress/*'
+      # Group ESLint and Prettier
+      linting:
+        patterns:
+          - 'eslint*'
+          - 'prettier*'
+          - '@typescript-eslint/*'
+      # Group TypeScript dependencies
+      typescript:
+        patterns:
+          - 'typescript'
+          - '@types/*'
+      # Group testing dependencies
+      testing:
+        patterns:
+          - 'mochawesome*'
+          - '@testing-library/*'
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(ci)'
+      include: 'scope'
+    reviewers:
+      - 'padmarajnidagundi'
+    labels:
+      - 'ci'
+      - 'automated'

@@ -3,9 +3,15 @@ describe('API Unit Tests - Basic Operations', () => {
   it('should validate user data structure', () => {
     cy.apiRequest('GET', '/users/1').then((response) => {
       expect(response.status).to.eq(200)
-      expect(response.body.data).to.have.all.keys('id', 'email', 'first_name', 'last_name', 'avatar')
+      expect(response.body.data).to.have.all.keys(
+        'id',
+        'email',
+        'first_name',
+        'last_name',
+        'avatar'
+      )
       expect(response.body.data.id).to.be.a('number')
-      expect(response.body.data.email).to.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
+      expect(response.body.data.email).to.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
     })
   })
 
@@ -68,9 +74,11 @@ describe('API Unit Tests - Basic Operations', () => {
    * Edge: invalid payload should result in 4xx
    */
   it('should return 4xx for invalid payloads', () => {
-    cy.apiRequest('POST', '/users', { body: { invalid: true }, failOnStatusCode: false }).then((res) => {
-      expect([400, 422, 201]).to.include(res.status)
-    })
+    cy.apiRequest('POST', '/users', { body: { invalid: true }, failOnStatusCode: false }).then(
+      (res) => {
+        expect([400, 422, 201]).to.include(res.status)
+      }
+    )
   })
 
   /**
