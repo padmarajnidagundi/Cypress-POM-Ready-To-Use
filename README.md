@@ -1,4 +1,4 @@
-# Cypress POM - Page Object Model Ready To Use - 2025 update
+# Cypress POM - Page Object Model Ready To Use - 2026 update
 
 [![Node.js CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml)
 [![npm version](https://img.shields.io/npm/v/cypress-page-object-model.svg)](https://www.npmjs.com/package/cypress-page-object-model)
