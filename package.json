@@ -76,7 +76,7 @@
     "@cypress/browserify-preprocessor": "^3.0.2",
     "@eslint/js": "^9.18.0",
     "@testing-library/cypress": "^10.0.2",
-    "@types/node": "^22.10.5",
+    "@types/node": "^25.0.9",
     "@typescript-eslint/eslint-plugin": "^8.19.1",
     "@typescript-eslint/parser": "^8.19.1",
     "cypress": "^13.17.0",
