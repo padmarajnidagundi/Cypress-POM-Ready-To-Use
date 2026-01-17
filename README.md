@@ -1,4 +1,4 @@
-# Cypress Page Object Model Framework 2026 | Complete E2E Testing Guide
+# Cypress Page Object Model Framework 2026 | MCP | ChatMode |Complete E2E Testing Guide
 
 **Production-Ready Cypress Automation Framework with TypeScript, API Testing & CI/CD Integration**
 
@@ -1045,67 +1045,17 @@ Built-in accessibility testing with cypress-axe:
 
 ```javascript
 describe('Accessibility Tests', () => {
-  # Q: How do I use the chatmode templates?
+  it('should pass accessibility checks', () => {
+    cy.visit('/')
+    cy.injectAxe()
+    cy.checkA11y()
+  })
+})
+```
 
-**A:** The chaFree to use in personal and commercial projects
+Run accessibility tests:
 
-Copyright (c) 2026 Padmaraj Nidagundi
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-## Keywords & Tags
-
-**For SEO:** Cypress testing framework, Page Object Model, E2E testing, API testing automation, TypeScript test framework, CI/CD testing, accessibility testing, visual regression testing, test automation best practices, Cypress tutorial, QA automation framework, end-to-end testing, test reporting, Mochawesome reports, Cypress patterns
-
-**For Developers:** #Cypress #Testing #Automation #QA #TypeScript #JavaScript #E2E #API #CI/CD #DevOps #PageObjectModel #TestAutomation #Accessibility #VisualTesting
-
----
-
-**⭐ If this framework helped you, please star the repository!**
-
-**🤝 Contributions welcome - See [CONTRIBUTING.md](CONTRIBUTING.md)**
-
-**📢 Share with your QA community**
-
-**A:** This framework provides:
-- Page Object Model structure
-- Pre-configured best practices
-- Custom helper functions
-- Comprehensive documentation
-- CI/CD integration
-- Professional templates
-- Test data generators
-- Enhanced reporting
-
-### Q: Is this framework suitable for large projects?
-
-**A:** Yes! This framework is designed for scalability with:
-- Modular architecture
-- Reusable components
-- Parallel test execution
-- Efficient data management
-- Clear folder structure
-
-## About the Author
-
-**Padmaraj Nidagundi** - Senior QA Automation Engineer
-
-With over 10+ years of experience in test automation and quality assurance, I've built this framework based on real-world enterprise projects. This repository represents industry best practices and battle-tested patterns used in production environments.
-
-**Expertise:**
-- Test Automation Architecture
-- Cypress & Selenium Frameworks
-- CI/CD Pipeline Integration
-- API Testing & Performance Testing
-- Accessibility & Security Testing
-
-**Connect:**
-- 💼 LinkedIn: [linkedin.com/in/padmarajn](https://www.linkedin.com/in/padmarajn/)
-- 📧 Email: padmaraj.nidagundi@gmail.com
-- 📦 npm: [npmjs.com/~padmarajnidagundi](https://www.npmjs.com/~padmarajnidagundi)
-- 🐙 GitHub: [github.com/padmarajnidagundi](https://github.com/padmarajnidagundi)
+```bash
 npm run test:a11y
 ```
 
