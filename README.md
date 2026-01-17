@@ -1,4 +1,4 @@
-# Cypress Page Object Model Framework 2026 | MCP | ChatMode |Complete E2E Testing Guide
+# Cypress Page Object Model Framework 2026 | MCP | ChatMode | Complete E2E Testing Guide
 
 **Production-Ready Cypress Automation Framework with TypeScript, API Testing & CI/CD Integration**
 
