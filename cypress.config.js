@@ -7,10 +7,6 @@ module.exports = defineConfig({
   viewportHeight: 1080,
   screenshotsFolder: 'mochawesome-report/assets',
   chromeWebSecurity: false,
-  firefoxGcInterval: {
-    runMode: null,
-    openMode: null
-  },
   retries: {
     runMode: process.env.CI ? 2 : 0,
     openMode: 0
@@ -55,8 +51,10 @@ module.exports = defineConfig({
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on)
-      require('cypress-image-snapshot/plugin')(on, config)
-      return require('./cypress/plugins/index.js')(on, config)
+      const { addMatchImageSnapshotPlugin } = require('cypress-image-snapshot/plugin')
+      addMatchImageSnapshotPlugin(on, config)
+      const pluginConfig = require('./cypress/plugins/index.js')
+      return pluginConfig(on, config)
     }
   }
 })
