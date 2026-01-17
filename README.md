@@ -1336,21 +1336,223 @@ MIT License - feel free to use in your projects
 
 ## MCP (Model Context Protocol) Integration
 
-MCP (Model Context Protocol) is an emerging standard for context-aware automation and test
-orchestration. The protocol enables advanced test scenarios, dynamic context switching, and improved
-interoperability between test suites and external systems.
+### Using ChatMode Templates with MCP
 
-### Planned MCP Features for This Repo
+This repository provides **MCP-compatible chatmode templates** that can be accessed directly by AI
+assistants and automation tools through the Model Context Protocol. The chatmode folder contains
+professional testing templates and best practices documentation that can be used for context-aware
+test generation and documentation.
 
-- **Context-aware Page Objects:** Enhance page objects to support dynamic context switching using
-  MCP.
-- **Test Orchestration:** Integrate MCP for orchestrating complex test flows across UI, API, and
-  accessibility layers.
-- **External System Integration:** Enable seamless communication with external systems (e.g., CI/CD,
-  reporting tools) via MCP endpoints.
-- **Custom MCP Commands:** Provide Cypress custom commands for interacting with MCP contexts and
-  models.
-- **Documentation & Examples:** Add guides and examples for using MCP in real-world test scenarios.
+### Available MCP Resources
 
-> **Status:** MCP integration is planned for upcoming releases. Contributions and feedback are
-> welcome!
+The following resources are available in the `cypress/chatmode/` directory for MCP integration:
+
+1. **Test Case Template** (`test-case-template.md`)
+
+   - Standardized test case documentation format
+   - Use for generating consistent test documentation
+   - Includes: Test ID, priority, steps, expected results
+
+2. **Bug Report Template** (`bug-report-template.md`)
+
+   - Professional bug reporting structure
+   - Severity and priority classification
+   - Reproduction steps and impact assessment
+
+3. **Test Execution Report** (`test-execution-report.md`)
+
+   - Comprehensive test execution summary
+   - Statistics, metrics, and defect tracking
+   - Stakeholder-ready reporting format
+
+4. **API Testing Checklist** (`api-testing-checklist.md`)
+
+   - Complete API testing coverage checklist
+   - Security, performance, and validation checks
+   - Best practices and edge cases
+
+5. **UI Testing Best Practices** (`ui-testing-best-practices.md`)
+   - Detailed testing guidelines and patterns
+   - Selector strategies and debugging techniques
+   - Common pitfalls and solutions
+
+### MCP Integration Guide
+
+#### For AI Assistants (Claude, ChatGPT, etc.)
+
+AI assistants can reference these templates when helping users:
+
+```
+Repository: padmarajnidagundi/Cypress-POM-Ready-To-Use
+Path: cypress/chatmode/
+Branch: main
+
+Available Templates:
+- test-case-template.md
+- bug-report-template.md
+- test-execution-report.md
+- api-testing-checklist.md
+- ui-testing-best-practices.md
+```
+
+#### For MCP Servers
+
+Create an MCP server configuration to expose chatmode templates:
+
+```json
+{
+  "mcpServers": {
+    "cypress-chatmode": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "./cypress/chatmode"],
+      "env": {
+        "ALLOWED_DIRECTORIES": "./cypress/chatmode"
+      }
+    }
+  }
+}
+```
+
+#### Usage Examples
+
+**1. Generate Test Case:**
+
+```bash
+# AI can read template and generate test case
+mcp read cypress/chatmode/test-case-template.md
+```
+
+**2. Create Bug Report:**
+
+```bash
+# Use template to structure bug reports
+mcp read cypress/chatmode/bug-report-template.md
+```
+
+**3. Access Best Practices:**
+
+```bash
+# Reference guidelines during test development
+mcp read cypress/chatmode/ui-testing-best-practices.md
+```
+
+### Direct File Access via GitHub
+
+Templates can be accessed directly via GitHub URLs for MCP tools:
+
+```
+https://raw.githubusercontent.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/main/cypress/chatmode/test-case-template.md
+https://raw.githubusercontent.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/main/cypress/chatmode/bug-report-template.md
+https://raw.githubusercontent.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/main/cypress/chatmode/test-execution-report.md
+https://raw.githubusercontent.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/main/cypress/chatmode/api-testing-checklist.md
+https://raw.githubusercontent.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/main/cypress/chatmode/ui-testing-best-practices.md
+```
+
+### MCP Use Cases
+
+#### 1. Context-Aware Test Generation
+
+AI assistants can use chatmode templates as context to generate:
+
+- Structured test cases following your team's format
+- Bug reports with all required information
+- Test execution summaries with proper metrics
+
+#### 2. Documentation Automation
+
+Automatically generate testing documentation using templates:
+
+- Convert test code to documentation format
+- Create test reports from execution results
+- Generate checklists for test planning
+
+#### 3. Code Review & Quality Checks
+
+Reference best practices during code review:
+
+- Validate test structure against guidelines
+- Check API testing coverage
+- Ensure proper selector usage
+
+#### 4. Team Onboarding
+
+Use templates for training new team members:
+
+- Provide standardized documentation format
+- Share testing best practices
+- Establish consistent workflows
+
+### Setting Up MCP for This Repository
+
+**Step 1: Clone the Repository**
+
+```bash
+git clone https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use.git
+cd Cypress-POM-Ready-To-Use
+```
+
+**Step 2: Configure MCP Server (for Cline, Claude Desktop, etc.)**
+
+Add to your MCP configuration file (e.g., `cline_mcp_settings.json`):
+
+```json
+{
+  "mcpServers": {
+    "cypress-templates": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/absolute/path/to/Cypress-POM-Ready-To-Use/cypress/chatmode"
+      ]
+    }
+  }
+}
+```
+
+**Step 3: Use Templates in Your Workflow**
+
+Once configured, AI assistants can:
+
+- Read templates to understand your documentation standards
+- Generate new documents based on templates
+- Reference best practices during test development
+- Provide context-aware suggestions
+
+### Benefits of MCP Integration
+
+1. **Consistency**: All generated documentation follows your templates
+2. **Efficiency**: Faster test documentation and report generation
+3. **Quality**: AI-generated content adheres to best practices
+4. **Collaboration**: Team members get consistent guidance
+5. **Scalability**: Easy to extend with more templates
+
+### Future MCP Enhancements
+
+Planned features for enhanced MCP integration:
+
+- **Dynamic Page Objects**: MCP-aware page object generation
+- **Test Orchestration**: Cross-layer test flow automation
+- **Live Context Switching**: Dynamic environment and context management
+- **CI/CD Integration**: MCP endpoints for build systems
+- **Custom Commands**: Cypress commands for MCP interaction
+- **Real-time Reporting**: Stream test results via MCP
+
+### Contributing MCP Templates
+
+We welcome contributions of additional templates:
+
+1. Create new `.md` template in `cypress/chatmode/`
+2. Follow existing template structure
+3. Add usage examples
+4. Submit pull request
+
+**Template Guidelines:**
+
+- Use clear, descriptive headers
+- Include examples and placeholders
+- Add usage instructions
+- Keep format consistent
+
+> **Status:** MCP integration is **ACTIVE** - chatmode templates are ready to use with any
+> MCP-compatible tool!
