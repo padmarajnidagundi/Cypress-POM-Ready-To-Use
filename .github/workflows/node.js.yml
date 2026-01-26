@@ -44,7 +44,7 @@ jobs:
         continue-on-error: true
 
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           browser: chrome
           headless: true
