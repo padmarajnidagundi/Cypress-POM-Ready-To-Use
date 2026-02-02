@@ -6,7 +6,9 @@ module.exports = defineConfig({
   viewportWidth: 1920,
   viewportHeight: 1080,
   screenshotsFolder: 'mochawesome-report/assets',
-  chromeWebSecurity: false,
+  // Enable Chrome web security by default for better security posture
+  // Only disable in specific tests using cy.visit() options when cross-origin testing is required
+  chromeWebSecurity: true,
   retries: {
     runMode: process.env.CI ? 2 : 0,
     openMode: 0
