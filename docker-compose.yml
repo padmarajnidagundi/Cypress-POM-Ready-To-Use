@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  cypress:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cypress-pom-tests
+    environment:
+      - CI=true
+      - NODE_ENV=test
+      - CYPRESS_CACHE_FOLDER=/root/.cache/Cypress
+    volumes:
+      # Mount source code for development
+      - ./cypress:/e2e/cypress
+      - ./cypress.config.js:/e2e/cypress.config.js
+      - ./package.json:/e2e/package.json
+      # Persist Cypress cache
+      - cypress-cache:/root/.cache/Cypress
+      # Mount reports directory
+      - ./cypress/reports:/e2e/cypress/reports
+      - ./mochawesome-report:/e2e/mochawesome-report
+    working_dir: /e2e
+    command: npm run test:ci
+    networks:
+      - cypress-network
+
+  # Optional: Service to view reports
+  cypress-reports:
+    image: nginx:alpine
+    container_name: cypress-reports-viewer
+    ports:
+      - '8080:80'
+    volumes:
+      - ./cypress/reports/html:/usr/share/nginx/html
+      - ./mochawesome-report:/usr/share/nginx/html/mochawesome
+    networks:
+      - cypress-network
+    depends_on:
+      - cypress
+
+volumes:
+  cypress-cache:
+
+networks:
+  cypress-network:
+    driver: bridge

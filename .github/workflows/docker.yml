@@ -1,0 +1,92 @@
+name: Docker CI
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: cypress-pom-tests:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Run Cypress tests in Docker
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/cypress/reports:/e2e/cypress/reports \
+            -v ${{ github.workspace }}/mochawesome-report:/e2e/mochawesome-report \
+            -v ${{ github.workspace }}/cypress/screenshots:/e2e/cypress/screenshots \
+            -v ${{ github.workspace }}/cypress/videos:/e2e/cypress/videos \
+            cypress-pom-tests:${{ github.sha }}
+
+      - name: Upload test reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docker-cypress-reports
+          path: |
+            cypress/reports
+            mochawesome-report
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: docker-cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload videos
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docker-cypress-videos
+          path: cypress/videos
+          if-no-files-found: ignore
+          retention-days: 7
+
+  docker-compose-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run tests with Docker Compose
+        run: |
+          docker-compose up --build --abort-on-container-exit cypress
+
+      - name: Upload test reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docker-compose-reports
+          path: |
+            cypress/reports
+            mochawesome-report
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Clean up Docker resources
+        if: always()
+        run: |
+          docker-compose down -v

@@ -37,7 +37,14 @@
     "report:generate": "marge cypress/reports/html/report.json -f report -o cypress/reports/html",
     "test:report": "npm run report:clean && npm run test && npm run report:merge && npm run report:generate",
     "test:visual": "cypress run --env type=visual",
-    "test:a11y": "cypress run --env type=accessibility"
+    "test:a11y": "cypress run --env type=accessibility",
+    "docker:build": "docker build -t cypress-pom-tests .",
+    "docker:run": "docker run --rm cypress-pom-tests",
+    "docker:run:api": "docker run --rm cypress-pom-tests npm run test:api",
+    "docker:run:ui": "docker run --rm cypress-pom-tests npm run test:ui",
+    "docker:compose:up": "docker-compose up --build cypress",
+    "docker:compose:down": "docker-compose down -v",
+    "docker:compose:reports": "docker-compose up cypress-reports"
   },
   "repository": {
     "type": "git",

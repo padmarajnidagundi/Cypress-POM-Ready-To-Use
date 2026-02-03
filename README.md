@@ -2,12 +2,14 @@
 
 **Production-Ready Cypress Automation Framework with TypeScript, API Testing & CI/CD Integration**
 
-> **Last Updated:** January 17, 2026 | **Version:** 2.0.0 | **Maintained by QA Professionals**
+> **Last Updated:** February 3, 2026 | **Version:** 2.0.0 | **Maintained by QA Professionals**
 
 [![Node.js CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml)
+[![Docker CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/docker.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/docker.yml)
 [![npm version](https://img.shields.io/npm/v/cypress-page-object-model.svg)](https://www.npmjs.com/package/cypress-page-object-model)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/padmarajnidagundi/Cypress-POM-Ready-To-Use)
@@ -17,6 +19,7 @@
 - [Overview](#overview)
 - [Key Features](#key-features)
 - [Quick Start Guide](#quick-start-guide)
+- [Docker Setup](#docker-setup)
 - [Framework Architecture](#framework-architecture)
 - [Testing Capabilities](#testing-capabilities)
   - [UI Testing](#ui-testing)
@@ -52,16 +55,18 @@ looking to implement robust end-to-end testing.
 
 ## Key Features
 
-- TypeScript support with type definitions
-- ChatGPT interface testing suite
-- Comprehensive accessibility testing
-- Page Object Model implementation
-- API testing capabilities with custom commands
-- Parallel test execution
-- CI/CD ready with GitHub Actions
-- Environment-based configuration
-- Comprehensive reporting
-- Built-in retry mechanisms for flaky tests
+- 🐳 **Docker Support**: Fully containerized testing environment
+- 📦 TypeScript support with type definitions
+- 🤖 ChatGPT interface testing suite
+- ♿ Comprehensive accessibility testing
+- 🏗️ Page Object Model implementation
+- 🔌 API testing capabilities with custom commands
+- ⚡ Parallel test execution
+- 🚀 CI/CD ready with GitHub Actions and Docker
+- ⚙️ Environment-based configuration
+- 📊 Comprehensive reporting with Mochawesome
+- 🔄 Built-in retry mechanisms for flaky tests
+- 🐋 Docker Compose for easy orchestration
 
 ## Framework Comparison
 
@@ -112,6 +117,7 @@ looking to implement robust end-to-end testing.
 - **npm**: Version 8.x or higher
 - **Git**: For version control
 - **Operating System**: Windows, macOS, or Linux
+- **Docker** (Optional): For containerized testing
 
 ### Installation Steps
 
@@ -169,6 +175,94 @@ npm run presetup
 ```bash
 npm run verify
 ```
+
+## Docker Setup
+
+This framework is **fully Docker-ready** for containerized testing. Run tests in isolated
+environments without local Node.js or Cypress installation.
+
+### Docker Installation (Alternative)
+
+If you prefer using Docker, you can run the entire test suite in a containerized environment:
+
+1. **Using Docker Compose (Recommended)**
+
+```bash
+# Build and run tests
+docker-compose up --build cypress
+
+# Run tests in detached mode
+docker-compose up -d cypress
+
+# View test reports
+docker-compose up cypress-reports
+# Access reports at http://localhost:8080
+```
+
+2. **Using Docker directly**
+
+```bash
+# Build Docker image
+docker build -t cypress-pom-tests .
+
+# Run tests
+docker run --rm cypress-pom-tests
+
+# Run specific test suite
+docker run --rm cypress-pom-tests npm run test:api
+docker run --rm cypress-pom-tests npm run test:ui
+
+# Mount local directory for development
+docker run --rm -v ${PWD}/cypress:/e2e/cypress cypress-pom-tests
+```
+
+3. **Custom test commands**
+
+```bash
+# Run with environment variables
+docker run --rm -e CYPRESS_BASE_URL=https://your-app.com cypress-pom-tests
+
+# Run specific spec file
+docker run --rm cypress-pom-tests npx cypress run --spec "cypress/e2e/ui/chatgpt.cy.js"
+
+# Run with custom browser
+docker run --rm cypress-pom-tests npm run test -- --browser chrome
+```
+
+4. **Access test artifacts**
+
+```bash
+# Copy reports from container
+docker run --rm -v ${PWD}/reports:/e2e/cypress/reports cypress-pom-tests
+
+# Or use docker-compose volumes (configured automatically)
+docker-compose up cypress
+# Reports will be available in ./cypress/reports and ./mochawesome-report
+```
+
+**Docker Benefits:**
+
+- ✅ Consistent test environment across all machines
+- ✅ No local Node.js or Cypress installation required
+- ✅ Easy CI/CD integration
+- ✅ Isolated dependencies and configurations
+- ✅ Quick setup and teardown
+
+### Docker NPM Scripts
+
+Convenient npm commands for Docker operations:
+
+```bash
+npm run docker:build              # Build Docker image
+npm run docker:run                # Run all tests in Docker
+npm run docker:run:api            # Run API tests only
+npm run docker:run:ui             # Run UI tests only
+npm run docker:compose:up         # Start with docker-compose
+npm run docker:compose:reports    # View reports in browser (port 8080)
+npm run docker:compose:down       # Stop and clean up containers
+```
+
+> 📖 **For detailed Docker documentation, see [DOCKER.md](DOCKER.md)**
 
 4. Test Cypress:
 
@@ -676,7 +770,93 @@ AssertionHelpers.assertElementState('[data-testid="button"]', {
 
 ### Common Issues & Solutions
 
-#### 1. Installation Problems & Guides
+#### 1. Installation Problems
+
+**Cypress not recognized:**
+
+```bash
+# Clear cache and reinstall
+npm cache clean --force
+rm -rf node_modules package-lock.json
+npm run presetup
+```
+
+**Permission errors:**
+
+```bash
+# Linux/Mac: Fix permissions
+sudo chown -R $(id -u):$(id -g) ~/.cache/Cypress
+```
+
+#### 2. Docker Issues
+
+**Permission denied (Linux/Mac):**
+
+```bash
+# Fix file permissions
+sudo chown -R $(id -u):$(id -g) cypress/reports
+sudo chown -R $(id -u):$(id -g) node_modules
+
+# Or run with proper user
+docker run --rm --user $(id -u):$(id -g) cypress-pom-tests
+```
+
+**Out of memory:**
+
+```bash
+# Increase Docker memory
+docker run --rm --memory=4g cypress-pom-tests
+
+# Or in docker-compose.yml add:
+# mem_limit: 4g
+```
+
+**Slow Docker builds:**
+
+```bash
+# Use BuildKit for faster builds
+DOCKER_BUILDKIT=1 docker build -t cypress-pom-tests .
+
+# Or use docker-compose with parallel builds
+docker-compose build --parallel
+```
+
+**Network connectivity issues:**
+
+```bash
+# Check DNS resolution
+docker run --rm cypress-pom-tests nslookup google.com
+
+# Use host network (Linux only)
+docker run --rm --network=host cypress-pom-tests
+```
+
+**Video/screenshot issues:**
+
+```bash
+# Disable video recording to save resources
+docker run --rm -e CYPRESS_VIDEO=false cypress-pom-tests
+```
+
+> 📖 **For more Docker troubleshooting, see [DOCKER.md](DOCKER.md#troubleshooting)**
+
+#### 3. Test Execution Issues
+
+**Flaky tests:**
+
+- Enable retry mechanism in `cypress.config.js`
+- Use proper waits instead of hard-coded delays
+- Check network stability
+
+**Timeout errors:**
+
+```javascript
+// Increase timeout in cypress.config.js
+defaultCommandTimeout: 10000,
+pageLoadTimeout: 60000
+```
+
+### Chat Mode Documentation
 
 #### 1. Test Case Template (`test-case-template.md`)
 
@@ -892,7 +1072,34 @@ module.exports = {
 npm run test:ci
 ```
 
-2. **Jenkins** (sample configuration)
+2. **Docker in CI/CD**
+
+```yaml
+# GitHub Actions with Docker
+- name: Run Cypress Tests in Docker
+  run: |
+    docker-compose up --build --abort-on-container-exit cypress
+
+# GitLab CI with Docker
+test:
+  image: cypress/included:13.17.0
+  script:
+    - npm ci
+    - npm run test:ci
+  artifacts:
+    paths:
+      - cypress/reports
+      - cypress/screenshots
+      - cypress/videos
+
+# Jenkins with Docker
+docker.image('cypress/included:13.17.0').inside {
+    sh 'npm ci'
+    sh 'npm run test:ci'
+}
+```
+
+3. **Jenkins** (sample configuration)
 
 ```groovy
 pipeline {
@@ -987,17 +1194,22 @@ module.exports = defineConfig({
 
 ## Changelog
 
-### Version 2.0.0 (January 2026)
+### Version 2.0.0 (January-February 2026)
 
+- 🐳 **Added full Docker support** with Dockerfile and docker-compose.yml
+- 🐳 Created comprehensive Docker documentation (DOCKER.md)
+- 🐳 Added Docker CI/CD workflow (.github/workflows/docker.yml)
+- 🐳 Added Docker npm scripts for easy container management
 - ✨ Added ESLint 9 flat config support
 - ✨ Integrated Husky 9 for pre-commit hooks
 - ✨ Added comprehensive test helpers (data generators, assertions, retry logic)
 - ✨ Created chatmode templates for documentation
-- 📝 Enhanced README with E-E-A-T guidelines
+- 📝 Enhanced README with E-E-A-T guidelines and Docker sections
 - 🔧 Updated dependencies (cypress-axe, cypress-mochawesome-reporter)
 - 🔧 Added dependabot configuration
 - 🔧 Improved GitHub Actions workflow
 - 📚 Added CONTRIBUTING.md
+- 📚 Added .dockerignore for optimized builds
 
 ### Version 1.x
 
@@ -1299,10 +1511,52 @@ cypress/
    - For parallel execution: `npm run test:parallel`
 
 4. **Environment Configuration**
+
    - Default environments are:
      - API URL: `https://reqres.in`
      - React App URL: `https://react-redux.realworld.io`
      - Example URL: `https://example.cypress.io`
+
+5. **Docker Questions**
+
+   **Q: Do I need Docker installed to run tests?**
+
+   - No, Docker is optional. You can run tests locally with Node.js or use Docker for containerized
+     testing.
+
+   **Q: How do I run tests in Docker?**
+
+   ```bash
+   # Quick start
+   docker-compose up --build cypress
+
+   # Or using Docker directly
+   docker build -t cypress-pom-tests .
+   docker run --rm cypress-pom-tests
+   ```
+
+   **Q: Can I access test reports from Docker?**
+
+   - Yes! Use `docker-compose up cypress-reports` and open http://localhost:8080
+
+   **Q: How do I debug tests in Docker?**
+
+   ```bash
+   # Interactive shell
+   docker run --rm -it cypress-pom-tests /bin/bash
+
+   # Enable debug logs
+   docker run --rm -e DEBUG=cypress:* cypress-pom-tests
+   ```
+
+   **Q: Docker builds are slow, how to speed up?**
+
+   ```bash
+   # Use BuildKit
+   DOCKER_BUILDKIT=1 docker build -t cypress-pom-tests .
+
+   # Use cache effectively (already configured in Dockerfile)
+   ```
 
 ### Best Practices
 
@@ -1322,6 +1576,44 @@ cypress/
    - Use `cy.session()` for login state
    - Enable retries in CI mode
    - Implement proper timeouts
+
+## Quick Reference
+
+### Essential Commands
+
+| Command                 | Description              |
+| ----------------------- | ------------------------ |
+| `npm run presetup`      | Install all dependencies |
+| `npm run cypress:open`  | Open Cypress Test Runner |
+| `npm run test:ui`       | Run UI tests             |
+| `npm run test:api`      | Run API tests            |
+| `npm run test:ci`       | Run tests in CI mode     |
+| `npm run test:parallel` | Run tests in parallel    |
+
+### Docker Commands
+
+| Command                             | Description                   |
+| ----------------------------------- | ----------------------------- |
+| `npm run docker:build`              | Build Docker image            |
+| `npm run docker:run`                | Run tests in Docker           |
+| `npm run docker:compose:up`         | Start with docker-compose     |
+| `npm run docker:compose:reports`    | View reports (localhost:8080) |
+| `docker-compose up --build cypress` | Build and run tests           |
+| `docker run --rm cypress-pom-tests` | Run tests (direct)            |
+
+### File Structure
+
+```
+cypress/
+├── e2e/                    # Test files
+│   ├── api/               # API tests
+│   ├── ui/                # UI tests
+│   └── accessibility/     # A11y tests
+├── pageObjects/           # Page Object Models
+├── fixtures/              # Test data
+├── support/               # Custom commands & helpers
+└── reports/               # Test reports
+```
 
 ## License
 
