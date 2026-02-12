@@ -90,4 +90,19 @@ describe('API Performance Tests', () => {
       )
     return Promise.all(burstRequests)
   })
+
+  /**
+   * Test: PUT request performance
+   * Updates a user resource and verifies response time is under 1.5 seconds.
+   * Purpose: Ensure update operations maintain acceptable performance.
+   */
+  it('should handle PUT request efficiently', () => {
+    cy.apiRequest('PUT', '/users/1', {
+      name: 'Updated User',
+      email: 'updated@test.com'
+    }).then((response) => {
+      expect(response.status).to.be.oneOf([200, 204])
+      expect(response.duration).to.be.lessThan(1500)
+    })
+  })
 })
