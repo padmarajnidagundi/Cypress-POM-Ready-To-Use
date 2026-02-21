@@ -35,6 +35,18 @@ describe('[Security] API Authentication', () => {
     })
   })
 
+  // Input Validation: Should reject login when email is missing
+  it('[Validation] should reject login when email is missing', () => {
+    cy.apiRequest('POST', '/login', {
+      body: { password: 'cityslicka' }
+    }).then((response) => {
+      expect(response.status).to.eq(400)
+      expect(response.body)
+        .to.have.property('error')
+        .and.to.match(/email|missing/i)
+    })
+  })
+
   // Input Validation: Should reject invalid username on login
   it('[Validation] should reject invalid username on login', () => {
     cy.apiRequest('POST', '/login', {
