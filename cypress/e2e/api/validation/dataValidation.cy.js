@@ -104,4 +104,22 @@ describe('API Validation Tests', () => {
       expect([200, 201, 400, 415]).to.include(res.status)
     })
   })
+
+  /**
+   * Edge: Unknown fields should not break register when required fields are valid
+   */
+  it('should handle unexpected fields in register payload gracefully', () => {
+    cy.apiRequest('POST', '/register', {
+      body: {
+        email: 'eve.holt@reqres.in',
+        password: 'cityslicka',
+        role: 'admin',
+        metadata: { source: 'cypress' }
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(200)
+      expect(response.body).to.have.property('token')
+      expect(response.body).to.not.have.property('error')
+    })
+  })
 })
