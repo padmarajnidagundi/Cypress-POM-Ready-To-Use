@@ -245,6 +245,18 @@ describe('UI Test Suite - Cypress Kitchen Sink Example', () => {
                 }
               })
             }
+
+            /**
+             * Browser navigation: should return to home page when navigating back from Utilities
+             */
+            it('should return to the home page when using browser back from Utilities', () => {
+              examplePage.getNavigationLink('Utilities').click()
+              cy.url().should('include', '/utilities')
+
+              cy.go('back')
+              cy.url().should('eq', 'https://example.cypress.io/')
+              examplePage.getHeader().should('contain', 'Kitchen Sink')
+            })
           })
       })
   })
