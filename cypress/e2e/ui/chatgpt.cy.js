@@ -227,4 +227,25 @@ describe('ChatGPT UI Tests', () => {
     cy.reload()
     chatGpt.getChatHistory().should('contain', msg)
   })
+
+  /**
+   * Example: should allow creating another chat after clearing current one
+   */
+  it('example: should start a new chat after clearing conversation', () => {
+    chatGpt.visit()
+
+    const firstMessage = 'First chat message'
+    const secondMessage = 'Second chat message in a new conversation'
+
+    chatGpt.sendMessage(firstMessage)
+    chatGpt.waitForResponse()
+    chatGpt.getChatHistory().should('contain', firstMessage)
+
+    chatGpt.clearConversation()
+    chatGpt.getChatHistory().should('not.contain', firstMessage)
+
+    chatGpt.sendMessage(secondMessage)
+    chatGpt.waitForResponse()
+    chatGpt.getUserMessages().should('contain', secondMessage)
+  })
 })
