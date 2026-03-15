@@ -83,4 +83,12 @@ describe('Users API', () => {
       expect(response.body).to.have.property('updatedAt')
     })
   })
+
+  // Test: Validates user deletion via DELETE request
+  it('should delete a user successfully', () => {
+    cy.request('DELETE', '/api/users/2').should((response) => {
+      expect(response.status).to.eq(204)
+      expect(response.body).to.be.empty
+    })
+  })
 })
