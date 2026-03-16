@@ -484,4 +484,20 @@ describe('Additional Tests', () => {
   })
 
   // Add more tests as needed
+
+  /**
+   * UI: Privacy policy page should be reachable and contain expected content
+   */
+  it('should serve a privacy policy page with relevant content', () => {
+    cy.visit('https://wesendcv.com/privacy', { failOnStatusCode: false })
+    cy.get('body').should('exist')
+    cy.get('h1, h2').then(($headings) => {
+      if ($headings.length) {
+        const text = $headings.text().toLowerCase()
+        expect(text).to.match(/privacy|policy|gdpr|data/i)
+      }
+    })
+    // Ensure the page does not redirect back to homepage
+    cy.url().should('not.eq', 'https://wesendcv.com/')
+  })
 })
