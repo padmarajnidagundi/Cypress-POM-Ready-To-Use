@@ -500,4 +500,15 @@ describe('Additional Tests', () => {
     // Ensure the page does not redirect back to homepage
     cy.url().should('not.eq', 'https://wesendcv.com/')
   })
+
+  /**
+   * UI: Homepage should have a viewport meta tag configured for responsive/mobile layout
+   */
+  it('should have a responsive viewport meta tag', () => {
+    cy.visit('https://wesendcv.com/')
+    cy.get('meta[name="viewport"]')
+      .should('exist')
+      .and('have.attr', 'content')
+      .and('include', 'width=device-width')
+  })
 })
