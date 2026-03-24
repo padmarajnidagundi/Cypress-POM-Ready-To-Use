@@ -36,7 +36,7 @@ jobs:
             cypress-pom-tests:${{ github.sha }}
 
       - name: Upload test reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: docker-cypress-reports
@@ -47,7 +47,7 @@ jobs:
           retention-days: 30
 
       - name: Upload screenshots
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: docker-cypress-screenshots
@@ -56,7 +56,7 @@ jobs:
           retention-days: 7
 
       - name: Upload videos
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: docker-cypress-videos
@@ -76,7 +76,7 @@ jobs:
           docker-compose up --build --abort-on-container-exit cypress
 
       - name: Upload test reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: docker-compose-reports
