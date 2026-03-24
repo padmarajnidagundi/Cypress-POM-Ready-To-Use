@@ -11,6 +11,18 @@ class Login extends BasePage {
     }
   }
 
+  email() {
+    return this.getElement(this.selectors.emailInput)
+  }
+
+  password() {
+    return this.getElement(this.selectors.passwordInput)
+  }
+
+  signInButton() {
+    return this.getElement(this.selectors.signInButton)
+  }
+
   login(email, password) {
     this.getElement(this.selectors.emailInput).type(email)
     this.getElement(this.selectors.passwordInput).type(password)
