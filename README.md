@@ -27,6 +27,7 @@
   - [Accessibility Testing](#accessibility-testing)
   - [Visual Regression Testing](#visual-regression-testing)
 - [Chat Mode Documentation](#chat-mode-documentation)
+- [AI Agents](#ai-agents)
 - [Test Reporting](#test-reporting)
 - [CI/CD Integration](#cicd-integration)
 - [Best Practices](#best-practices)
@@ -1849,3 +1850,216 @@ We welcome contributions of additional templates:
 
 > **Status:** MCP integration is **ACTIVE** - chatmode templates are ready to use with any
 > MCP-compatible tool!
+
+---
+
+## AI Agents
+
+### Overview
+
+This framework is designed to work seamlessly with **AI coding agents** such as GitHub Copilot (VS
+Code), Cursor, Cline, Claude, and similar tools. The `cypress/chatmode/` templates and the MCP
+server configuration give any agent the context it needs to generate, review, and maintain your
+Cypress tests automatically.
+
+---
+
+### GitHub Copilot Agent (VS Code)
+
+#### What the Agent Does
+
+| Capability                | Description                                                        |
+| ------------------------- | ------------------------------------------------------------------ |
+| **Generate Tests**        | Ask Copilot to write new Cypress specs using existing page objects |
+| **Fix Failing Tests**     | Paste error output and let Copilot suggest a fix                   |
+| **Scaffold Page Objects** | Describe a page and Copilot produces a typed POM class             |
+| **Add Custom Commands**   | Request new `cy.*` commands in `cypress/support/commands/`         |
+| **Review Test Quality**   | Ask Copilot to audit selectors, waits, and assertions              |
+| **Generate Fixtures**     | Produce realistic JSON test-data files under `cypress/fixtures/`   |
+
+#### Quick Start — Copilot Chat
+
+1. Open the **Copilot Chat** panel in VS Code (`Ctrl+Alt+I` / `Cmd+Alt+I`).
+2. Open the relevant spec or page-object file so Copilot has file context.
+3. Type a natural-language request:
+
+```
+@workspace Generate a Cypress spec for the Login page using the ReactLogin page object.
+```
+
+```
+@workspace Add a custom command cy.loginAsAdmin() that calls POST /api/login and stores
+the token in localStorage.
+```
+
+```
+@workspace Review cypress/e2e/api/users.cy.js and suggest improvements for selector
+strategy and assertion depth.
+```
+
+#### Copilot Agent Mode
+
+Enable **Agent mode** (GitHub Copilot Edits) for multi-file changes:
+
+1. Click the **Copilot icon** in the VS Code sidebar → **Open Copilot Edits**.
+2. Type your intent across multiple files, e.g.:
+
+```
+Create a new page object for the Pricing page, add a spec that validates all plan cards,
+and register a custom Cypress command `cy.checkPricingCard(planName)`.
+```
+
+Copilot will propose edits across `pageObjects/`, `e2e/`, and `support/commands/` simultaneously.
+
+#### Inline Completions in Test Files
+
+Copilot provides real-time completions inside spec files:
+
+```javascript
+// Start typing — Copilot completes the full test body
+it('should display error on invalid credentials', () => {
+  // Copilot auto-completes from here using context from loginPage.js
+})
+```
+
+---
+
+### Using Chatmode Templates with Agents
+
+The `cypress/chatmode/` directory contains structured prompt templates. Attach them to any agent
+conversation to enforce consistent output format.
+
+#### Attaching a Template in Copilot Chat
+
+```
+# Reference the template in your prompt
+@workspace Using the format defined in cypress/chatmode/test-case-template.md, write
+test cases for the user registration flow.
+```
+
+#### Available Templates
+
+| Template                       | Best Used When                                  |
+| ------------------------------ | ----------------------------------------------- |
+| `test-case-template.md`        | Asking an agent to document a new test scenario |
+| `bug-report-template.md`       | Asking an agent to capture a reproduction case  |
+| `test-execution-report.md`     | Asking an agent to summarise a test run         |
+| `api-testing-checklist.md`     | Asking an agent to audit API test coverage      |
+| `ui-testing-best-practices.md` | Asking an agent to review UI test code          |
+
+#### Example Prompts
+
+```
+# Generate a structured test case document
+@workspace Read cypress/chatmode/test-case-template.md then produce a test case document
+for the "Add to Cart" feature.
+
+# Let the agent audit API coverage
+@workspace Use cypress/chatmode/api-testing-checklist.md as a checklist and evaluate
+how well cypress/e2e/api/ covers each item.
+
+# Ask the agent to write a bug report
+@workspace A 401 error appears on POST /api/users when authenticated. Produce a bug
+report following cypress/chatmode/bug-report-template.md.
+```
+
+---
+
+### Cline / Claude Desktop Agent
+
+Expose the chatmode folder over MCP so any MCP-aware agent can read templates natively:
+
+```json
+{
+  "mcpServers": {
+    "cypress-chatmode": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "./cypress/chatmode"],
+      "env": { "ALLOWED_DIRECTORIES": "./cypress/chatmode" }
+    }
+  }
+}
+```
+
+After configuring, the agent can:
+
+```bash
+# List available templates
+mcp list cypress/chatmode/
+
+# Read a specific template
+mcp read cypress/chatmode/test-case-template.md
+
+# Generate a test case from the template
+mcp read cypress/chatmode/test-case-template.md | agent generate --feature "User Login"
+```
+
+---
+
+### Cursor Agent
+
+1. Open Cursor and point it at this repository.
+2. Press `Ctrl+K` to open the inline agent prompt inside any `.cy.js` / `.cy.ts` file.
+3. Use `@file` references to include page objects or fixtures:
+
+```
+@file cypress/pageObjects/reactLogin.js
+Generate a full Cypress spec that covers successful login, invalid password, and
+account-locked scenarios. Follow the POM pattern in the referenced file.
+```
+
+4. For project-wide changes, open **Cursor Composer** (`Ctrl+Shift+I`) and describe the full task:
+
+```
+Refactor all API specs under cypress/e2e/api/ to use the cy.apiRequest() custom command
+defined in cypress/support/commands/api.commands.js.
+```
+
+---
+
+### Agent-Driven CI/CD
+
+Agents can be embedded in CI pipelines to generate or update tests on every PR:
+
+```yaml
+# .github/workflows/agent-test-gen.yml
+name: Agent Test Generation
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+
+jobs:
+  generate-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm run test:ci
+      # Add your preferred AI agent step here to analyse diff and
+      # propose new Cypress specs for changed source files.
+```
+
+---
+
+### Tips for Effective Agent Use
+
+1. **Provide file context** — open the relevant page object or spec before prompting so the agent
+   inherits accurate selector and method names.
+2. **Reference chatmode templates** — including a template path steers the agent toward consistent,
+   reviewable output.
+3. **Break large tasks down** — ask the agent to handle one page object or one test category at a
+   time for more accurate results.
+4. **Review generated selectors** — prefer `data-testid` attributes; ask the agent to flag any
+   brittle CSS or XPath selectors it produces.
+5. **Commit incrementally** — accept agent-generated files one at a time so each diff is easy to
+   review and revert if needed.
+6. **Iterate with error output** — when a generated test fails, paste the Cypress error output back
+   into the agent chat for a precise fix.
+
+---
+
+> **Tip:** The `cypress/chatmode/ui-testing-best-practices.md` file is an excellent system prompt
+> addition for any agent when working on UI test files in this repository.
