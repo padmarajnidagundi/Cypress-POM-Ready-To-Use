@@ -2044,7 +2044,7 @@ jobs:
 
 ---
 
-### Tips for Effective Agent Use
+### Tips for Effective Agent Use.
 
 1. **Provide file context** — open the relevant page object or spec before prompting so the agent
    inherits accurate selector and method names.
