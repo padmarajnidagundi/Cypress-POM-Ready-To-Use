@@ -2,7 +2,7 @@
 
 **Production-Ready Cypress Automation Framework with TypeScript, API Testing & CI/CD Integration**
 
-> **Last Updated:** February 3, 2026 | **Version:** 2.0.0 | **Maintained by QA Professionals**
+> **Last Updated:** May 11, 2026 | **Version:** 2.1.0 | **Maintained by QA Professionals**
 
 [![Node.js CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml)
 [![Docker CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/docker.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/docker.yml)
@@ -1083,7 +1083,7 @@ npm run test:ci
 
 # GitLab CI with Docker
 test:
-  image: cypress/included:13.17.0
+  image: cypress/included:15.14.2
   script:
     - npm ci
     - npm run test:ci
@@ -1094,7 +1094,7 @@ test:
       - cypress/videos
 
 # Jenkins with Docker
-docker.image('cypress/included:13.17.0').inside {
+docker.image('cypress/included:15.14.2').inside {
     sh 'npm ci'
     sh 'npm run test:ci'
 }
@@ -1194,6 +1194,20 @@ module.exports = defineConfig({
 - **Share**: Share with your QA community
 
 ## Changelog
+
+### Version 2.1.0 (May 2026)
+
+- ⬆️ **Updated Cypress** from 13.17.0 to 15.14.2
+- ⬆️ Updated `@typescript-eslint/eslint-plugin` and `parser` to 8.59.2
+- ⬆️ Updated `@testing-library/cypress` to 10.1.3
+- ⬆️ Updated `@types/node` to 22.19.18
+- ⬆️ Updated `cypress-real-events` to 1.15.0
+- ⬆️ Updated `eslint-plugin-cypress` to 6.4.1
+- ⬆️ Updated `mochawesome` to 7.1.4
+- ⬆️ Updated `mochawesome-report-generator` to 6.3.2
+- ⬆️ Updated `prettier` to 3.8.3
+- ⬆️ Updated `typescript` to 5.9.3
+- ⬆️ Updated `lint-staged` to 15.5.2
 
 ### Version 2.0.0 (January-February 2026)
 
@@ -1312,10 +1326,9 @@ New testing capabilities are provided by:
 ```json
 {
   "cypress-image-snapshot": "^4.0.1",
-  "cypress-axe": "^1.5.0",
-  "@testing-library/cypress": "^10.0.1",
-  "cypress-real-events": "^1.11.0",
-  "@faker-js/faker": "^8.0.0"
+  "cypress-axe": "^1.7.0",
+  "@testing-library/cypress": "^10.1.3",
+  "cypress-real-events": "^1.15.0"
 }
 ```
 
@@ -1499,8 +1512,8 @@ cypress/
    {
      "devDependencies": {
        "@cypress/browserify-preprocessor": "^3.0.2",
-       "@types/node": "^20.11.16",
-       "typescript": "^5.3.3"
+       "@types/node": "^22.19.18",
+       "typescript": "^5.9.3"
      }
    }
    ```
