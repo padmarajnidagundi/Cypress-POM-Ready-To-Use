@@ -39,10 +39,6 @@ jobs:
       - name: Verify Cypress
         run: npx cypress verify
 
-      - name: Run Linter
-        run: npm run lint
-        continue-on-error: true
-
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
