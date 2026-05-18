@@ -2075,4 +2075,4 @@ jobs:
 ---
 
 > **Tip:** The `cypress/chatmode/ui-testing-best-practices.md` file is an excellent system prompt
-> addition for any agent when working on UI test files in this repository.
+> addition for any agent when working on UI test files in this repository..
