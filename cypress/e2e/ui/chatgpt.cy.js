@@ -248,4 +248,47 @@ describe('ChatGPT UI Tests', () => {
     chatGpt.waitForResponse()
     chatGpt.getUserMessages().should('contain', secondMessage)
   })
+
+  describe('Edge Cases', () => {
+    beforeEach(() => {
+      chatGpt.visit()
+    })
+
+    it('should not submit a whitespace-only message', () => {
+      const whitespaceMessage = '     '
+
+      cy.get('body').then(($body) => {
+        const beforeCount = $body.find(chatGpt.selectors.userMessage).length
+
+        chatGpt.getElement(chatGpt.selectors.messageInput).type(whitespaceMessage)
+        chatGpt.getElement(chatGpt.selectors.sendButton).click()
+
+        chatGpt.getElement(chatGpt.selectors.userMessage).should('have.length', beforeCount)
+      })
+    })
+
+    it('should preserve multi-line input before sending', () => {
+      const multilineMessage = 'First line{shift+enter}Second line'
+
+      chatGpt.getElement(chatGpt.selectors.messageInput).type(multilineMessage)
+      chatGpt
+        .getElement(chatGpt.selectors.messageInput)
+        .should('have.value', 'First line\nSecond line')
+
+      chatGpt.getElement(chatGpt.selectors.sendButton).click()
+      chatGpt.waitForResponse()
+      chatGpt.getUserMessages().should('contain', 'First line').and('contain', 'Second line')
+    })
+
+    it('should accept and submit a very long prompt', () => {
+      const longMessage = 'EdgeCaseMessage '.repeat(200)
+
+      chatGpt.getElement(chatGpt.selectors.messageInput).type(longMessage, { delay: 0 })
+      chatGpt.getElement(chatGpt.selectors.messageInput).invoke('val').should('not.be.empty')
+
+      chatGpt.getElement(chatGpt.selectors.sendButton).click()
+      chatGpt.waitForResponse()
+      chatGpt.getUserMessages().should('contain', 'EdgeCaseMessage')
+    })
+  })
 })
