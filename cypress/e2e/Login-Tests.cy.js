@@ -203,4 +203,14 @@ describe('UI Authentication Tests', function () {
     cy.get('button').contains('Sign in').click()
     cy.get('.error-messages').should('be.visible')
   })
+
+  /**
+   * Additional UI navigation test: register link route
+   */
+  it('should navigate to register page from login page', function () {
+    cy.visit('https://react-redux.realworld.io/#/login')
+    cy.contains('Need an account?').should('be.visible').click()
+    cy.url().should('include', '/register')
+    cy.get('h1').should('contain', 'Sign up')
+  })
 })
