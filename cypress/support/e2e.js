@@ -18,6 +18,9 @@ import './commands'
 import './commands/api.commands'
 import 'cypress-axe'
 import { configureAxe } from 'cypress-axe'
+import { addMatchImageSnapshotCommand } from '@simonsmith/cypress-image-snapshot/command'
+
+addMatchImageSnapshotCommand()
 
 // Configure aXe
 configureAxe({

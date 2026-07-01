@@ -236,7 +236,7 @@ it('should have no accessibility violations', () => {
 ## Visual Regression Testing
 
 ```javascript
-// Install cypress-image-snapshot
+// Install @simonsmith/cypress-image-snapshot
 cy.get('.component').matchImageSnapshot('component-name')
 ```
 

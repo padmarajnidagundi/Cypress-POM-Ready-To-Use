@@ -53,8 +53,8 @@ module.exports = defineConfig({
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on)
-      const { addMatchImageSnapshotPlugin } = require('cypress-image-snapshot/plugin')
-      addMatchImageSnapshotPlugin(on, config)
+      const { addMatchImageSnapshotPlugin } = require('@simonsmith/cypress-image-snapshot/plugin')
+      addMatchImageSnapshotPlugin(on)
       const pluginConfig = require('./cypress/plugins/index.js')
       return pluginConfig(on, config)
     }

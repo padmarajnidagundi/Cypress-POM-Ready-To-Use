@@ -85,7 +85,7 @@
     "@typescript-eslint/parser": "^8.59.2",
     "cypress": "^15.14.2",
     "cypress-axe": "^1.7.0",
-    "cypress-image-snapshot": "^4.0.1",
+    "@simonsmith/cypress-image-snapshot": "^10.0.4",
     "cypress-mochawesome-reporter": "^4.0.2",
     "cypress-real-events": "^1.15.0",
     "eslint": "^9.39.4",
