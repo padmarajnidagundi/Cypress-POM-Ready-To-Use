@@ -707,7 +707,7 @@ New testing capabilities are provided by:
 
 ```json
 {
-  "cypress-image-snapshot": "^4.0.1",
+  "@simonsmith/cypress-image-snapshot": "^10.0.4",
   "cypress-axe": "^1.7.0",
   "@testing-library/cypress": "^10.0.2",
   "cypress-real-events": "^1.14.0"
@@ -1325,7 +1325,7 @@ New testing capabilities are provided by:
 
 ```json
 {
-  "cypress-image-snapshot": "^4.0.1",
+  "@simonsmith/cypress-image-snapshot": "^10.0.4",
   "cypress-axe": "^1.7.0",
   "@testing-library/cypress": "^10.1.3",
   "cypress-real-events": "^1.15.0"
