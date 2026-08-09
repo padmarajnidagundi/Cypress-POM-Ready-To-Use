@@ -2,7 +2,7 @@
 
 **Production-Ready Cypress Automation Framework with TypeScript, API Testing & CI/CD Integration**
 
-> **Last Updated:** May 11, 2026 | **Version:** 2.1.0 | **Maintained by QA Professionals**
+> **Last Updated:** August 9, 2026 | **Version:** 2.1.0 | **Maintained by QA Professionals**
 
 [![Node.js CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml)
 [![Docker CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/docker.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/docker.yml)
@@ -709,8 +709,8 @@ New testing capabilities are provided by:
 {
   "@simonsmith/cypress-image-snapshot": "^10.0.4",
   "cypress-axe": "^1.7.0",
-  "@testing-library/cypress": "^10.0.2",
-  "cypress-real-events": "^1.14.0"
+  "@testing-library/cypress": "^10.1.3",
+  "cypress-real-events": "^1.15.0"
 }
 ```
 
@@ -743,13 +743,7 @@ cy.log('User data:', user)
 ## Contributing
 
 We welcome contributions! This project follows industry best practices and is maintained by
-experienced QA professionals.teUser()
-
-// Generate email const email = TestDataGenerator.generateEmail()
-
-// Generate password const password = TestDataGenerator.generatePassword(16, true)
-
-````
+experienced QA professionals.
 
 **Assertion Helpers:**
 
@@ -765,7 +759,7 @@ AssertionHelpers.assertElementState('[data-testid="button"]', {
   enabled: true,
   text: 'Submit'
 })
-````
+```
 
 ## Troubleshooting
 
@@ -1176,7 +1170,7 @@ module.exports = defineConfig({
    - Open `cypress/reports/html/report.html` in any browser
    - Reports are self-contained and can be shared
    - Support offline viewing
-   - Can b & Community
+   - Can be hosted on any static server
 
 ### Get Help
 
@@ -1231,14 +1225,7 @@ module.exports = defineConfig({
 - Initial release with Page Object Model
 - Basic UI and API testing support
 
-## Frequently Asked Questions (FAQ)always()
-
-run: npm run test:report
-
-- name: Upload Test Report if: always() uses: actions/upload-artifact@v4 with: name: test-report
-  path: cypress/reports/html
-
-````
+## Frequently Asked Questions (FAQ)
 
 ## Advanced Features
 
@@ -1254,7 +1241,7 @@ describe('Visual Tests', () => {
     cy.matchImageSnapshot('homepage')
   })
 })
-````
+```
 
 Configuration in cypress.config.js:
 
