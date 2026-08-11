@@ -40,7 +40,7 @@ jobs:
         run: npx cypress verify
 
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           browser: chrome
           headless: true
