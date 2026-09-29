@@ -73,7 +73,7 @@ jobs:
 
       - name: Run tests with Docker Compose
         run: |
-          docker-compose up --build --abort-on-container-exit cypress
+          docker compose up --build --abort-on-container-exit cypress
 
       - name: Upload test reports
         uses: actions/upload-artifact@v4
@@ -89,4 +89,4 @@ jobs:
       - name: Clean up Docker resources
         if: always()
         run: |
-          docker-compose down -v
+          docker compose down -v

@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es2021",
-    "lib": ["es2021", "dom"],
+    "target": "ES2021",
+    "lib": ["ES2021", "DOM"],
     "types": ["cypress", "node"],
     "allowJs": true,
-    "baseUrl": "./",
-    "paths": {
-      "@pageObjects/*": ["cypress/pageObjects/*"],
-      "@support/*": ["cypress/support/*"]
-    },
-    "moduleResolution": "node",
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@pageObjects/*": ["./cypress/pageObjects/*"],
+      "@support/*": ["./cypress/support/*"]
+    }
   },
   "include": ["**/*.ts", "**/*.js"]
 }

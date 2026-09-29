@@ -1,8 +1,8 @@
-# Cypress Page Object Model Framework 2026 | MCP | ChatMode | Complete E2E Testing Guide
+# Cypress Page Object Model Framework
 
-**Production-Ready Cypress Automation Framework with TypeScript, API Testing & CI/CD Integration**
+**Production-ready Cypress automation with TypeScript, API testing, Docker, and CI/CD support**
 
-> **Last Updated:** August 9, 2026 | **Version:** 2.1.0 | **Maintained by QA Professionals**
+> **Updated:** September 2026 | **Package version:** 2.1.0 | **Current stack:** Node.js 18+ / Cypress 15.14.2 / TypeScript 5.9 / ESLint 9
 
 [![Node.js CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml)
 [![Docker CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/docker.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/docker.yml)
@@ -114,11 +114,11 @@ looking to implement robust end-to-end testing.
 
 ### Prerequisites
 
-- **Node.js**: Version 18.x or higher
-- **npm**: Version 8.x or higher
-- **Git**: For version control
+- **Node.js**: 18.x or newer
+- **npm**: 8.x or newer
+- **Git**: for version control
 - **Operating System**: Windows, macOS, or Linux
-- **Docker** (Optional): For containerized testing
+- **Docker** (optional): for containerized runs with the Compose v2 plugin
 
 ### Installation Steps
 
@@ -190,13 +190,13 @@ If you prefer using Docker, you can run the entire test suite in a containerized
 
 ```bash
 # Build and run tests
-docker-compose up --build cypress
+docker compose up --build cypress
 
 # Run tests in detached mode
-docker-compose up -d cypress
+docker compose up -d cypress
 
 # View test reports
-docker-compose up cypress-reports
+docker compose up cypress-reports
 # Access reports at http://localhost:8080
 ```
 
