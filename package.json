@@ -39,9 +39,9 @@
     "docker:run": "docker run --rm cypress-pom-tests",
     "docker:run:api": "docker run --rm cypress-pom-tests npm run test:api",
     "docker:run:ui": "docker run --rm cypress-pom-tests npm run test:ui",
-    "docker:compose:up": "docker-compose up --build cypress",
-    "docker:compose:down": "docker-compose down -v",
-    "docker:compose:reports": "docker-compose up cypress-reports"
+    "docker:compose:up": "docker compose up --build cypress",
+    "docker:compose:down": "docker compose down -v",
+    "docker:compose:reports": "docker compose up cypress-reports"
   },
   "repository": {
     "type": "git",
