@@ -1,5 +1,5 @@
 # Use the current Cypress browser image with Node.js and Chrome preinstalled
-FROM cypress/included:15.14.2
+FROM cypress/included:16.4.0
 
 # Set working directory
 WORKDIR /e2e

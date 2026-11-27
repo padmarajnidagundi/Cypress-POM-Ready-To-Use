@@ -2,7 +2,7 @@
 
 **Production-ready Cypress automation with TypeScript, API testing, Docker, and CI/CD support**
 
-> **Updated:** September 2026 | **Package version:** 2.1.0 | **Current stack:** Node.js 18+ / Cypress 15.14.2 / TypeScript 5.9 / ESLint 9
+> **Updated:** November 2026 | **Package version:** 2.1.0 | **Current stack:** Node.js 18+ / Cypress 16.4.0 / TypeScript 5.9 / ESLint 9
 
 [![Node.js CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/node.js.yml)
 [![Docker CI](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/docker.yml/badge.svg)](https://github.com/padmarajnidagundi/Cypress-POM-Ready-To-Use/actions/workflows/docker.yml)
@@ -1077,7 +1077,7 @@ npm run test:ci
 
 # GitLab CI with Docker
 test:
-  image: cypress/included:15.14.2
+  image: cypress/included:16.4.0
   script:
     - npm ci
     - npm run test:ci
@@ -1088,7 +1088,7 @@ test:
       - cypress/videos
 
 # Jenkins with Docker
-docker.image('cypress/included:15.14.2').inside {
+docker.image('cypress/included:16.4.0').inside {
     sh 'npm ci'
     sh 'npm run test:ci'
 }
@@ -1189,9 +1189,9 @@ module.exports = defineConfig({
 
 ## Changelog
 
-### Version 2.1.0 (May 2026)
+### Version 2.1.0 (November 2026)
 
-- ⬆️ **Updated Cypress** from 13.17.0 to 15.14.2
+- ⬆️ **Updated Cypress** from 15.14.2 to 16.4.0
 - ⬆️ Updated `@typescript-eslint/eslint-plugin` and `parser` to 8.59.2
 - ⬆️ Updated `@testing-library/cypress` to 10.1.3
 - ⬆️ Updated `@types/node` to 22.19.18

@@ -62,7 +62,7 @@ docker run --rm \
 
 The Dockerfile uses the official Cypress included image with Chrome browser pre-installed:
 
-- **Base Image**: `cypress/included:15.14.2`
+- **Base Image**: `cypress/included:16.4.0`
 - **Node.js**: Pre-installed in Cypress image
 - **Browsers**: Chrome (included)
 - **Working Directory**: `/e2e`
@@ -187,7 +187,7 @@ docker run --rm \
 Create a custom Dockerfile for specific needs:
 
 ```dockerfile
-FROM cypress/included:15.14.2
+FROM cypress/included:16.4.0
 
 WORKDIR /e2e
 
